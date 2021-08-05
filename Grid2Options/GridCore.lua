@@ -1,6 +1,4 @@
---[[
-Created by Grid2 original authors
---]]
+local Grid2 = Grid2
 local L = LibStub("AceLocale-3.0"):GetLocale("Grid2Options")
 local LG = LibStub("AceLocale-3.0"):GetLocale("Grid2")
 local ACD3
@@ -100,6 +98,4 @@ function Grid2Options:OnChatCommand(input)
 	end
 end
 
---{{
 _G.Grid2Options = Grid2Options
---}}

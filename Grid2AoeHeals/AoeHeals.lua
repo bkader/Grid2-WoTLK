@@ -28,7 +28,6 @@ local UnitIsEnemy = UnitIsEnemy
 local UnitIsVisible = UnitIsVisible
 local InCombatLockdown = InCombatLockdown
 local GetPlayerMapPosition = GetPlayerMapPosition
-local UnitGetIncomingHeals = UnitGetIncomingHeals
 local GetNumGroupMembers = GetNumGroupMembers
 local next = next
 local min = math.min
@@ -39,6 +38,19 @@ local tsort = table.sort
 local tinsert = table.insert
 local tostring = tostring
 local bit_band = bit.band
+
+if not _G.UnitGetIncomingHeals then
+	local HealComm = LibStub("LibHealComm-4.0", true)
+	_G.UnitGetIncomingHeals = function(unit, healer)
+		if HealComm and healer then
+			return HealComm:GetCasterHealAmount(UnitGUID(healer), HealComm.CASTED_HEALS, GetTime() + 5)
+		elseif HealComm then
+			return HealComm:GetHealAmount(UnitGUID(unit), HealComm.ALL_HEALS, GetTime() + 5)
+		else
+			return 0
+		end
+	end
+end
 
 --{{
 local raidSizes = {raid40 = 25, raid25 = 25, raid20 = 20, raid15 = 15, raid10 = 10, party = 5, solo = 5}

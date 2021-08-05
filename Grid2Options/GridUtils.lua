@@ -1,6 +1,7 @@
 --[[
 	Miscelaneous/shared functions and variables
 --]]
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 local LG = Grid2Options.LG
 
@@ -113,9 +114,7 @@ do
 				wipe(options)
 				options.openManager = openManager
 			end
-			for _, f in ipairs(
-				{"MakeIndicatorsOptions", "MakeStatusesOptions", "MakeIndicatorChildOptions", "MakeStatusChildOptions"}
-			) do
+			for _, f in ipairs({"MakeIndicatorsOptions", "MakeStatusesOptions", "MakeIndicatorChildOptions", "MakeStatusChildOptions"}) do
 				self[f .. "_"] = self[f]
 				self[f] = Hook
 			end

@@ -52,9 +52,9 @@ function Grid2Options:MakeStatusAuraListOptions(status, options, optionParams)
 			end
 			return table.concat(auras, "\n")
 		end,
-		set = function(_, v)
+		set = function(_, val)
 			wipe(status.dbx.auras)
-			local auras = {strsplit("\n,", v)}
+			local auras = {strsplit("\n,", val)}
 			for _, v in pairs(auras) do
 				local aura = strtrim(v)
 				if #aura > 0 then

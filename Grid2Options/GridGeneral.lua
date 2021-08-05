@@ -1,6 +1,7 @@
 --[[
 	General Settings
 --]]
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
 local tabs_order = 10

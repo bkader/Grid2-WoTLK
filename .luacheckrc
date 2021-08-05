@@ -52,6 +52,7 @@ globals = {
 	"CUSTOM_CLASS_COLORS",
 	"L_UIDropDownMenu_CreateInfo",
 	"UnitDied",
+	"UnitGetIncomingHeals",
 	"AceGUIWidgetLSMlists",
 	"L_UIDropDownMenu_AddButton",
 	"L_CloseDropDownMenus",
