@@ -1,4 +1,4 @@
-local L =  LibStub:GetLibrary("AceLocale-3.0"):NewLocale("Grid2", "esES")
+local L = LibStub:GetLibrary("AceLocale-3.0"):NewLocale("Grid2", "esES")
 if not L then return end
 
 --{{{ Actually used
@@ -92,3 +92,20 @@ L["By Group 40"] = "Por Grupo 40"
 L["By Group 25 Tanks First"] = "Por Grupo 25 tanques primero"
 L["By Group 10 Tanks First"] = "Por Grupo 10 tanques primero"
 L["Select Layout"] = "Elige Diseño"
+
+--Free Layout
+L["Free Layout"] = "Diseño libre"
+L["Sort by Group"] = "Ordenar por Grupo"
+L["Sort by Class"] = "Ordenar por Clase"
+L["Sort by Name"] = "Ordenar por Nombre"
+L["Custom Sort"] = "Diseño Personalizado"
+L["Tanks First"] = "Tanques primero"
+L["Units per Column"] = "Unidades por Columna"
+L["Units per Row"] = "Unidades por Fila"
+L["Visible Groups"] = "Grupos Visibles"
+L["Layout Orientation"] = "Orientación"
+L["Horizontal"] = "Horizontal"
+L["Vertical"] = "Vertical"
+L["Change Layout"] = "Cambiar Diseño"
+L["Left Click to drag and rearrange units"] = "Click Izquierdo: arrastra y recoloca las unidades"
+L["Right Click to finish config"] = "Click Derecho: finaliza la configuración"

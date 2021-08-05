@@ -1,8 +1,6 @@
--- Created by Grid2 original authors, modified by Michael
-
 local Grid2 = Grid2
-local next = next
-local pairs = pairs
+
+local next, pairs = next, pairs
 
 Grid2.statuses = {}
 Grid2.statusTypes = {}
@@ -11,6 +9,7 @@ Grid2.statusPrototype = {}
 -- {{ status prototype
 local status = Grid2.statusPrototype
 status.__index = status
+
 -- constructor
 function status:new(name, embed)
 	local e = setmetatable({}, self)
@@ -21,22 +20,27 @@ function status:new(name, embed)
 	e.indicators = {}
 	return e
 end
+
 -- shading color: icon indicator
 function status:GetVertexColor()
 	return 1, 1, 1, 1
 end
+
 -- texture coords: icon indicator
 function status:GetTexCoord()
 	return 0.05, 0.95, 0.05, 0.95
 end
+
 -- stacks: text, bar indicators
 function status:GetCount()
 	return 1
 end
+
 -- max posible stacks: bar indicator
 function status:GetCountMax()
 	return 1
 end
+
 -- icon, square, text-color, bar-color indicators
 function status:GetColor()
 	return 0, 0, 0, 1
@@ -111,11 +115,11 @@ function Grid2:RegisterStatus(status, types, baseKey, dbx)
 		status.name = baseKey
 	else
 		self.statuses[name] = status
-		for _, type in ipairs(types) do
-			local t = self.statusTypes[type]
+		for _, stype in ipairs(types) do
+			local t = self.statusTypes[stype]
 			if not t then
 				t = {}
-				self.statusTypes[type] = t
+				self.statusTypes[stype] = t
 			end
 			t[#t + 1] = status
 		end
@@ -134,7 +138,7 @@ function Grid2:UnregisterStatus(status)
 	end
 	local name = status.name
 	self.statuses[name] = nil
-	for type, t in pairs(self.statusTypes) do
+	for _, t in pairs(self.statusTypes) do
 		for i = 1, #t do
 			if t[i] == status then
 				table.remove(t, i)
@@ -144,6 +148,6 @@ function Grid2:UnregisterStatus(status)
 	end
 end
 
-function Grid2:IterateStatuses(type)
-	return next, type and self.statusTypes[type] or self.statuses
+function Grid2:IterateStatuses(stype)
+	return next, stype and self.statusTypes[stype] or self.statuses
 end

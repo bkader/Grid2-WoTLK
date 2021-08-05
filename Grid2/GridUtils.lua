@@ -1,16 +1,16 @@
 -- Misc functions
-
 local Grid2 = Grid2
 
-function Grid2.Dummy()
-end
+function Grid2.Dummy() end
 
 function Grid2:HideBlizzardRaidFrames()
-	if CompactRaidFrameManager then --check if Blizzard_CompactRaidFrames isn't already disabled by the user
-		CompactRaidFrameManager:UnregisterAllEvents()
-		CompactRaidFrameManager:Hide()
-		CompactRaidFrameContainer:UnregisterAllEvents()
-		CompactRaidFrameContainer:Hide()
+	if _G.CompactRaidFrameManager then --check if Blizzard_CompactRaidFrames isn't already disabled by the user
+		_G.CompactRaidFrameManager:UnregisterAllEvents()
+		_G.CompactRaidFrameManager:Hide()
+		if _G.CompactRaidFrameContainer then
+			_G.CompactRaidFrameContainer:UnregisterAllEvents()
+			_G.CompactRaidFrameContainer:Hide()
+		end
 	end
 end
 

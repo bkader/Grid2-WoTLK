@@ -1,6 +1,3 @@
---[[
-Created by Grid2 original authors, modified by Michael
---]]
 local Grid2 = Grid2
 
 function Grid2:SetupIndicators(setup)

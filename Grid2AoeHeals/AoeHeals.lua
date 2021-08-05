@@ -1,4 +1,4 @@
---[[ Aoe Heals module, created by Michael
+--[[ Aoe Heals module
 
 	* Created statuses
 	aoe-ChainHeal			Best targets to use Shaman "Chain Heal"
@@ -15,18 +15,12 @@
 		x,y				 Position of unit
 		curMask          Bitmask of the current unit, each roster[index] element has a bitmask of 2^(index-1)
 --]]
+local Grid2 = Grid2
 local AOEM = Grid2:NewModule("Grid2AoeHeals")
 
-AOEM.defaultDB = {
-	profile = {
-		updateRate = 0.25,
-		showInCombat = true,
-		showInRaid = false
-	}
-}
+AOEM.defaultDB = {profile = { updateRate = 0.25, showInCombat = true, showInRaid = false}}
 AOEM.playerClass = select(2, UnitClass("player"))
 
-local Grid2 = Grid2
 local IsInRaid = IsInRaid
 local Grid2Layout = Grid2Layout
 local UnitExists = UnitExists
@@ -89,14 +83,9 @@ local function UpdateRoster()
 				i = i + 1
 			end
 		end
-		tsort(
-			roster,
-			function(a, b)
-				return a.group < b.group
-			end
-		)
-		for i = 1, #roster do
-			roster[i].curMask = 2 ^ (i - 1)
+		tsort(roster, function(a, b) return a.group < b.group end)
+		for r = 1, #roster do
+			roster[i].curMask = 2 ^ (r - 1)
 		end
 	else
 		for i = 1, 5 do
@@ -231,9 +220,7 @@ local function UpdateTimerState(InCombat)
 	if InCombat == nil then
 		InCombat = InCombatLockdown()
 	end
-	local disabled =
-		(AOEM.db.profile.showInCombat and (not InCombat)) or (AOEM.db.profile.showInRaid and (not IsInRaid())) or
-		(GetNumGroupMembers() == 0)
+	local disabled = (AOEM.db.profile.showInCombat and (not InCombat)) or (AOEM.db.profile.showInRaid and (not IsInRaid())) or (GetNumGroupMembers() == 0)
 	SetTimer(not disabled)
 end
 
@@ -272,12 +259,7 @@ local function status_OnEnable(self)
 		UpdateTimerState()
 	end
 	tinsert(statuses, self)
-	tsort(
-		statuses,
-		function(a, b)
-			return a.order < b.order
-		end
-	)
+	tsort(statuses, function(a, b) return a.order < b.order end)
 	if self.StatusEnabled then
 		self:StatusEnabled()
 	end

@@ -1,15 +1,10 @@
---[[
-Created by Grid2 original authors, modified by Michael
---]]
-local Range = Grid2.statusPrototype:new("range")
-
 local Grid2 = Grid2
-local UnitIsUnit = UnitIsUnit
-local UnitInRange = UnitInRange
-local IsSpellInRange = IsSpellInRange
-local IsItemInRange = IsItemInRange
-local UnitIsFriend = UnitIsFriend
-local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local Range = Grid2.statusPrototype:new("range")
+Range.IsActive = Grid2.statusLibrary.IsActive
+
+local UnitIsUnit, UnitInRange = UnitIsUnit, UnitInRange
+local UnitIsFriend, UnitIsDeadOrGhost = UnitIsFriend, UnitIsDeadOrGhost
+local IsSpellInRange, IsItemInRange = IsSpellInRange, IsItemInRange
 local CheckInteractDistance = CheckInteractDistance
 local tostring = tostring
 
@@ -31,13 +26,11 @@ local Ranges = {
 	end, --	34471 = Vial of the Sunwell, 28767 = The Decapitator
 	["99"] = UnitIsVisible
 }
+
 local UnitRangeCheck
 local UnitIsInRange
 
-local rezSpell =
-	({DRUID = 20484, PRIEST = 2006, PALADIN = 7328, SHAMAN = 2008, MONK = 115178, DEATHKNIGHT = 61999, WARLOCK = 20707})[
-	select(2, UnitClass("player"))
-]
+local rezSpell = ({DRUID = 20484, PRIEST = 2006, PALADIN = 7328, SHAMAN = 2008, MONK = 115178, DEATHKNIGHT = 61999, WARLOCK = 20707})[select(2, UnitClass("player"))]
 if rezSpell then
 	rezSpell = GetSpellInfo(rezSpell)
 	UnitIsInRange = function(unit)
@@ -50,7 +43,6 @@ if rezSpell then
 end
 
 -- Roster ranges update function
-
 local function Update(self)
 	for unit in Grid2:IterateRosterUnits() do
 		local value = UnitIsInRange(unit) and 1 or false
@@ -63,7 +55,6 @@ local function Update(self)
 end
 
 -- Range status
-
 function Range:OnEnable()
 	self:CreateTimer()
 	self:UpdateDB()
@@ -129,13 +120,10 @@ function Range:GetRanges()
 	return Ranges
 end
 
-Range.IsActive = Grid2.statusLibrary.IsActive
-
 local function Create(baseKey, dbx)
 	Grid2:RegisterStatus(Range, {"percent"}, baseKey, dbx)
 	return Range
 end
 
 Grid2.setupFunc["range"] = Create
-
 Grid2:DbSetStatusDefaultValue("range", {type = "range", range = 38, default = 0.25, elapsed = 0.5})

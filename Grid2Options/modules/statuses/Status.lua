@@ -1,11 +1,10 @@
 -- Library of common/shared methods
-
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
--- Grid2Options:MakeStatusDeleteOptions()
 do
 	local function DeleteStatus(info)
-		local status   = info.arg.status
+		local status = info.arg.status
 		local category = Grid2Options:GetStatusCategory(status)
 		Grid2.db.profile.statuses[status.name] = nil
 		Grid2:UnregisterStatus(status)
@@ -13,7 +12,7 @@ do
 		Grid2Options:DeleteStatusOptions(category, status)
 	end
 	function Grid2Options:MakeStatusDeleteOptions(status, options, optionParams)
-		self:MakeHeaderOptions( options, "Delete")
+		self:MakeHeaderOptions(options, "Delete")
 		options.delete = {
 			type = "execute",
 			order = 255,
@@ -21,8 +20,10 @@ do
 			name = L["Delete"],
 			desc = L["Delete this element"],
 			func = DeleteStatus,
-			disabled = function() return next(status.indicators)~=nil end,
-			arg = { status = status },
+			disabled = function()
+				return next(status.indicators) ~= nil
+			end,
+			arg = {status = status}
 		}
 	end
 end
@@ -30,20 +31,20 @@ end
 -- Grid2Options:MakeStatusColorOptions()
 do
 	local function GetStatusColor(info)
-		local c = info.arg.status.dbx["color"..(info.arg.colorIndex)]
+		local c = info.arg.status.dbx["color" .. (info.arg.colorIndex)]
 		return c.r, c.g, c.b, c.a
 	end
 	local function SetStatusColor(info, r, g, b, a)
 		local status = info.arg.status
-		local c = status.dbx["color"..(info.arg.colorIndex)]
+		local c = status.dbx["color" .. (info.arg.colorIndex)]
 		c.r, c.g, c.b, c.a = r, g, b, a
 		status:UpdateDB()
 		status:UpdateAllIndicators()
 	end
 	function Grid2Options:MakeStatusColorOptions(status, options, optionParams)
 		local colorCount = status.dbx.colorCount or 1
-		local name  = L["Color"]
-		local desc  = L["Color for %s."]:format(status.name)
+		local name = L["Color"]
+		local desc = L["Color for %s."]:format(status.name)
 		local width = optionParams and optionParams.width or "half"
 		for i = 1, colorCount do
 			local colorKey = "color" .. i
@@ -67,7 +68,7 @@ do
 				get = GetStatusColor,
 				set = SetStatusColor,
 				hasAlpha = true,
-				arg = {status = status, colorIndex = i },
+				arg = {status = status, colorIndex = i}
 			}
 		end
 	end
@@ -94,13 +95,13 @@ function Grid2Options:MakeStatusThresholdOptions(status, options, optionParams, 
 		min = min,
 		max = max,
 		step = step,
-		get = function ()
+		get = function()
 			return status.dbx.threshold
 		end,
-		set = function (_, v)
+		set = function(_, v)
 			status.dbx.threshold = v
 			status:UpdateAllIndicators()
-		end,
+		end
 	}
 end
 
@@ -112,12 +113,14 @@ function Grid2Options:MakeStatusMissingOptions(status, options, optionParams)
 		desc = L["Display status only if the buff is not active."],
 		order = 110,
 		tristate = false,
-		get = function ()return status.dbx.missing end,
-		set = function (_, v)
+		get = function()
+			return status.dbx.missing
+		end,
+		set = function(_, v)
 			status.dbx.missing = v or nil
 			status:UpdateDB()
 			status:UpdateAllIndicators()
-		end,
+		end
 	}
 end
 
@@ -129,14 +132,15 @@ function Grid2Options:MakeStatusToggleOptions(status, options, optionParams, tog
 		name = name,
 		tristate = false,
 		width = optionParams and optionParams.width or nil,
-		get = function () return status.dbx[toggleKey] end,
-		set = function (_, v)
+		get = function()
+			return status.dbx[toggleKey]
+		end,
+		set = function(_, v)
 			status.dbx[toggleKey] = v or nil
 			status:UpdateDB()
 			status:UpdateAllIndicators()
-		end,
+		end
 	}
 end
 
--- Grid2Options:MakeStatusStandardOptions()
 Grid2Options.MakeStatusStandardOptions = Grid2Options.MakeStatusColorOptions

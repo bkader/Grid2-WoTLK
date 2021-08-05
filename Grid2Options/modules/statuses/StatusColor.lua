@@ -1,3 +1,4 @@
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
 local function MakeClassColorOption(status, options, type, translation)
@@ -28,8 +29,12 @@ local function MakeCharmedToggleOption(status, options)
 		width = "full",
 		order = 105,
 		tristate = false,
-		get = function() return status.dbx.colorHostile end,
-		set = function(_, v) status.dbx.colorHostile = v or nil end
+		get = function()
+			return status.dbx.colorHostile
+		end,
+		set = function(_, v)
+			status.dbx.colorHostile = v or nil
+		end
 	}
 end
 
@@ -70,7 +75,8 @@ Grid2Options:RegisterStatusOptions(
 	}
 )
 
-Grid2Options:RegisterStatusOptions("color", "color", function(self, status, options, optionParams)
+Grid2Options:RegisterStatusOptions("color", "color",
+function(self, status, options, optionParams)
 	self:MakeStatusColorOptions(status, options, optionParams)
 	self:MakeStatusDeleteOptions(status, options, optionParams)
 end)

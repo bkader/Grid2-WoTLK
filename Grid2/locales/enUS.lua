@@ -1,4 +1,4 @@
-local L =  LibStub:GetLibrary("AceLocale-3.0"):NewLocale("Grid2", "enUS", true, true)
+local L = LibStub:GetLibrary("AceLocale-3.0"):NewLocale("Grid2", "enUS", true, true)
 if not L then return end
 
 --{{{ Actually used
@@ -94,19 +94,19 @@ L["By Group 10 Tanks First"] = true
 L["Select Layout"] = true
 
 --Free Layout
-L["Select Layout"] = "Select Layout"
-L["Free Layout"] = "Free Layout"
-L["Sort by Group"] = "Sort by Group"
-L["Sort by Class"] = "Sort by Class"
-L["Sort by Name"] = "Sort by Name"
-L["Custom Sort"] = "Custom Sort"
-L["Tanks First"] = "Tanks First"
-L["Units per Column"] = "Units per Column"
-L["Units per Row"] = "Units per Row"
-L["Visible Groups"] = "Visible Groups"
-L["Layout Orientation"] = "Layout Orientation"
-L["Horizontal"] = "Horizontal"
-L["Vertical"] = "Vertical"
-L["Change Layout"] = "Change Layout"
-L["Left Click to drag and rearrange units"] = "Left Click to drag and rearrange units"
-L["Right Click to finish config"] = "Right Click to finish config"
+L["Select Layout"] = true
+L["Free Layout"] = true
+L["Sort by Group"] = true
+L["Sort by Class"] = true
+L["Sort by Name"] = true
+L["Custom Sort"] = true
+L["Tanks First"] = true
+L["Units per Column"] = true
+L["Units per Row"] = true
+L["Visible Groups"] = true
+L["Layout Orientation"] = true
+L["Horizontal"] = true
+L["Vertical"] = true
+L["Change Layout"] = true
+L["Left Click to drag and rearrange units"] = true
+L["Right Click to finish config"] = true

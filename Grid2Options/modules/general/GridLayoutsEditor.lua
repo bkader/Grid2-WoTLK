@@ -2,6 +2,9 @@
 	Layouts Editor
 	General > Layouts Tab > Advanced Tab
 --]]
+local Grid2 = Grid2
+local Grid2Options = Grid2Options
+
 local L = Grid2Options.L
 local LG = Grid2Options.LG
 
@@ -59,11 +62,6 @@ local SORTBY_VALUES = {
 	["NAME"] = L["Name"],
 	["INDEX"] = L["Index"]
 }
-
--- local SORTDIR_VALUES= {
--- ["ASC"]  = "Asc",
--- ["DESC"] = "Desc",
--- }
 
 local ACTION1_VALUES = {
 	add = string.format("|T%s:0|t%s", READY_CHECK_READY_TEXTURE, L["Insert"]),

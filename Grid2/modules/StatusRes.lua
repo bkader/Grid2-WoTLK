@@ -1,25 +1,18 @@
--- Resurrection status, created by Michael --
+local Grid2 = Grid2
+local Resurrection = Grid2.statusPrototype:new("resurrection")
+Resurrection.GetBorder = Grid2.statusLibrary.GetBorder
 
 local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
-
 local LRC = LibStub:GetLibrary("LibResComm-1.0")
 
-local Resurrection = Grid2.statusPrototype:new("resurrection")
-
-local Grid2 = Grid2
-local GetTime = GetTime
-local UnitExists = UnitExists
+local next, GetTime, UnitExists = next, GetTime, UnitExists
 local o_UnitIsDeadOrGhost = UnitIsDeadOrGhost
-local UnitHasIncomingResurrection = UnitHasIncomingResurrection
-local next = next
+
+local res_cache, res_time, timer = {}, {}, nil
 
 local function UnitIsDeadOrGhost(unit)
 	return o_UnitIsDeadOrGhost(unit) == 1
 end
-
-local timer
-local res_cache = {}
-local res_time = {}
 
 function Resurrection:Timer()
 	for unit in next, res_cache do
@@ -35,8 +28,7 @@ function Resurrection:Timer()
 end
 
 function Resurrection:CheckResTimers()
-	local t = GetTime()
-	local n = 0
+	local t, n = GetTime(), 0
 	for unit, val in pairs(res_cache) do
 		if val == 0 then
 			n = n + 1
@@ -60,9 +52,7 @@ function Resurrection:CheckResTimers()
 end
 
 function Resurrection:UNIT_HEALTH(event, unit)
-	if not res_cache[unit] then
-		return
-	end
+	if not res_cache[unit] then return end
 	if UnitHealth(unit) > 0 then
 		res_cache[unit] = nil
 		self:UpdateIndicators(unit)
@@ -89,27 +79,34 @@ function Resurrection:ResComm_ResStart(event, resser, endTime, target)
 		end
 	end
 end
-function Resurrection:ResComm_ResEnd(event, resser, target) --Fired when a resurrection cast ended. This can either mean it has failed or completed. Use ResComm_Ressed to check if someone actually ressed.
-	if not target then
-		return
-	end
+
+--Fired when a resurrection cast ended. This can either mean it has failed or completed.
+-- Use ResComm_Ressed to check if someone actually ressed.
+function Resurrection:ResComm_ResEnd(event, resser, target)
+	if not target then return end
 	local unit = Grid2:GetUnitByFullName(target)
 	if res_cache[unit] ~= 0 then
 		res_cache[unit] = nil
 		self:UpdateIndicators(unit)
 	end
 end
-function Resurrection:ResComm_CanRes(event, name, typeToken, typeString) --Fired when someone can use a soulstone or ankh.
+
+--Fired when someone can use a soulstone or ankh.
+function Resurrection:ResComm_CanRes(event, name, typeToken, typeString)
 	local unit = Grid2:GetUnitByFullName(name)
 	res_cache[name] = typeString
 	self:UpdateIndicators(unit)
 end
-function Resurrection:ResComm_Ressed(event, name) --Fired when someone actually sees the accept resurrection box.
+
+--Fired when someone actually sees the accept resurrection box.
+function Resurrection:ResComm_Ressed(event, name)
 	local unit = Grid2:GetUnitByFullName(name)
 	res_cache[unit] = 0
 	self:UpdateIndicators(unit)
 end
-function Resurrection:ResComm_ResExpired(event, name) --Fired when the accept resurrection box dissapears/is declined.
+
+--Fired when the accept resurrection box dissapears/is declined.
+function Resurrection:ResComm_ResExpired(event, name)
 	local unit = Grid2:GetUnitByFullName(name)
 	res_cache[unit] = nil
 	self:UpdateIndicators(unit)
@@ -135,15 +132,10 @@ function Resurrection:GetIcon(unit)
 	return "Interface\\Icons\\Spell_Holy_Resurrection"
 end
 
-local resText = {
-	[0] = L["Revived"],
-	[1] = L["Reviving"]
-}
+local resText = {[0] = L["Revived"], [1] = L["Reviving"]}
 function Resurrection:GetText(unit)
 	return resText[res_cache[unit]] or res_cache[unit]
 end
-
-Resurrection.GetBorder = Grid2.statusLibrary.GetBorder
 
 local function Create(baseKey, dbx)
 	Grid2:RegisterStatus(Resurrection, {"text", "icon", "color"}, baseKey, dbx)

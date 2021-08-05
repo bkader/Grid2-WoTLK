@@ -1,7 +1,7 @@
 -- Status: MouseOver Highlight status
-
-local AOEM = Grid2:GetModule("Grid2AoeHeals")
 local Grid2 = Grid2
+local AOEM = Grid2:GetModule("Grid2AoeHeals", true)
+if not AOEM then return end
 
 local bxor = bit.bxor
 local band = bit.band
@@ -23,19 +23,16 @@ do
 	local timerDelay = 0
 	TimerStart = function(delay, func)
 		timerFrame = CreateFrame("Frame", nil, Grid2LayoutFrame)
-		timerFrame:SetScript(
-			"OnUpdate",
-			function(_, elapsed)
-				timerDelay = timerDelay - elapsed
-				if timerDelay <= 0 then
-					timerFrame:Hide()
-					TimerEnabled = false
-					if timerFunc then
-						timerFunc(status)
-					end
+		timerFrame:SetScript("OnUpdate", function(_, elapsed)
+			timerDelay = timerDelay - elapsed
+			if timerDelay <= 0 then
+				timerFrame:Hide()
+				TimerEnabled = false
+				if timerFunc then
+					timerFunc(status)
 				end
 			end
-		)
+		end)
 		TimerStart = function(delay, func)
 			timerDelay, timerFunc = delay, func
 			timerFrame:Show()

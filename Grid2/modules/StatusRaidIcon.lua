@@ -1,8 +1,5 @@
--- Created by Michael
-
 local Grid2 = Grid2
-local UnitExists = UnitExists
-local GetRaidTargetIndex = GetRaidTargetIndex
+local UnitExists, GetRaidTargetIndex = UnitExists, GetRaidTargetIndex
 local rawget = rawget
 
 -- Star, Circle, Diamond, Triangle, Moon, Square, Cross, Skull
@@ -16,24 +13,25 @@ local iconColors = {
 	{r = 1.0, g = 0.24, b = 0.168, a = 1},
 	{r = 0.98, g = 0.98, b = 0.98, a = 1}
 }
-local iconText = {}
-local iconTexture = {}
+local iconText, iconTexture = {}, {}
 for i = 1, 8 do
 	iconText[i] = _G["RAID_TARGET_" .. i]
 	iconTexture[i] = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_" .. i
 end
 
-local caches = {["raid-icon-player"] = setmetatable({}, {__index = function(t, unit)
-	local v = GetRaidTargetIndex(unit) or false
-	t[unit] = v
-	return v
-end}),
-["raid-icon-target"] = setmetatable({}, {__index = function(t, unit)
-	local target = unit .. "target"
-	local v = UnitExists(target) and GetRaidTargetIndex(target) or false
-	t[unit] = v
-	return v
-end})}
+local caches = {
+	["raid-icon-player"] = setmetatable({}, {__index = function(t, unit)
+		local v = GetRaidTargetIndex(unit) or false
+		t[unit] = v
+		return v
+	end}),
+	["raid-icon-target"] = setmetatable({}, {__index = function(t, unit)
+		local target = unit .. "target"
+		local v = UnitExists(target) and GetRaidTargetIndex(target) or false
+		t[unit] = v
+		return v
+	end})
+}
 
 local RaidIcon = {}
 
@@ -118,7 +116,6 @@ end
 
 Grid2.setupFunc["raid-icon-player"] = Create
 Grid2.setupFunc["raid-icon-target"] = Create
-
 Grid2:DbSetStatusDefaultValue("raid-icon-player", {
 	type = "raid-icon-player",
 	opacity = 1,

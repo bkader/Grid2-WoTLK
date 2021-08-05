@@ -1,7 +1,7 @@
--- Color, CreatureColor, FriendColor, Charmed, ClassColor
+local Grid2 = Grid2
 
 local L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
-local Grid2 = Grid2
+
 local UnitClass = UnitClass
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsCharmed = UnitIsCharmed
@@ -73,16 +73,17 @@ Grid2.setupFunc["creaturecolor"] = function(baseKey, dbx)
 end
 
 Grid2:DbSetStatusDefaultValue("creaturecolor", {
-type = "creaturecolor",
-colorHostile = true,
-colors = {
-	HOSTILE = {r = 1, g = 0.1, b = 0.1, a = 1},
-	UNKNOWN_UNIT = {r = 0.5, g = 0.5, b = 0.5, a = 1},
-	[L["Beast"]] = {r = 0.94, g = 0.75, b = 0.28, a = 1},
-	[L["Demon"]] = {r = 0.5, g = 0.25, b = 0.69, a = 1},
-	[L["Humanoid"]] = {r = 0.92, g = 0.67, b = 0.85, a = 1},
-	[L["Elemental"]] = {r = 0.1, g = 0.3, b = 0.9, a = 1}
-}})
+	type = "creaturecolor",
+	colorHostile = true,
+	colors = {
+		HOSTILE = {r = 1, g = 0.1, b = 0.1, a = 1},
+		UNKNOWN_UNIT = {r = 0.5, g = 0.5, b = 0.5, a = 1},
+		[L["Beast"]] = {r = 0.94, g = 0.75, b = 0.28, a = 1},
+		[L["Demon"]] = {r = 0.5, g = 0.25, b = 0.69, a = 1},
+		[L["Humanoid"]] = {r = 0.92, g = 0.67, b = 0.85, a = 1},
+		[L["Elemental"]] = {r = 0.1, g = 0.3, b = 0.9, a = 1}
+	}
+})
 
 -- FriendColor status
 local FriendColor = Grid2.statusPrototype:new("friendcolor")

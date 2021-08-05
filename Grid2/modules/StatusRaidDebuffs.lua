@@ -1,15 +1,10 @@
--- Raid Debuffs module, implements raid-debuffs statuses
-
+local Grid2 = Grid2
 local GSRD = Grid2:NewModule("Grid2RaidDebuffs")
---	local BRZ = LibStub("LibBabble-Zone-3.0"):GetReverseLookupTable()
 local BZ = LibStub("LibBabble-Zone-3.0"):GetLookupTable()
 local frame = CreateFrame("Frame")
 
-local Grid2 = Grid2
-local next = next
-local ipairs = ipairs
-local UnitDebuff = UnitDebuff
-local GetSpellInfo = GetSpellInfo
+local next, ipairs = next, ipairs
+local GetSpellInfo, UnitDebuff = GetSpellInfo, UnitDebuff
 
 local curzone
 local statuses = {}
@@ -43,7 +38,7 @@ for n, i in pairs(GSRD.engMapName_to_mapID) do
 	GSRD.mapID_to_engMapName[i] = n
 end
 
-function GetMapNameByID(id)
+function Grid2:GetMapNameByID(id)
 	return BZ[GSRD.mapID_to_engMapName[id]]
 end
 
@@ -51,9 +46,8 @@ frame:SetScript("OnEvent", function(self, event, unit)
 	local index = 1
 	while true do
 		local name, _, te, co, ty, du, ex, _, _, _, id = UnitDebuff(unit, index)
-		if not name then
-			break
-		end
+		if not name then break end
+
 		local order = spells_order[name]
 		if not order then
 			order, name = spells_order[id], id
@@ -78,9 +72,7 @@ end
 
 function GSRD:UpdateZoneSpells(event)
 	local zone = self:GetCurrentZone()
-	if zone == curzone and event then
-		return
-	end
+	if zone == curzone and event then return end
 
 	self:ResetZoneSpells(zone)
 	for status in next, statuses do
@@ -132,21 +124,11 @@ end
 
 local class = {
 	GetColor = Grid2.statusLibrary.GetColor,
-	IsActive = function(self, unit)
-		return self.states[unit]
-	end,
-	GetIcon = function(self, unit)
-		return self.textures[unit]
-	end,
-	GetCount = function(self, unit)
-		return self.counts[unit]
-	end,
-	GetDuration = function(self, unit)
-		return self.durations[unit]
-	end,
-	GetExpirationTime = function(self, unit)
-		return self.expirations[unit]
-	end
+	IsActive = function(self, unit) return self.states[unit] end,
+	GetIcon = function(self, unit) return self.textures[unit] end,
+	GetCount = function(self, unit) return self.counts[unit] end,
+	GetDuration = function(self, unit) return self.durations[unit] end,
+	GetExpirationTime = function(self, unit) return self.expirations[unit] end
 }
 
 function class:ClearAllIndicators()
@@ -268,5 +250,4 @@ local function Create(baseKey, dbx)
 end
 
 Grid2.setupFunc["raid-debuffs"] = Create
-
-Grid2:DbSetStatusDefaultValue("raid-debuffs", {type = "raid-debuffs", debuffs = {}, color1 = {r = 1, g = .5, b = 1, a = 1}})
+Grid2:DbSetStatusDefaultValue("raid-debuffs", {type = "raid-debuffs", debuffs = {}, color1 = {r = 1, g = 0.5, b = 1, a = 1}})

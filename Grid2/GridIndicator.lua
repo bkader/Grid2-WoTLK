@@ -1,6 +1,4 @@
---[[
-Created by Grid2 original authors, modified by Michael
---]]
+local Grid2 = Grid2
 local Grid2Frame = Grid2Frame
 
 Grid2.indicators = {}
@@ -22,10 +20,10 @@ function indicator:new(name)
 	return e
 end
 
-function indicator:CreateFrame(type, parent)
+function indicator:CreateFrame(ftype, parent)
 	local f = parent[self.name]
-	if not (f and f:GetObjectType() == type) then
-		f = CreateFrame(type, nil, parent)
+	if not (f and f:GetObjectType() == ftype) then
+		f = CreateFrame(ftype, nil, parent)
 		parent[self.name] = f
 	end
 	return f
@@ -109,11 +107,11 @@ indicator.Update = indicator.UpdateBlink
 function Grid2:RegisterIndicator(indicator, types)
 	local name = indicator.name
 	self.indicators[name] = indicator
-	for _, type in ipairs(types) do
-		local t = self.indicatorTypes[type]
+	for _, itype in ipairs(types) do
+		local t = self.indicatorTypes[itype]
 		if not t then
 			t = {}
-			self.indicatorTypes[type] = t
+			self.indicatorTypes[itype] = t
 		end
 		t[name] = indicator
 	end
@@ -129,7 +127,7 @@ function Grid2:UnregisterIndicator(indicator)
 	end
 	local name = indicator.name
 	self.indicators[name] = nil
-	for type, t in pairs(self.indicatorTypes) do
+	for _, t in pairs(self.indicatorTypes) do
 		t[name] = nil
 	end
 	if indicator.sideKick then
@@ -138,6 +136,6 @@ function Grid2:UnregisterIndicator(indicator)
 	end
 end
 
-function Grid2:IterateIndicators(type)
-	return next, type and self.indicatorTypes[type] or self.indicators
+function Grid2:IterateIndicators(itype)
+	return next, itype and self.indicatorTypes[itype] or self.indicators
 end

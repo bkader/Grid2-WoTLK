@@ -1,6 +1,6 @@
---[[ Icon indicator, created by Grid2 original authors, modified by Michael ]] --
-
 local Grid2 = Grid2
+local Grid2Frame = Grid2Frame
+
 local GetTime = GetTime
 local fmt = string.format
 

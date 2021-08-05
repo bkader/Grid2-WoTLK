@@ -1,7 +1,7 @@
--- Direction status, shows arrows pointing to the players, created by Michael
-local Direction = Grid2.statusPrototype:new("direction")
-
 local Grid2 = Grid2
+local Direction = Grid2.statusPrototype:new("direction")
+local Grid2Frame = Grid2Frame
+
 local PI = math.pi
 local PI2 = PI * 2
 local floor = math.floor
@@ -15,7 +15,6 @@ local UnitIsUnit = UnitIsUnit
 -- local UnitIsDead= UnitIsDead -- this is useless, loadstring functions dont reach this scope
 
 local timer
--- local ValidMap
 local directions = {}
 local UnitCheck
 local mouseover = ""
@@ -187,5 +186,4 @@ local function Create(baseKey, dbx)
 end
 
 Grid2.setupFunc["direction"] = Create
-
 Grid2:DbSetStatusDefaultValue("direction", {type = "direction", color1 = {r = 0, g = 1, b = 0, a = 1}})

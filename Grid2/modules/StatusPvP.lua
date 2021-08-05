@@ -1,20 +1,15 @@
+local Grid2 = Grid2
 local PvP = Grid2.statusPrototype:new("pvp")
+PvP.GetColor = Grid2.statusLibrary.GetColor
+PvP.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
 
 local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
-
-local IsInInstance = IsInInstance
-local UnitIsPVP = UnitIsPVP
-local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
+local IsInInstance, UnitIsPVP, UnitIsPVPFreeForAll = IsInInstance, UnitIsPVP, UnitIsPVPFreeForAll
 
 local pvpText = L["PvP"]
 local ffaText = L["FFA"]
 local ffaTexture = [[Interface\TargetingFrame\UI-PVP-FFA]]
-local pvpTexture =
-	UnitFactionGroup("player") == "Horde" and [[Interface\PVPFrame\PVP-Currency-Horde]] or
-	[[Interface\PVPFrame\PVP-Currency-Alliance]]
-
-PvP.GetColor = Grid2.statusLibrary.GetColor
-PvP.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
+local pvpTexture = UnitFactionGroup("player") == "Horde" and [[Interface\PVPFrame\PVP-Currency-Horde]] or [[Interface\PVPFrame\PVP-Currency-Alliance]]
 
 function PvP:UNIT_FACTION(_, unit)
 	self:UpdateIndicators(unit)
@@ -61,4 +56,4 @@ Grid2.setupFunc["pvp"] = function(baseKey, dbx)
 	return PvP
 end
 
-Grid2:DbSetStatusDefaultValue("pvp", {type = "pvp", color1 = {r = 0, g = 1, b = 1, a = .75}})
+Grid2:DbSetStatusDefaultValue("pvp", {type = "pvp", color1 = {r = 0, g = 1, b = 1, a = 0.75}})

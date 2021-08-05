@@ -1,54 +1,9 @@
---[[ Credits to Michael --]]
----
---- Translations
----
-
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
-do
-	local GL = GetLocale()
-	if GL == "esES" or GL == "esMX" then
-		L["Select Layout"] = "Elige Diseño"
-		L["Free Layout"] = "Diseño libre"
-		L["Sort by Group"] = "Ordenar por Grupo"
-		L["Sort by Class"] = "Ordenar por Clase"
-		L["Sort by Name"] = "Ordenar por Nombre"
-		L["Custom Sort"] = "Diseño Personalizado"
-		L["Tanks First"] = "Tanques primero"
-		L["Units per Column"] = "Unidades por Columna"
-		L["Units per Row"] = "Unidades por Fila"
-		L["Visible Groups"] = "Grupos Visibles"
-		L["Layout Orientation"] = "Orientación"
-		L["Horizontal"] = "Horizontal"
-		L["Vertical"] = "Vertical"
-		L["Change Layout"] = "Cambiar Diseño"
-		L["Left Click to drag and rearrange units"] = "Click Izquierdo: arrastra y recoloca las unidades"
-		L["Right Click to finish config"] = "Click Derecho: finaliza la configuración"
-	else
-		L["Select Layout"] = "Select Layout"
-		L["Free Layout"] = "Free Layout"
-		L["Sort by Group"] = "Sort by Group"
-		L["Sort by Class"] = "Sort by Class"
-		L["Sort by Name"] = "Sort by Name"
-		L["Custom Sort"] = "Custom Sort"
-		L["Tanks First"] = "Tanks First"
-		L["Units per Column"] = "Units per Column"
-		L["Units per Row"] = "Units per Row"
-		L["Visible Groups"] = "Visible Groups"
-		L["Layout Orientation"] = "Layout Orientation"
-		L["Horizontal"] = "Horizontal"
-		L["Vertical"] = "Vertical"
-		L["Change Layout"] = "Change Layout"
-		L["Left Click to drag and rearrange units"] = "Left Click to drag and rearrange units"
-		L["Right Click to finish config"] = "Right Click to finish config"
-	end
-end
-
----
---- Variables
----
+local Grid2 = Grid2
+local Grid2Frame = Grid2:GetModule("Grid2Frame", true)
+if not Grid2Frame then return end
 
 local Grid2Layout = Grid2Layout
-local Grid2Frame = Grid2Frame
+local L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
 
 local fmt = string.format
 
@@ -69,10 +24,7 @@ local queueUpdateRoster
 local queueUpdateLayout
 local Events = {}
 
----
 --- "Free Layout" layout management
----
-
 local FreeLayout = {
 	meta = {
 		raid25 = true,
@@ -123,7 +75,7 @@ local function LayoutUpdate(NoResize)
 			Grid2Layout:UpdateSize()
 		end
 	end
-	queueUpateLayout = false
+	queueUpdateLayout = false
 end
 
 local UpdateRoster
@@ -131,30 +83,14 @@ do
 	local PartyMaxGroup = {raid25 = 5, raid20 = 4, raid15 = 3, raid10 = 2, party = 1, solo = 1}
 	local TankKey = {["MAINTANK"] = 0, ["MAINASSIST"] = 1}
 	local SortKeyGen = {
-		["group"] = function(n, g)
-			return fmt("%d%s", g, n)
-		end,
-		["grouptank"] = function(n, g, _, r)
-			return fmt("%d%d%s", g, TankKey[r] or 1, n)
-		end,
-		["class"] = function(_, _, c)
-			return c
-		end,
-		["classtank"] = function(n, _, c, r)
-			return fmt("%d%s%s", TankKey[r] or 1, c, n)
-		end,
-		["name"] = function(n)
-			return n
-		end,
-		["nametank"] = function(n, _, _, r)
-			return fmt("%d%s", TankKey[r] or 1, n)
-		end,
-		["user"] = function(n, _, _, r)
-			return nameList[n] or 100
-		end,
-		["usertank"] = function(n, _, _, r)
-			return nameList[n] or 100
-		end
+		["group"] = function(n, g) return fmt("%d%s", g, n) end,
+		["grouptank"] = function(n, g, _, r) return fmt("%d%d%s", g, TankKey[r] or 1, n) end,
+		["class"] = function(_, _, c) return c end,
+		["classtank"] = function(n, _, c, r) return fmt("%d%s%s", TankKey[r] or 1, c, n) end,
+		["name"] = function(n) return n end,
+		["nametank"] = function(n, _, _, r) return fmt("%d%s", TankKey[r] or 1, n) end,
+		["user"] = function(n, _, _, r) return nameList[n] or 100 end,
+		["usertank"] = function(n, _, _, r) return nameList[n] or 100 end
 	}
 	local function GetPartyRosterInfo(i)
 		local unit = i < 2 and "player" or "party" .. (i - 1)
@@ -195,7 +131,6 @@ do
 		table.sort(newList, function(a, b) return newList[a] < newList[b] end)
 
 		local modified
-
 		local newListStr = table.concat(newList, ",")
 		if newListStr ~= nameListStr then
 			nameList, newList, nameListStr = newList, nameList, newListStr
@@ -424,7 +359,7 @@ function Events:PLAYER_REGEN_ENABLED()
 		UpdateRoster()
 	end
 	if queueUpdateLayout then
-		UpdateLayout()
+		LayoutUpdate()
 	end
 end
 
@@ -509,14 +444,7 @@ do
 			local list = MenuGetLayouts(partyType)
 			for _, name in ipairs(list) do
 				if name ~= "None" then
-					local option = {
-						text = L[name],
-						value = name,
-						checked = function()
-							return curLayoutName == name
-						end,
-						func = MenuSetLayout
-					}
+					local option = {text = L[name], value = name, checked = function() return curLayoutName == name end, func = MenuSetLayout}
 					table.insert(menuLayouts, name == "Free Layout" and 2 or #menuLayouts + 1, option)
 				end
 			end
@@ -527,13 +455,7 @@ do
 		if not menuFree then
 			local unitMenu = {}
 			for i = 5, 25, 5 do
-				unitMenu[#unitMenu + 1] = {
-					text = tostring(i),
-					checked = function()
-						return SettingUnitsPerColumn == i
-					end,
-					func = MenuSetUnits
-				}
+				unitMenu[#unitMenu + 1] = {text = tostring(i), checked = function() return SettingUnitsPerColumn == i end, func = MenuSetUnits}
 			end
 			local groupMenu = {}
 			for i = 1, 8 do
@@ -547,45 +469,11 @@ do
 			end
 			menuFree = {}
 			menuFree[1] = {text = L["Free Layout"], notCheckable = true, isTitle = true}
-			menuFree[2] = {
-				text = L["Sort by Group"],
-				value = "group",
-				checked = function()
-					return SettingSortType == "group"
-				end,
-				func = MenuSetSort
-			}
-			menuFree[3] = {
-				text = L["Sort by Class"],
-				value = "class",
-				checked = function()
-					return SettingSortType == "class"
-				end,
-				func = MenuSetSort
-			}
-			menuFree[4] = {
-				text = L["Sort by Name"],
-				value = "name",
-				checked = function()
-					return SettingSortType == "name"
-				end,
-				func = MenuSetSort
-			}
-			menuFree[5] = {
-				text = L["Custom Sort"],
-				value = "user",
-				checked = function()
-					return SettingSortType == "user"
-				end,
-				func = MenuSetDrag
-			}
-			menuFree[6] = {
-				text = L["Tanks First"],
-				checked = function()
-					return SettingSortTanks
-				end,
-				func = MenuSetTank
-			}
+			menuFree[2] = {text = L["Sort by Group"], value = "group", checked = function() return SettingSortType == "group" end, func = MenuSetSort}
+			menuFree[3] = {text = L["Sort by Class"], value = "class", checked = function() return SettingSortType == "class" end, func = MenuSetSort}
+			menuFree[4] = {text = L["Sort by Name"], value = "name", checked = function() return SettingSortType == "name" end, func = MenuSetSort}
+			menuFree[5] = {text = L["Custom Sort"], value = "user", checked = function() return SettingSortType == "user" end, func = MenuSetDrag}
+			menuFree[6] = {text = L["Tanks First"], checked = function() return SettingSortTanks end, func = MenuSetTank}
 			menuFree[7] = {text = "", notCheckable = true, hasArrow = true, menuList = unitMenu}
 			menuFree[8] = {text = L["Visible Groups"], notCheckable = true, hasArrow = true, menuList = groupMenu}
 			menuFree[9] = {
@@ -643,12 +531,7 @@ function LayoutInit()
 	if not frameLayout then
 		frameLayout = CreateFrame("Frame", nil, Grid2LayoutFrame)
 		frameLayout:SetPoint("CENTER", Grid2LayoutFrame, "CENTER")
-		frameLayout:SetScript(
-			"OnEvent",
-			function(self, event, ...)
-				Events[event](self, ...)
-			end
-		)
+		frameLayout:SetScript("OnEvent", function(self, event, ...) Events[event](self, ...) end)
 	end
 
 	prev_MouseUpHandler = Grid2LayoutFrame:GetScript("OnMouseUp")

@@ -1,4 +1,3 @@
---[[ Created by Grid2 original authors, modified by Michael --]]
 local Grid2 = Grid2
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 local UnitFrame_OnEnter = UnitFrame_OnEnter
@@ -63,12 +62,7 @@ end
 --}}}
 
 -- {{ Precalculated backdrop table, shared by all frames
-local frameBackdrop = {
-	bgFile = "Interface\\Addons\\Grid2\\media\\white16x16",
-	tile = true,
-	tileSize = 16,
-	insets = {}
-}
+local frameBackdrop = {bgFile = "Interface\\Addons\\Grid2\\media\\white16x16", tile = true, tileSize = 16, insets = {}}
 -- }}
 
 --{{{ Grid2Frame script handlers
@@ -297,12 +291,8 @@ end
 -- shows the default unit tooltip
 do
 	local TooltipCheck = {
-		Always = function()
-			return false
-		end,
-		Never = function()
-			return true
-		end,
+		Always = function() return false end,
+		Never = function() return true end,
 		OOC = InCombatLockdown
 	}
 	function Grid2Frame:OnFrameEnter(frame)

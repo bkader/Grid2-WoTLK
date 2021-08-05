@@ -1,4 +1,6 @@
-local AOEM = Grid2:GetModule("Grid2AoeHeals")
+local Grid2 = Grid2
+local AOEM = Grid2:GetModule("Grid2AoeHeals", true)
+if not AOEM then return end
 
 -- Forward declaration of Grid2Options Locales
 local L
@@ -47,8 +49,8 @@ do
 			set = function(_, v)
 				wipe(status.dbx.spells[AOEM.playerClass])
 				local auras = {strsplit("\n,", v)}
-				for i, v in pairs(auras) do
-					local aura = strtrim(v)
+				for i, a in pairs(auras) do
+					local aura = strtrim(a)
 					if #aura > 0 then
 						local spellID = status:GetSpellID(aura)
 						if spellID > 0 then
@@ -347,17 +349,9 @@ end
 -- Hook to load options
 local prev_LoadOptions = Grid2.LoadOptions
 function Grid2:LoadOptions()
-	L = LibStub("AceLocale-3.0"):GetLocale("Grid2Options")
-	Grid2Options:RegisterStatusCategory(
-		"aoe-heal",
-		{name = L["AOE Heals"], icon = "Interface\\Icons\\Spell_holy_holynova", options = MakeCategoryOptions()}
-	)
-	Grid2Options:RegisterStatusOptions(
-		"aoe-OutgoingHeals",
-		"aoe-heal",
-		MakeStatusOutgoingOptions,
-		{titleIcon = "Interface\\Icons\\Spell_holy_holybolt"}
-	)
+	L = L or LibStub("AceLocale-3.0"):GetLocale("Grid2Options")
+	Grid2Options:RegisterStatusCategory("aoe-heal", {name = L["AOE Heals"], icon = "Interface\\Icons\\Spell_holy_holynova", options = MakeCategoryOptions()})
+	Grid2Options:RegisterStatusOptions("aoe-OutgoingHeals", "aoe-heal", MakeStatusOutgoingOptions, {titleIcon = "Interface\\Icons\\Spell_holy_holybolt"})
 	for name in next, AOEM.setupFunc do
 		local status = Grid2.statuses[name]
 		if status then

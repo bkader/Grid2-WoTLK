@@ -1,14 +1,10 @@
---[[ afk status, created by Potje, modified by Michael ]] --
-
-local L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
-
-local AFK = Grid2.statusPrototype:new("afk")
-
 local Grid2 = Grid2
-local UnitIsAFK = UnitIsAFK
-
+local AFK = Grid2.statusPrototype:new("afk")
 AFK.GetColor = Grid2.statusLibrary.GetColor
 AFK.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
+
+local L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
+local UnitIsAFK = UnitIsAFK
 
 function AFK:UpdateUnit(_, unit)
 	if unit then
@@ -44,5 +40,4 @@ local function CreateStatusAFK(baseKey, dbx)
 end
 
 Grid2.setupFunc["afk"] = CreateStatusAFK
-
 Grid2:DbSetStatusDefaultValue("afk", {type = "afk", color1 = {r = 1, g = 0, b = 0, a = 1}})

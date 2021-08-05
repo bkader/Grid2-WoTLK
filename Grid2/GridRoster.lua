@@ -1,11 +1,9 @@
 -- Roster management
+local Grid2 = Grid2
+
 local pairs, next = pairs, next
-local UnitName = UnitName
-local UnitGUID = UnitGUID
-local UnitExists = UnitExists
-local GetNumGroupMembers = GetNumGroupMembers
-local IsInRaid = IsInRaid
-local IsInGroup = IsInGroup
+local UnitName, UnitGUID, UnitExists = UnitName, UnitGUID, UnitExists
+local IsInRaid, IsInGroup, GetNumGroupMembers = IsInRaid, IsInGroup, GetNumGroupMembers
 
 -- realm name
 local my_realm = GetRealmName()

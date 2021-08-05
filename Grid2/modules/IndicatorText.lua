@@ -1,6 +1,6 @@
---[[ Created by Grid2 original authors, modified by Michael ]] --
-
 local Grid2 = Grid2
+local Grid2Frame = Grid2Frame
+
 local GetTime = GetTime
 local string_cut = Grid2.strcututf8
 local min = math.min
@@ -41,7 +41,8 @@ local timers = {}
 local stacks = {}
 local expirations = {}
 
-local curTime  -- Here goes current time to minimize GetTime() calls
+-- Here goes current time to minimize GetTime() calls
+local curTime
 
 -- {{ Timer management
 local TimerStart, TimerStop
@@ -50,16 +51,13 @@ do
 	function TimerStart(text, func)
 		timer = CreateFrame("Frame", nil, Grid2LayoutFrame):CreateAnimationGroup()
 		local anim = timer:CreateAnimation()
-		timer:SetScript(
-			"OnFinished",
-			function(self)
-				self:Play()
-				curTime = GetTime()
-				for text, func in next, timers do
-					func(text)
-				end
+		timer:SetScript("OnFinished", function(self)
+			self:Play()
+			curTime = GetTime()
+			for text, func in next, timers do
+				func(text)
 			end
-		)
+		end)
 		anim:SetOrder(1)
 		anim:SetDuration(0.10)
 		timer:Play()

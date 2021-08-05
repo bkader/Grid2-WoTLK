@@ -1,15 +1,9 @@
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
-Grid2Options:RegisterStatusOptions("lowmana",  "mana", Grid2Options.MakeStatusColorThresholdOptions, {
-	titleIcon = "Interface\\Icons\\Inv_potion_86"
-})
-Grid2Options:RegisterStatusOptions("mana",     "mana", Grid2Options.MakeStatusColorOptions, {
-	titleIcon = "Interface\\Icons\\Inv_potion_72"
-})
---[[Grid2Options:RegisterStatusOptions("poweralt", "mana", Grid2Options.MakeStatusColorOptions, {
-	titleIcon = "Interface\\Icons\\Inv_potion_34"
-})]]
-Grid2Options:RegisterStatusOptions("power",    "mana", Grid2Options.MakeStatusColorOptions, {
+Grid2Options:RegisterStatusOptions("lowmana", "mana", Grid2Options.MakeStatusColorThresholdOptions, {titleIcon = "Interface\\Icons\\Inv_potion_86"})
+Grid2Options:RegisterStatusOptions("mana", "mana", Grid2Options.MakeStatusColorOptions, {titleIcon = "Interface\\Icons\\Inv_potion_72"})
+Grid2Options:RegisterStatusOptions("power", "mana", Grid2Options.MakeStatusColorOptions, {
 	color1 = L["Mana"],
 	colorDesc1 = L["Mana"],
 	color2 = L["Rage"],
@@ -23,7 +17,3 @@ Grid2Options:RegisterStatusOptions("power",    "mana", Grid2Options.MakeStatusCo
 	width = "full",
 	titleIcon = "Interface\\Icons\\Inv_potion_33"
 })
-
-
-
-

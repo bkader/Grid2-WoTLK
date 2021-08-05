@@ -42,8 +42,11 @@ globals = {
 	"_G",
 	"bit",
 	"Grid2",
+	"Grid2Frame",
 	"Grid2Options",
+	"Grid2Layout",
 	"Grid2LayoutFrame",
+	"Grid2DebugFrame",
 
 	-- misc custom
 	"CUSTOM_CLASS_COLORS",
@@ -2154,6 +2157,8 @@ globals = {
 	"GetNumQuestLogRewards",
 	"GetNumQuestRewards",
 	"GetNumQuestWatches",
+	"GetNumSubgroupMembers",
+	"GetNumGroupMembers",
 	"GetNumRaidMembers",
 	"GetNumRandomDungeons",
 	"GetNumRoutes",

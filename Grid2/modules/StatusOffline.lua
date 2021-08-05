@@ -1,11 +1,10 @@
+local Grid2 = Grid2
 local Offline = Grid2.statusPrototype:new("offline")
+Offline.GetColor = Grid2.statusLibrary.GetColor
 
 local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 
-local Grid2 = Grid2
-local GetTime = GetTime
-local UnitIsConnected = UnitIsConnected
-
+local GetTime, UnitIsConnected = GetTime, UnitIsConnected
 local timer
 local offline = {}
 
@@ -90,8 +89,6 @@ function Offline:GetIcon()
 	return "Interface\\CharacterFrame\\Disconnect-Icon"
 end
 
-Offline.GetColor = Grid2.statusLibrary.GetColor
-
 local function Create(baseKey, dbx)
 	Grid2:RegisterStatus(Offline, {"color", "icon", "percent", "text"}, baseKey, dbx)
 
@@ -99,5 +96,4 @@ local function Create(baseKey, dbx)
 end
 
 Grid2.setupFunc["offline"] = Create
-
 Grid2:DbSetStatusDefaultValue("offline", {type = "offline", color1 = {r = 1, g = 1, b = 1, a = 1}})

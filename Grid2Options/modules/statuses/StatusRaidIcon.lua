@@ -1,3 +1,4 @@
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
 local optionParams = {
@@ -10,7 +11,7 @@ local optionParams = {
 	color7 = RAID_TARGET_7,
 	color8 = RAID_TARGET_8,
 	titleIcon = "Interface\\TARGETINGFRAME\\UI-RaidTargetingIcons",
-	titleIconCoords = { 0.5, 1, 0, 0.5},
+	titleIconCoords = {0.5, 1, 0, 0.5}
 }
 
 local function MakeOptions(self, status, options, optionParams)
@@ -24,12 +25,14 @@ local function MakeOptions(self, status, options, optionParams)
 		min = 0,
 		max = 1,
 		step = 0.01,
-		get = function(info) return status.dbx.opacity or false end,
-		set = function(info, v) 
+		get = function(info)
+			return status.dbx.opacity or false
+		end,
+		set = function(info, v)
 			status.dbx.opacity = v
 			status:SetGlobalOpacity(v)
 			status:UpdateAllIndicators()
-		end,
+		end
 	}
 end
 

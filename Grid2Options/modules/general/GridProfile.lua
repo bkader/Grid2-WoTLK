@@ -1,6 +1,8 @@
 --[[
 	General -> Profiles Tab -> General & Advanced Tabs
 --]]
+local Grid2 = Grid2
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
 local profileOptions = LibStub("AceDBOptions-3.0"):GetOptionsTable(Grid2.db, true)

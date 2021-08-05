@@ -1,5 +1,3 @@
---[[ Created by Grid2 original authors, modified by Michael ]] --
-
 local Grid2 = Grid2
 local Grid2Frame = Grid2Frame
 local GetTime = GetTime
@@ -11,7 +9,6 @@ local AlignPoints = {
 	VERTICAL = {"BOTTOMLEFT", "TOPLEFT", "BOTTOMRIGHT", "TOPRIGHT"},
 	VERTICAL_INVERSE = {"TOPLEFT", "BOTTOMLEFT", "TOPRIGHT", "BOTTOMRIGHT"}
 }
-
 
 -- Emulate blizzard statusbar with advanced features (more grow directions)
 local barPrototype = {
@@ -151,7 +148,6 @@ local barPrototype = {
 	["SetValue"] = function(self, value)
 		if value and type(value) == "number" then
 			self.value = value
-
 			self:Update()
 		end
 	end,
@@ -165,7 +161,6 @@ local barPrototype = {
 				orientation == "VERTICAL_INVERSE"
 		 then
 			self.orientation = orientation
-
 			self:Update()
 		end
 	end,
@@ -483,5 +478,4 @@ local function Create(indicatorKey, dbx)
 end
 
 Grid2.setupFunc["bar"] = Create
-
 Grid2.setupFunc["bar-color"] = Grid2.Dummy

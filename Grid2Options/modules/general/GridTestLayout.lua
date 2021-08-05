@@ -1,6 +1,7 @@
 --[[
 	Layouts test mode
 --]]
+local Grid2 = Grid2
 local Grid2Layout = Grid2:GetModule("Grid2Layout")
 local Grid2Frame = Grid2:GetModule("Grid2Frame")
 local texture
@@ -98,9 +99,7 @@ do
 		end
 		if not texture then
 			local media = LibStub("LibSharedMedia-3.0", true)
-			texture =
-				media:Fetch("statusbar", Grid2Frame.db.profile.frameTexture) or
-				"Interface\\Addons\\Grid2\\media\\gradient32x32"
+			texture = media:Fetch("statusbar", Grid2Frame.db.profile.frameTexture) or "Interface\\Addons\\Grid2\\media\\gradient32x32"
 		end
 		if not frameLayout then
 			frameLayout = Grid2Layout.frame
@@ -136,9 +135,7 @@ do
 end
 
 local function LayoutRefresh()
-	if not layoutName then
-		return
-	end
+	if not layoutName then return end
 
 	Grid2Layout:ShowFrames(false)
 

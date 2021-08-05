@@ -1,4 +1,4 @@
-local L =  LibStub:GetLibrary("AceLocale-3.0"):NewLocale("Grid2", "frFR")
+local L = LibStub:GetLibrary("AceLocale-3.0"):NewLocale("Grid2", "frFR")
 if not L then return end
 
 --{{{ Actually used
@@ -13,10 +13,10 @@ L["Elemental"] = "Elementaire"
 --}}}
 
 --{{{ Health
--- L["DEAD"] = ""
--- L["GHOST"] = ""
--- L["FD"] = ""
--- L["Offline"] = ""
+L["DEAD"] = "MORT"
+L["GHOST"] = "FANTÔME"
+L["FD"] = "FlM"
+L["Offline"] = "Hors ligne"
 --}}}
 
 --{{{ Pvp
@@ -60,12 +60,12 @@ L["talking"] = "Parle"
 --}}}
 
 --{{{ Resurrection
--- L["Reviving"] = ""
--- L["Revived"] = ""
+L["Reviving"] = "Ressusciter"
+L["Revived"] = "Ressuscité"
 ---}}}
 
 --{{{ Self
--- L["Me"] = ""
+L["Me"] = "Moi"
 ---}}}
 
 --Layouts
@@ -91,4 +91,21 @@ L["By Group 25 w/tanks"] = "Groupe de 25 avec tanks"
 L["By Group 40"] = "Groupe de 40"
 L["By Group 25 Tanks First"] = "Groupe de 25 tanks"
 L["By Group 10 Tanks First"] = "Groupe de 10 tanks"
--- L["Select Layout"] = ""
+L["Select Layout"] = "Select Layout"
+
+--Free Layout
+L["Free Layout"] = "Disposition libre"
+L["Sort by Group"] = "Trier par groupe"
+L["Sort by Class"] = "Trier par classe"
+L["Sort by Name"] = "Trier par nom"
+L["Custom Sort"] = "Tri personnalisé"
+L["Tanks First"] = "Tanks en premier"
+L["Units per Column"] = "Unités par colonne"
+L["Units per Row"] = "Unités par ligne"
+L["Visible Groups"] = "Groupes visibles"
+L["Layout Orientation"] = "Orientation"
+L["Horizontal"] = "Horizontal"
+L["Vertical"] = "Verticale"
+L["Change Layout"] = "Changer la disposition"
+L["Left Click to drag and rearrange units"] = "Clic gauche pour glisser et réorganiser les unités"
+L["Right Click to finish config"] = "Clic droit pour terminer la configuration"

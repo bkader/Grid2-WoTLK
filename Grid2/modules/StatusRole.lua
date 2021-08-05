@@ -1,3 +1,5 @@
+local Grid2 = Grid2
+
 local Role = Grid2.statusPrototype:new("role")
 local Leader = Grid2.statusPrototype:new("leader")
 local Assistant = Grid2.statusPrototype:new("raid-assistant")
@@ -5,32 +7,35 @@ local MasterLooter = Grid2.statusPrototype:new("master-looter")
 local DungeonRole = Grid2.statusPrototype:new("dungeon-role")
 
 local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
+local strmatch = string.match
 
-local Grid2 = Grid2
---local IsInRaid = IsInRaid
 local UnitExists = UnitExists
 local GetRaidRosterInfo = GetRaidRosterInfo
+local GetPartyAssignment = GetPartyAssignment
+local orig_UnitGroupRolesAssigned = UnitGroupRolesAssigned
+
+local MAIN_TANK = MAIN_TANK
+local MAIN_ASSIST = MAIN_ASSIST
+local next = next
+
 local function IsInRaid()
 	return GetNumRaidMembers() > 0
 end
-local strmatch = string.match
+
 local function UnitIsGroupLeader(unit)
 	if IsInRaid() then
-		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML =
-			GetRaidRosterInfo(strmatch(unit, "%d+"))
+		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(strmatch(unit, "%d+"))
 		return rank and rank == 2
 	elseif GetNumPartyMembers() > 0 then
 		return UnitIsPartyLeader(unit)
 	end
 end
-local GetPartyAssignment = GetPartyAssignment
---local UnitIsGroupLeader = UnitIsGroupLeader
-local orig_UnitGroupRolesAssigned = UnitGroupRolesAssigned
+
 local function UnitGroupRolesAssigned(unit)
 	local isTank, isHeal, isDPS = orig_UnitGroupRolesAssigned(unit)
 	return isTank and "TANK" or isHeal and "HEALER" or isDPS and "DAMAGER" or "NONE"
 end
---local GetTexCoordsForRoleSmallCircle= GetTexCoordsForRoleSmallCircle
+
 local function GetTexCoordsForRoleSmallCircle(role)
 	if (role == "TANK") then
 		return 0, 19 / 64, 22 / 64, 41 / 64
@@ -42,6 +47,7 @@ local function GetTexCoordsForRoleSmallCircle(role)
 		error("Unknown role: " .. tostring(role))
 	end
 end
+
 local function GetTexCoordsForRoleSmall(role)
 	if (role == "TANK") then
 		return 0.5, 0.75, 0, 1
@@ -53,9 +59,6 @@ local function GetTexCoordsForRoleSmall(role)
 		error("Unknown role: " .. tostring(role))
 	end
 end
-local MAIN_TANK = MAIN_TANK
-local MAIN_ASSIST = MAIN_ASSIST
-local next = next
 
 -- Code to disable statuses in combat
 local SetHideInCombat
@@ -94,7 +97,6 @@ end
 -- Role (maintank/mainassist) status
 
 local role_cache = {}
-
 Role.SetHideInCombat = SetHideInCombat
 
 function Role:UpdateActiveUnits()
@@ -109,10 +111,7 @@ function Role:UpdatePartyUnits(event)
 		if not UnitExists(unit) then
 			break
 		end
-		local role =
-			(GetPartyAssignment("MAINTANK", unit) and "MAINTANK") or
-			(GetPartyAssignment("MAINASSIST", unit) and "MAINASSIST") or
-			nil
+		local role = (GetPartyAssignment("MAINTANK", unit) and "MAINTANK") or (GetPartyAssignment("MAINASSIST", unit) and "MAINASSIST") or nil
 		if role ~= role_cache[unit] then
 			role_cache[unit] = role
 			if event then
@@ -209,7 +208,7 @@ end
 
 Grid2.setupFunc["role"] = CreateRole
 
-Grid2:DbSetStatusDefaultValue("role", {type = "role", colorCount = 2, color1 = {r = 1, g = 1, b = .5, a = 1}, color2 = {r = .5, g = 1, b = 1, a = 1}})
+Grid2:DbSetStatusDefaultValue("role", {type = "role", colorCount = 2, color1 = {r = 1, g = 1, b = 0.5, a = 1}, color2 = {r = 0.5, g = 1, b = 1, a = 1}})
 
 -- Assistant status
 
@@ -222,9 +221,7 @@ function Assistant:UpdateActiveUnits()
 end
 
 function Assistant:UpdateAllUnits(event)
-	if not IsInRaid() then
-		return
-	end
+	if not IsInRaid() then return end
 	local units = Grid2.raid_units
 	for i = 1, 40 do
 		local name, rank = GetRaidRosterInfo(i)
@@ -357,7 +354,6 @@ local function CreateLeader(baseKey, dbx)
 end
 
 Grid2.setupFunc["leader"] = CreateLeader
-
 Grid2:DbSetStatusDefaultValue("leader", {type = "leader", color1 = {r = 0, g = .7, b = 1, a = 1}})
 
 -- Master looter status
@@ -434,7 +430,6 @@ local function CreateMasterLooter(baseKey, dbx)
 end
 
 Grid2.setupFunc["master-looter"] = CreateMasterLooter
-
 Grid2:DbSetStatusDefaultValue("master-looter", {type = "master-looter", color1 = {r = 1, g = .5, b = 0, a = 1}})
 
 -- dungeon-role status
@@ -494,9 +489,7 @@ end
 
 function DungeonRole:UpdateDB()
 	isValidRole["DAMAGER"] = (not self.dbx.hideDamagers) or nil
-	roleTexture =
-		self.dbx.useAlternateIcons and "Interface\\LFGFrame\\LFGROLE" or
-		"Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES"
+	roleTexture = self.dbx.useAlternateIcons and "Interface\\LFGFrame\\LFGROLE" or "Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES"
 	TexCoordfunc = self.dbx.useAlternateIcons and GetTexCoordsForRoleSmall or GetTexCoordsForRoleSmallCircle
 end
 

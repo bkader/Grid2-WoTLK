@@ -1,6 +1,8 @@
 -- Status: Aoe-OutgoingHeals
+local Grid2 = Grid2
+local AOEM = Grid2:GetModule("Grid2AoeHeals", true)
+if not AOEM then return end
 
-local AOEM = Grid2:GetModule("Grid2AoeHeals")
 local playerClass = AOEM.playerClass
 local defaultSpells = {
 	["SHAMAN"] = {1064}, -- {Chain Heal, Healing Rain}
@@ -11,10 +13,7 @@ if not defaultSpells[playerClass] then
 	return
 end
 
-local Grid2 = Grid2
-local next = next
-local select = select
-local GetTime = GetTime
+local next, select, GetTime = next, select, GetTime
 
 local OutgoingHeal = Grid2.statusPrototype:new("aoe-OutgoingHeals")
 local timer
@@ -44,10 +43,7 @@ end
 local function CombatLogEvent(...)
 	local spellName = select(14, ...)
 	local subEvent = select(3, ...)
-	if
-		(subEvent == "SPELL_HEAL" or subEvent == "SPELL_PERIODIC_HEAL") and spells[spellName] and
-			select(5, ...) == playerGUID
-	 then
+	if (subEvent == "SPELL_HEAL" or subEvent == "SPELL_PERIODIC_HEAL") and spells[spellName] and select(5, ...) == playerGUID then
 		local unit = Grid2:GetUnitidByGUID(select(9, ...))
 		if unit then
 			local prev = heal_cache[unit]

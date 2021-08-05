@@ -2,6 +2,7 @@
 	Grid2Options:MakeIndicatorTypeOptions()
 	Option to change indicator type
 --]]
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
 local typeMorphValues = {
@@ -62,11 +63,7 @@ local function SetIndicatorType(info, value)
 		end
 	end
 	-- Remove old indicator
-	Grid2Frame:WithAllFrames(
-		function(f)
-			indicator:Disable(f)
-		end
-	)
+	Grid2Frame:WithAllFrames(function(f) indicator:Disable(f) end)
 	Grid2:UnregisterIndicator(indicator)
 	-- Create new indicator
 	local setupFunc = Grid2.setupFunc[dbx.type]

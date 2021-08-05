@@ -1,9 +1,7 @@
--- banzai & banzai-threat statuses ( created by Michael )
-
+local Grid2 = Grid2
 local Banzai = Grid2.statusPrototype:new("banzai", false)
 local BanzaiThreat = Grid2.statusPrototype:new("banzai-threat", false)
 
-local Grid2 = Grid2
 local GetTime = GetTime
 local UnitName = UnitName
 local UnitGUID = UnitGUID

@@ -2,24 +2,6 @@ Grid2 = LibStub("AceAddon-3.0"):NewAddon("Grid2", "AceEvent-3.0", "AceTimer-3.0"
 Grid2.versionstring = "Grid2 v" .. GetAddOnMetadata("Grid2", "Version")
 
 -- missing function for this expansion
-if not _G.GetNumGroupMembers then
-	_G.GetNumGroupMembers = function()
-		local num = GetNumRaidMembers()
-		if num == 0 then
-			num = GetNumPartyMembers()
-			if num > 0 then
-				num = num + 1
-			end
-		end
-		return num
-	end
-end
-
-if not _G.GetNumSubgroupMembers then
-	_G.GetNumSubgroupMembers = function()
-		return GetNumPartyMembers()
-	end
-end
 
 if not _G.IsInRaid then
 	_G.IsInRaid = function()
@@ -30,6 +12,18 @@ end
 if not IsInGroup then
 	IsInGroup = function()
 		return GetNumPartyMembers() > 0
+	end
+end
+
+if not _G.GetNumGroupMembers then
+	_G.GetNumGroupMembers = function()
+		return IsInRaid() and GetNumRaidMembers() or GetNumPartyMembers()
+	end
+end
+
+if not _G.GetNumSubgroupMembers then
+	_G.GetNumSubgroupMembers = function()
+		return GetNumPartyMembers()
 	end
 end
 

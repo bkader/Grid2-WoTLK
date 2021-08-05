@@ -1,8 +1,6 @@
---[[
-Created by Grid2 original authors, modified by Michael
---]]
-local AuraFrame_OnEvent
 local Grid2 = Grid2
+
+local AuraFrame_OnEvent
 local GetTime = GetTime
 local UnitBuff = UnitBuff
 local UnitDebuff = UnitDebuff
@@ -23,8 +21,7 @@ local function MakeStatusColorHandler(status)
 		handlerArray[#handlerArray + 1] = " local count = self:GetCount(unit)"
 		for i = 1, colorCount - 1 do
 			local color = dbx["color" .. i]
-			handlerArray[#handlerArray + 1] =
-				(" if count == %d then return %s, %s, %s, %s end"):format(i, color.r, color.g, color.b, color.a)
+			handlerArray[#handlerArray + 1] = (" if count == %d then return %s, %s, %s, %s end"):format(i, color.r, color.g, color.b, color.a)
 		end
 	end
 	color = dbx["color" .. colorCount]
@@ -261,7 +258,7 @@ local function status_UpdateStateGroupMine(self, unit, iconTexture, count, durat
 end
 
 local function status_UpdateStateGroupNotMine(self, unit, iconTexture, count, duration, expiration, isMine)
-	if not IsMine then
+	if not isMine then
 		status_UpdateStateGroup(self, unit, iconTexture, count, duration, expiration)
 	end
 end
@@ -361,7 +358,7 @@ local function status_UpdateDB(self)
 	end
 	local dbx = self.dbx
 	if dbx.missing then
-		local _, _, texture = GetSpellInfo(auras and auras[1] or dbx.spellName)
+		local _, _, texture = GetSpellInfo(dbx.auras and dbx.auras[1] or dbx.spellName)
 		self.thresholds = nil
 		self.missingTexture = texture or "Interface\\ICONS\\Achievement_General"
 		self.GetIcon = status_GetIconMissing
@@ -546,8 +543,8 @@ Grid2.setupFunc["debuffType"] = Grid2.CreateDebuff
 --}}
 
 --{{
-Grid2:DbSetStatusDefaultValue("debuff-Magic", {type = "debuffType", subType = "Magic", color1 = {r = .2, g = .6, b = 1, a = 1}})
-Grid2:DbSetStatusDefaultValue("debuff-Poison", {type = "debuffType", subType = "Poison", color1 = {r = 0, g = .6, b = 0, a = 1}})
-Grid2:DbSetStatusDefaultValue("debuff-Curse", {type = "debuffType", subType = "Curse", color1 = {r = .6, g = 0, b = 1, a = 1}})
-Grid2:DbSetStatusDefaultValue("debuff-Disease", {type = "debuffType", subType = "Disease", color1 = {r = .6, g = .4, b = 0, a = 1}})
+Grid2:DbSetStatusDefaultValue("debuff-Magic", {type = "debuffType", subType = "Magic", color1 = {r = 0.2, g = 0.6, b = 1, a = 1}})
+Grid2:DbSetStatusDefaultValue("debuff-Poison", {type = "debuffType", subType = "Poison", color1 = {r = 0, g = 0.6, b = 0, a = 1}})
+Grid2:DbSetStatusDefaultValue("debuff-Curse", {type = "debuffType", subType = "Curse", color1 = {r = 0.6, g = 0, b = 1, a = 1}})
+Grid2:DbSetStatusDefaultValue("debuff-Disease", {type = "debuffType", subType = "Disease", color1 = {r = 0.6, g = 0.4, b = 0, a = 1}})
 --}}

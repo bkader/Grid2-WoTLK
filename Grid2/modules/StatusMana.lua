@@ -1,9 +1,7 @@
--- mana, lowmana, power, poweralt
-
+local Grid2 = Grid2
 local Mana = Grid2.statusPrototype:new("mana", false)
 local LowMana = Grid2.statusPrototype:new("lowmana", false)
 local Power = Grid2.statusPrototype:new("power", false)
-local PowerAlt = Grid2.statusPrototype:new("poweralt", false)
 
 local max = math.max
 local fmt = string.format
@@ -19,35 +17,32 @@ local UnitIsPlayer = UnitIsPlayer
 local statuses = {} -- Enabled statuses
 
 -- Methods shared by MANA statuses
-local status_OnEnable, status_OnDisable
+local mana_OnEnable, mana_OnDisable
 do
 	local frame
 	local function Frame_OnEvent(self, event, unit, powerType)
 		if UnitIsPlayer(unit) then
 			for status in next, statuses do
-				--status:UpdateUnitPower(unit, powerType)
 				status:UpdateIndicators(unit)
 			end
 		end
 	end
-	function status_OnEnable(status)
+	function mana_OnEnable(status)
 		if not next(statuses) then
 			if not frame then
 				frame = CreateFrame("Frame", nil, Grid2LayoutFrame)
 			end
 			frame:SetScript("OnEvent", Frame_OnEvent)
-			--	frame:RegisterEvent("UNIT_POWER")
 			frame:RegisterEvent("UNIT_MANA")
 			frame:RegisterEvent("UNIT_MAXMANA")
 			frame:RegisterEvent("UNIT_DISPLAYPOWER")
 		end
 		statuses[status] = true
 	end
-	function status_OnDisable(status)
+	function mana_OnDisable(status)
 		statuses[status] = nil
 		if (not next(statuses)) and frame then
 			frame:SetScript("OnEvent", nil)
-			--	frame:UnregisterEvent("UNIT_POWER")
 			frame:UnregisterEvent("UNIT_MANA")
 			frame:UnregisterEvent("UNIT_MAXMANA")
 			frame:UnregisterEvent("UNIT_DISPLAYPOWER")
@@ -57,8 +52,8 @@ end
 
 -- Mana status
 Mana.GetColor = Grid2.statusLibrary.GetColor
-Mana.OnEnable = status_OnEnable
-Mana.OnDisable = status_OnDisable
+Mana.OnEnable = mana_OnEnable
+Mana.OnDisable = mana_OnDisable
 
 function Mana:UpdateUnitPower(unit, powerType)
 	if powerType == "MANA" then
@@ -87,13 +82,11 @@ Grid2:DbSetStatusDefaultValue("mana", {type = "mana", color1 = {r = 0, g = 0, b 
 
 -- Low Mana status
 LowMana.GetColor = Grid2.statusLibrary.GetColor
-LowMana.OnEnable = status_OnEnable
-LowMana.OnDisable = status_OnDisable
+LowMana.OnEnable = mana_OnEnable
+LowMana.OnDisable = mana_OnDisable
 
 function LowMana:UpdateUnitPower(unit, powerType)
-	--	if powerType=="MANA" then
 	self:UpdateIndicators(unit)
-	--	end
 end
 
 function LowMana:IsActive(unit)
@@ -129,12 +122,12 @@ local replaceEventWithPowerType = {
 	UNIT_MAXFOCUS = "FOCUS",
 	UNIT_RUNIC_POWER = "RUNIC_POWER"
 }
-local status_OnEnable, status_OnDisable
+local power_OnEnable, power_OnDisable
 do
 	local frame
 	local function Frame_OnEvent(self, event, unit, powerType)
 		if UnitIsPlayer(unit) then
-			local powerType = replaceEventWithPowerType[event]
+			powerType = replaceEventWithPowerType[event] or powerType
 			local _, ctype = UnitPowerType(unit)
 			if powerType == ctype then
 				for status in next, statuses do
@@ -144,7 +137,7 @@ do
 			end
 		end
 	end
-	function status_OnEnable(status)
+	function power_OnEnable(status)
 		if not next(statuses) then
 			if not frame then
 				frame = CreateFrame("Frame", nil, Grid2LayoutFrame)
@@ -158,7 +151,7 @@ do
 		end
 		statuses[status] = true
 	end
-	function status_OnDisable(status)
+	function power_OnDisable(status)
 		statuses[status] = nil
 		if (not next(statuses)) and frame then
 			frame:SetScript("OnEvent", nil)
@@ -173,8 +166,8 @@ end
 
 local powerColors = {}
 
-Power.OnEnable = status_OnEnable
-Power.OnDisable = status_OnDisable
+Power.OnEnable = power_OnEnable
+Power.OnDisable = power_OnDisable
 
 function Power:UpdateUnitPower(unit, powerType)
 	if powerColors[powerType] then

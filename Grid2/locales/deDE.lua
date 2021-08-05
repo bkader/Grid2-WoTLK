@@ -1,4 +1,4 @@
-local L =  LibStub:GetLibrary("AceLocale-3.0"):NewLocale("Grid2", "deDE")
+local L = LibStub:GetLibrary("AceLocale-3.0"):NewLocale("Grid2", "deDE")
 if not L then return end
 
 --{{{ Actually used

@@ -1,3 +1,4 @@
+local Grid2 = Grid2
 local Alpha = Grid2.indicatorPrototype:new("alpha")
 
 Alpha.Create = Grid2.Dummy

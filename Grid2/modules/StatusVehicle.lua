@@ -1,8 +1,6 @@
-local Vehicle = Grid2.statusPrototype:new("vehicle")
-
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
-
 local Grid2 = Grid2
+local Vehicle = Grid2.statusPrototype:new("vehicle")
+local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 local UnitHasVehicleUI = UnitHasVehicleUI
 
 Vehicle.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
@@ -25,11 +23,7 @@ end
 
 function Vehicle:IsActive(unit)
 	local owner = Grid2:GetOwnerUnitByUnit(unit)
-	if owner and UnitHasVehicleUI(owner) then
-		return true
-	else
-		return UnitHasVehicleUI(unit)
-	end
+	return (owner and UnitHasVehicleUI(owner)) and true or UnitHasVehicleUI(unit)
 end
 
 function Vehicle:GetIcon(unit)
@@ -39,11 +33,7 @@ end
 local text = L["vehicle"]
 function Vehicle:GetText(unit)
 	local owner = Grid2:GetOwnerUnitByUnit(unit)
-	if owner and UnitHasVehicleUI(owner) then
-		return UnitName(owner)
-	else
-		return text
-	end
+	return (owner and UnitHasVehicleUI(owner)) and UnitName(owner) or text
 end
 
 function Vehicle:GetPercent(unit)
@@ -54,10 +44,8 @@ Vehicle.GetColor = Grid2.statusLibrary.GetColor
 
 local function Create(baseKey, dbx)
 	Grid2:RegisterStatus(Vehicle, {"color", "icon", "percent", "text"}, baseKey, dbx)
-
 	return Vehicle
 end
 
 Grid2.setupFunc["vehicle"] = Create
-
-Grid2:DbSetStatusDefaultValue("vehicle", {type = "vehicle", color1 = {r = 0, g = 1, b = 1, a = .75}})
+Grid2:DbSetStatusDefaultValue("vehicle", {type = "vehicle", color1 = {r = 0, g = 1, b = 1, a = 0.75}})

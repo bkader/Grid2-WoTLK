@@ -1,5 +1,5 @@
 -- Grid2Options:MakeIndicatorStatusOptions()
-
+local Grid2 = Grid2
 local Grid2Options = Grid2Options
 local L = Grid2Options.L
 

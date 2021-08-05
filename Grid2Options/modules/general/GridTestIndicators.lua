@@ -1,4 +1,6 @@
 -- Indicators test mode module
+local Grid2 = Grid2
+local Grid2Options = Grid2Options
 
 local Test, TestIcons, TestMode
 
@@ -34,7 +36,6 @@ local function InitTestData()
 	end
 	Test.dbx = TestIcons -- Asigned to TestIcons to avoid creating a new table
 	Grid2:RegisterStatus(Test, {"text", "color", "percent", "icon"}, "test")
-	--
 	InitTestData = Grid2.Dummy
 end
 

@@ -3,20 +3,16 @@
 local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
-Grid2Options:RegisterIndicatorOptions(
-	"bar",
-	true,
-	function(self, indicator)
-		local colors, options, statuses = {}, {}, {}
-		self:MakeIndicatorBarLocationOptions(indicator, options)
-		self:MakeIndicatorBarAppearanceOptions(indicator, options)
-		self:MakeIndicatorBarMiscOptions(indicator, options)
-		self:MakeIndicatorDeleteOptions(indicator, options)
-		self:MakeIndicatorStatusOptions(indicator, statuses)
-		self:MakeIndicatorStatusOptions(indicator.sideKick, colors)
-		self:AddIndicatorOptions(indicator, statuses, options, colors)
-	end
-)
+Grid2Options:RegisterIndicatorOptions("bar", true, function(self, indicator)
+	local colors, options, statuses = {}, {}, {}
+	self:MakeIndicatorBarLocationOptions(indicator, options)
+	self:MakeIndicatorBarAppearanceOptions(indicator, options)
+	self:MakeIndicatorBarMiscOptions(indicator, options)
+	self:MakeIndicatorDeleteOptions(indicator, options)
+	self:MakeIndicatorStatusOptions(indicator, statuses)
+	self:MakeIndicatorStatusOptions(indicator.sideKick, colors)
+	self:AddIndicatorOptions(indicator, statuses, options, colors)
+end)
 
 -- Grid2Options:MakeIndicatorBarParentOptions()
 do
@@ -24,11 +20,7 @@ do
 		-- local excludeIndicator = info.arg or info
 		local list = {}
 		for name, indicator in Grid2:IterateIndicators() do
-			if
-				indicator.dbx.type == "bar" and indicator.sideKick and indicator ~= excludeIndicator and
-					(((not indicator.parentIndicator) and (not indicator.childIndicator)) or
-						indicator.childIndicator == excludeIndicator)
-			 then
+			if indicator.dbx.type == "bar" and indicator.sideKick and indicator ~= excludeIndicator and (((not indicator.parentIndicator) and (not indicator.childIndicator)) or indicator.childIndicator == excludeIndicator) then
 				list[name] = L[name]
 			end
 		end
@@ -97,9 +89,7 @@ end
 -- Grid2Options:MakeIndicatorBarDisplayOptions()
 function Grid2Options:MakeIndicatorBarAppearanceOptions(indicator, options)
 	self:MakeHeaderOptions(options, "Appearance")
-	if indicator.dbx.parentBar then
-		return
-	end
+	if indicator.dbx.parentBar then return end
 	options.orientation = {
 		type = "select",
 		order = 15,

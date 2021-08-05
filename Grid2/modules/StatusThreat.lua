@@ -1,10 +1,8 @@
-local Threat = Grid2.statusPrototype:new("threat")
-
 local Grid2 = Grid2
-local UnitExists = UnitExists
-local UnitThreatSituation = UnitThreatSituation
-
+local Threat = Grid2.statusPrototype:new("threat")
 Threat.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
+
+local UnitExists, UnitThreatSituation = UnitExists, UnitThreatSituation
 
 function Threat:UpdateUnit(_, unit)
 	if unit then -- unit can be nil which is so wtf
@@ -50,7 +48,6 @@ end
 
 local function Create(baseKey, dbx)
 	Grid2:RegisterStatus(Threat, {"color", "icon"}, baseKey, dbx)
-
 	return Threat
 end
 
@@ -60,6 +57,6 @@ Grid2:DbSetStatusDefaultValue("threat", {
 	type = "threat",
 	colorCount = 3,
 	color1 = {r = 1, g = 0, b = 0, a = 1},
-	color2 = {r = .5, g = 1, b = 1, a = 1},
+	color2 = {r = 0.5, g = 1, b = 1, a = 1},
 	color3 = {r = 1, g = 1, b = 1, a = 1}
 })

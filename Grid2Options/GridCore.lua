@@ -1,5 +1,5 @@
 --[[
-Created by Grid2 original authors, modified by Michael
+Created by Grid2 original authors
 --]]
 local L = LibStub("AceLocale-3.0"):GetLocale("Grid2Options")
 local LG = LibStub("AceLocale-3.0"):GetLocale("Grid2")

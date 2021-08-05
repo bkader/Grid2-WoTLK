@@ -1,5 +1,4 @@
--- Original Grid Version: Greltok
-
+local Grid2 = Grid2
 local ReadyCheck = Grid2.statusPrototype:new("ready-check")
 
 local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
@@ -137,12 +136,7 @@ function ReadyCheck:GetIcon(unitid)
 	end
 end
 
-local texts = {
-	waiting = L["?"],
-	ready = L["R"],
-	notready = L["X"],
-	afk = L["AFK"]
-}
+local texts = {waiting = L["?"], ready = L["R"], notready = L["X"], afk = L["AFK"]}
 function ReadyCheck:GetText(unitid)
 	local state = self:GetReadyCheckStatus(unitid)
 	if state then
@@ -152,7 +146,6 @@ end
 
 local function Create(baseKey, dbx)
 	Grid2:RegisterStatus(ReadyCheck, {"color", "icon", "text"}, baseKey, dbx)
-
 	return ReadyCheck
 end
 

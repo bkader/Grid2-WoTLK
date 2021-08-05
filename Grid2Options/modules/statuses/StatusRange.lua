@@ -1,3 +1,4 @@
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
 Grid2Options:RegisterStatusOptions("range", "target", function(self, status, options, optionParams)
@@ -13,8 +14,13 @@ Grid2Options:RegisterStatusOptions("range", "target", function(self, status, opt
 		min = 0,
 		max = 1,
 		step = 0.01,
-		get = function () return status.dbx.default	end,
-		set = function (_, v) status.dbx.default = v; status:UpdateDB()	end,
+		get = function()
+			return status.dbx.default
+		end,
+		set = function(_, v)
+			status.dbx.default = v
+			status:UpdateDB()
+		end
 	}
 	options.update = {
 		type = "range",
@@ -25,16 +31,26 @@ Grid2Options:RegisterStatusOptions("range", "target", function(self, status, opt
 		max = 5,
 		step = 0.05,
 		bigStep = 0.1,
-		get = function () return status.dbx.elapsed	end,
-		set = function (_, v) status.dbx.elapsed = v; status:UpdateDB()	end,
+		get = function()
+			return status.dbx.elapsed
+		end,
+		set = function(_, v)
+			status.dbx.elapsed = v
+			status:UpdateDB()
+		end
 	}
 	options.range = {
 		type = "select",
 		order = 30,
 		name = L["Range"],
 		desc = L["Range in yards beyond which the status will be lost."],
-		get = function () return status.dbx.range and tostring(status.dbx.range) or "38" end,
-		set = function (_, v) status.dbx.range = v; status:UpdateDB() end,
-		values = rangeList,
+		get = function()
+			return status.dbx.range and tostring(status.dbx.range) or "38"
+		end,
+		set = function(_, v)
+			status.dbx.range = v
+			status:UpdateDB()
+		end,
+		values = rangeList
 	}
-end )
+end)

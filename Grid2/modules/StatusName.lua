@@ -1,8 +1,8 @@
+local Grid2 = Grid2
 local Name = Grid2.statusPrototype:new("name")
+Name.IsActive = Grid2.statusLibrary.IsActive
 
 local UnitName = UnitName
-
-Name.IsActive = Grid2.statusLibrary.IsActive
 
 function Name:UNIT_NAME_UPDATE(_, unit)
 	self:UpdateIndicators(unit)
@@ -22,10 +22,8 @@ end
 
 local function Create(baseKey, dbx)
 	Grid2:RegisterStatus(Name, {"text"}, baseKey, dbx)
-
 	return Name
 end
 
 Grid2.setupFunc["name"] = Create
-
 Grid2:DbSetStatusDefaultValue("name", {type = "name"})

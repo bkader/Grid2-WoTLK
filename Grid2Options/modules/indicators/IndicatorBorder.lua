@@ -1,3 +1,5 @@
+local Grid2Frame = Grid2Frame
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
 Grid2Options:RegisterIndicatorOptions(

@@ -1,6 +1,3 @@
---[[
-Created by Grid2 original authors, modified by Michael
---]]
 local Grid2Layout = Grid2:NewModule("Grid2Layout")
 
 local pairs, ipairs, next = pairs, ipairs, next
@@ -29,21 +26,10 @@ local GridLayoutHeaderClass = {
 		if (type == "spacer") then
 			frame = CreateFrame("Frame", "Grid2LayoutHeader" .. NUM_HEADERS, Grid2Layout.frame)
 		else
-			frame =
-				CreateFrame(
-				"Frame",
-				"Grid2LayoutHeader" .. NUM_HEADERS,
-				Grid2Layout.frame,
-				assert(SecureHeaderTemplates[type])
-			)
-			frame:SetAttribute(
-				"template",
-				ClickCastHeader and "ClickCastUnitTemplate,SecureUnitButtonTemplate" or "Grid2SecureUnitButtonTemplate"
-			)
+			frame = CreateFrame("Frame", "Grid2LayoutHeader" .. NUM_HEADERS, Grid2Layout.frame, assert(SecureHeaderTemplates[type]))
+			frame:SetAttribute("template", _G.ClickCastHeader and "ClickCastUnitTemplate,SecureUnitButtonTemplate" or "Grid2SecureUnitButtonTemplate")
 			frame.initialConfigFunction = GridHeader_InitialConfigFunction
-			frame:SetAttribute(
-				"initialConfigFunction",
-				[[
+			frame:SetAttribute("initialConfigFunction", [[
 				RegisterUnitWatch(self)
 				self:SetAttribute("*type1", "target")
 				self:SetAttribute("useparent-toggleForVehicle", true)
@@ -51,8 +37,7 @@ local GridLayoutHeaderClass = {
 				self:SetAttribute("useparent-unitsuffix", true)
 				local header = self:GetParent()
 				header:CallMethod("initialConfigFunction", self:GetName())
-			]]
-			)
+			]])
 		end
 		for name, func in pairs(self.prototype) do
 			frame[name] = func
@@ -103,9 +88,7 @@ local anchorPoints = {
 }
 -- nil or false for vertical
 function GridLayoutHeaderClass.prototype:SetOrientation(horizontal)
-	if not self.initialConfigFunction then
-		return
-	end
+	if not self.initialConfigFunction then return end
 	local settings = Grid2Layout.db.profile
 	local vertical = not horizontal
 	local point = anchorPoints[not vertical][settings.groupAnchor]
@@ -529,15 +512,11 @@ function Grid2Layout:SavePosition()
 		local a = self.db.profile.anchor
 		local s = f:GetEffectiveScale()
 		local t = UIParent:GetEffectiveScale()
-		local x =
-			(a:find("LEFT") and f:GetLeft() * s) or (a:find("RIGHT") and f:GetRight() * s - UIParent:GetWidth() * t) or
-			(f:GetLeft() + f:GetWidth() / 2) * s - UIParent:GetWidth() / 2 * t
-		local y =
-			(a:find("BOTTOM") and f:GetBottom() * s) or (a:find("TOP") and f:GetTop() * s - UIParent:GetHeight() * t) or
-			(f:GetTop() - f:GetHeight() / 2) * s - UIParent:GetHeight() / 2 * t
+		local x = (a:find("LEFT") and f:GetLeft() * s) or (a:find("RIGHT") and f:GetRight() * s - UIParent:GetWidth() * t) or (f:GetLeft() + f:GetWidth() / 2) * s - UIParent:GetWidth() / 2 * t
+		local y = (a:find("BOTTOM") and f:GetBottom() * s) or (a:find("TOP") and f:GetTop() * s - UIParent:GetHeight() * t) or (f:GetTop() - f:GetHeight() / 2) * s - UIParent:GetHeight() / 2 * t
 		self.db.profile.PosX = x
 		self.db.profile.PosY = y
-		self:Debug("Saved Position", anchor, x, y)
+		self:Debug("Saved Position", a, x, y)
 	end
 end
 

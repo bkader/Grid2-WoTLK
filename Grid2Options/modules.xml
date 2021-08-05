@@ -34,8 +34,7 @@
 <Script file="modules\statuses\StatusRole.lua"/>
 <Script file="modules\statuses\StatusThreat.lua"/>
 <Script file="modules\statuses\StatusMisc.lua"/>
-<Script file="modules\statuses\StatusRaidDebuffs\RaidDebuffsOptions.lua"/>
-<Script file="modules\statuses\StatusRaidDebuffs\RaidDebuffsDatabase.lua"/>
+<Script file="modules\statuses\StatusRaidDebuffs.lua"/>
 
 <Script file="modules\indicators\Indicator.lua"/>
 <Script file="modules\indicators\NewIndicator.lua"/>

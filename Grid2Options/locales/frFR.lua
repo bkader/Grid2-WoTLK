@@ -7,8 +7,8 @@ L["GRID2_WELCOME"] = "Bienvenue sur Grid2"
 
 L["General Settings"] = "Paramètres généraux"
 
-L["statuses"] = "statuts"
-L["indicators"] = "indicateurs"
+L["statuses"] = "Statuts"
+L["indicators"] = "Indicateurs"
 
 L["Frames"] = "Cadres"
 L["frame"] = "cadre"
@@ -471,11 +471,11 @@ L["Poison"] = "Poison"
 L["Disease"] = "Maladie"
 L["Magic"] = "Magie"
 
-L["raid-debuffs"] = "débuffs-raid"
--- L["raid-debuffs2"] = ""
--- L["raid-debuffs3"] = ""
--- L["raid-debuffs4"] = ""
--- L["raid-debuffs5"] = ""
+L["raid-debuffs"] = "Débuffs de raid"
+L["raid-debuffs2"] = "Débuffs de raid (2)"
+L["raid-debuffs3"] = "Débuffs de raid (3)"
+L["raid-debuffs4"] = "Débuffs de raid (4)"
+L["raid-debuffs5"] = "Débuffs de raid (5)"
 
 -- L["boss-shields"] = ""
 

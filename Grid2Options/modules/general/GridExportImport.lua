@@ -2,8 +2,10 @@
 	Profiles export&import options
 	General -> Profiles Tab -> Advanced Tab
 --]]
-local L = Grid2Options.L
 local Grid2 = Grid2
+local Grid2Options = Grid2Options
+
+local L = Grid2Options.L
 
 local includeCustomLayouts
 
@@ -269,7 +271,7 @@ function Comm:ShowProgress(sent, total)
 		frame:SetHeight(160)
 		label = AceGUI:Create("Label")
 		frame:AddChild(label)
-		label:SetFontObject(GameFontHighlightHuge)
+		label:SetFontObject(GameFontHighlightLarge)
 		label:SetFullWidth(true)
 		label:SetFullHeight(true)
 		self.textFmt = "\n" .. L["Transmision progress: %d%%"]
@@ -321,10 +323,7 @@ Grid2Options.ExportImportOptions = {
 			order = 70,
 			name = L["Import profile"],
 			func = function()
-				ShowSerializeFrame(
-					L["Paste here a profile in text format"],
-					L["Press CTRL-V to paste a Grid2 configuration text"]
-				)
+				ShowSerializeFrame(L["Paste here a profile in text format"], L["Press CTRL-V to paste a Grid2 configuration text"])
 			end
 		},
 		export = {
@@ -332,11 +331,7 @@ Grid2Options.ExportImportOptions = {
 			order = 80,
 			name = L["Export profile"],
 			func = function(info)
-				ShowSerializeFrame(
-					L["This is your current profile in text format"],
-					L["Press CTRL-C to copy the configuration to your clipboard"],
-					SerializeCurrentProfile(true, includeCustomLayouts)
-				)
+				ShowSerializeFrame(L["This is your current profile in text format"], L["Press CTRL-C to copy the configuration to your clipboard"], SerializeCurrentProfile(true, includeCustomLayouts))
 			end
 		},
 		header3 = {

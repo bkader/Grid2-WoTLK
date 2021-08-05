@@ -1,7 +1,4 @@
---[[
-Created by Grid2 original authors, modified by Michael
---]]
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
+local Grid2 = Grid2
 
 local HealthCurrent = Grid2.statusPrototype:new("health-current", false)
 local HealthLow = Grid2.statusPrototype:new("health-low", false)
@@ -10,7 +7,7 @@ local HealthDeficit = Grid2.statusPrototype:new("health-deficit", false)
 local Heals = Grid2.statusPrototype:new("heals-incoming", false)
 local Death = Grid2.statusPrototype:new("death", true)
 
-local Grid2 = Grid2
+local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 local GetTime = GetTime
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -103,8 +100,7 @@ do
 			if unit and strlen(unit) < 8 then
 				local health
 				if sign > 0 then
-					health =
-						min((health_cache[unit] or UnitHealthOriginal(unit)) + select(sign, ...), UnitHealthMax(unit))
+					health = min((health_cache[unit] or UnitHealthOriginal(unit)) + select(sign, ...), UnitHealthMax(unit))
 				elseif sign < 0 then
 					health = max((health_cache[unit] or UnitHealthOriginal(unit)) - select(-sign, ...), 0)
 				end
@@ -223,7 +219,6 @@ local function CreateHealthCurrent(baseKey, dbx)
 end
 
 Grid2.setupFunc["health-current"] = CreateHealthCurrent
-
 Grid2:DbSetStatusDefaultValue("health-current", {
 	type = "health-current",
 	colorCount = 3,
@@ -256,7 +251,6 @@ local function CreateHealthLow(baseKey, dbx)
 end
 
 Grid2.setupFunc["health-low"] = CreateHealthLow
-
 Grid2:DbSetStatusDefaultValue("health-low", {type = "health-low", threshold = 0.4, color1 = {r = 1, g = 0, b = 0, a = 1}})
 
 -- feign-death status
@@ -300,7 +294,6 @@ local function CreateFeignDeath(baseKey, dbx)
 end
 
 Grid2.setupFunc["feign-death"] = CreateFeignDeath
-
 Grid2:DbSetStatusDefaultValue("feign-death", {type = "feign-death", color1 = {r = 1, g = .5, b = 1, a = 1}})
 
 -- health-deficit status
@@ -344,8 +337,6 @@ do
 	Heals.GetColor = Grid2.statusLibrary.GetColor
 
 	local UnitGUID = UnitGUID
-
-	local HEALCOMM_FLAGS = HealComm.ALL_HEALS --HealComm.CASTED_HEALS
 	local HEALCOMM_TIMEFRAME = 3
 
 	local function get_active_heal_amount_with_user(unit)
@@ -368,7 +359,6 @@ do
 	end
 
 	function Heals:UpdateDB()
-		HEALCOMM_FLAGS = HealComm.ALL_HEALS --self.dbx.flags
 		HEALCOMM_TIMEFRAME = self.dbx.timeFrame
 		get_active_heal_amount = self.dbx.includePlayerHeals and get_active_heal_amount_with_user or get_active_heal_amount_without_user
 	end
@@ -439,7 +429,6 @@ do
 	end
 
 	Grid2.setupFunc["heals-incoming"] = Create
-
 	Grid2:DbSetStatusDefaultValue("heals-incoming", {
 		type = "heals-incoming",
 		includePlayerHeals = false,
@@ -517,5 +506,4 @@ local function CreateDeath(baseKey, dbx)
 end
 
 Grid2.setupFunc["death"] = CreateDeath
-
 Grid2:DbSetStatusDefaultValue("death", {type = "death", color1 = {r = 1, g = 1, b = 1, a = 1}})

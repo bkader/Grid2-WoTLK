@@ -1,9 +1,7 @@
 -- Status: PrayerOfHealing
-
-local AOEM = Grid2:GetModule("Grid2AoeHeals")
-if AOEM.playerClass ~= "PRIEST" then
-	return
-end
+local Grid2 = Grid2
+local AOEM = Grid2:GetModule("Grid2AoeHeals", true)
+if not AOEM or AOEM.playerClass ~= "PRIEST" then return end
 
 local radius2
 local minPlayers

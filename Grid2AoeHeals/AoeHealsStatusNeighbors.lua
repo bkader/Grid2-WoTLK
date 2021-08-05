@@ -1,6 +1,7 @@
 -- Status: Neighbors
-
-local AOEM = Grid2:GetModule("Grid2AoeHeals")
+local Grid2 = Grid2
+local AOEM = Grid2:GetModule("Grid2AoeHeals", true)
+if not AOEM then return end
 
 local radius
 local minPlayers

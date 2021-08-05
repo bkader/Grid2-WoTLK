@@ -44,12 +44,10 @@ local function NewIndicator()
 		-- Create runtime indicator
 		local setupFunc = Grid2.setupFunc[dbx.type]
 		local indicator = setupFunc(newIndicatorName, dbx)
-		Grid2Frame:WithAllFrames(
-			function(f)
-				indicator:Create(f)
-				indicator:Layout(f)
-			end
-		)
+		Grid2Frame:WithAllFrames(function(f)
+			indicator:Create(f)
+			indicator:Layout(f)
+		end)
 		-- Create indicator options
 		Grid2Options:MakeIndicatorOptions(indicator)
 	end
@@ -76,13 +74,7 @@ end
 
 function Grid2Options:MakeNewIndicatorOptions()
 	local options = self.indicatorOptions
-	self:MakeTitleOptions(
-		options,
-		L["indicators"],
-		L["Options for %s."]:format(L["indicators"]),
-		nil,
-		"Interface\\ICONS\\Spell_ChargePositive"
-	)
+	self:MakeTitleOptions(options, L["indicators"], L["Options for %s."]:format(L["indicators"]), nil, "Interface\\ICONS\\Spell_ChargePositive")
 	options.newIndicatorName = {
 		type = "input",
 		order = 2,
