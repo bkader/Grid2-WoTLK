@@ -2,8 +2,11 @@
 local DataBroker = LibStub("LibDataBroker-1.1", true)
 if not DataBroker then return end
 
-local Grid2, Grid2Layout = Grid2, Grid2Layout
+local Grid2 = Grid2
+local Grid2Layout = Grid2Layout
 local MenuLayoutsShow
+
+local L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
 
 local Grid2Icon = [[Interface\AddOns\Grid2\media\icon]]
 local Grid2LDB = DataBroker:NewDataObject("Grid2", {
@@ -19,8 +22,8 @@ local Grid2LDB = DataBroker:NewDataObject("Grid2", {
 	end,
 	OnTooltipShow = function(tooltip)
 		tooltip:AddLine("Grid2")
-		tooltip:AddLine("Left Click to open configuration", 0.2, 1, 0.2)
-		tooltip:AddLine("Right Click to open layouts menu", 0.2, 1, 0.2)
+		tooltip:AddLine(L["|cffeda55fLeft-Click|r to open configuration"], 0.2, 1, 0.2)
+		tooltip:AddLine(L["|cffeda55fRight-Click|r to open layouts menu"], 0.2, 1, 0.2)
 	end
 })
 Grid2.dataobj = Grid2LDB
@@ -55,9 +58,7 @@ do
 				if layout.meta[partyType] and name ~= "None" then
 					local option = menuTable[index]
 					if not option then
-						option = {func = SetLayout, checked = function()
-								return name == layoutName
-							end}
+						option = {func = SetLayout, checked = function() return name == layoutName end}
 						menuTable[index] = option
 					end
 					option.text = L[name]
@@ -87,8 +88,20 @@ do
 end
 
 local LibDBIcon = LibStub("LibDBIcon-1.0", true)
-hooksecurefunc(Grid2, "OnEnable", function()
-	if LibDBIcon and not LibDBIcon:IsRegistered("Grid2") then
+if not LibDBIcon then return end
+
+hooksecurefunc(Grid2, "OnEnable", function(self)
+	if not LibDBIcon:IsRegistered("Grid2") then
 		LibDBIcon:Register("Grid2", Grid2LDB, Grid2LDB.icon or Grid2Icon)
 	end
 end)
+hooksecurefunc(Grid2, "PLAYER_ENTERING_WORLD", function(self) self:RefreshMMButton() end)
+
+function Grid2:RefreshMMButton()
+	LibDBIcon:Refresh("Grid2", Grid2Icon)
+	if self.db.profile.mmbutton then
+		LibDBIcon:Show("Grid2")
+	else
+		LibDBIcon:Hide("Grid2")
+	end
+end

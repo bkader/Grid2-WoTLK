@@ -110,3 +110,7 @@ L["Vertical"] = true
 L["Change Layout"] = true
 L["Left Click to drag and rearrange units"] = true
 L["Right Click to finish config"] = true
+
+--Minimap button
+L["|cffeda55fLeft-Click|r to open configuration"] = true
+L["|cffeda55fRight-Click|r to open layouts menu"] = true

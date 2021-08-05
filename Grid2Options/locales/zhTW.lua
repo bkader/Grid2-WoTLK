@@ -477,8 +477,6 @@ L["raid-debuffs3"] = "團隊減益(3)"
 L["raid-debuffs4"] = "團隊減益(4)"
 L["raid-debuffs5"] = "團隊減益(5)"
 
-L["boss-shields"] = "頭目護盾"
-
 -- class specific buffs & debuffs statuses
 
 -- shaman
@@ -486,7 +484,6 @@ L["EarthShield"] = "大地之盾"
 L["Earthliving"] = "大地生命"
 L["Riptide"] = "激流"
 L["ChainHeal"] = "治療鍊"
-L["HealingRain"] = "治療之雨"
 
 -- Druid
 L["Rejuvenation"] = "回春術"
@@ -643,34 +640,6 @@ L["A resurrection spell is being casted on the unit"] = "正在施放復活法�
 L["Resurrected"] = "已復活"
 L["A resurrection spell has been casted on the unit"] = "已經施放復活法術於該單位"
 
--- power
-L["Mana"] = "法力值"
-L["Rage"] = "怒氣"
-L["Focus"] = "專注"
-L["Energy"] = "能量"
-L["Runic Power"] = "符能"
-
--- shields status
-L["shields"] = "護盾"
-L["Maximum shield amount"] = "最多護盾數"
-L["Maximum shield amount value. Only used by bar indicators."] = "最多護盾總數 只能用狀態條指標表示"
-L["Normal"] = "一般"
-L["Medium"] = "中"
-L["Low"] = "低"
-L["Normal shield color"] = "一般護盾顏色"
-L["Medium shield color"] = "中等護盾值顏色"
-L["Low shield color"] = "低護盾值顏色"
-L["Low shield threshold"] = "低護盾值門檻"
-L["The value below which a shield is considered low."] = "護盾值為下方數值時表示低護盾值"
-L["Medium shield threshold"] = "中等護盾值門檻"
-L["The value below which a shield is considered medium."] = "護盾值為下方數值時表示中等護盾值"
-L["Custom Shields"] = "自訂護盾"
--- L["Type shield spell IDs separated by commas."] = ""
-
--- boss-shields status
-L["Boss"] = "頭目"
-L["Supported debuffs"] = "支援的減益效果"
-
 -- role related statuses
 L["Hide in combat"] = "戰鬥中隱藏"
 L["Hide Damagers"] = "隱藏傷害輸出角色"
@@ -680,7 +649,6 @@ L["highlights your target"] = "高亮你的目標"
 L["hostile casts against raid members"] = "敵對單位施放於團隊成員"
 L["advanced threat detection"] = "進階的仇恨偵測"
 L["arrows pointing to each raid member"] = "指向每個團隊成員的箭頭"
-L["display remaining amount of heal absorb shields"] = "顯示剩餘的治療吸收護盾數量"
 
 -- aoe heals
 L["aoe-"] = "範圍效果："

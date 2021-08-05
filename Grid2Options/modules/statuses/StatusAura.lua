@@ -142,7 +142,7 @@ function Grid2Options:MakeStatusAuraCommonOptions(status, options, optionParams)
 		options.colorCount = {
 			type = "select",
 			order = 5,
-			width = "half",
+			width = "double",
 			name = L["Color count"],
 			desc = L["Select how many colors the status must provide."],
 			get = function()

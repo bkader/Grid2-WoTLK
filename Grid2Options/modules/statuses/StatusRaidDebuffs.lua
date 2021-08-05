@@ -97,12 +97,8 @@ RDDB["The Burning Crusade"] = {
 	[781] = {["-"] = {43657, 43622, 43299, 43303, 43613, 43501, 43093, 43095, 43150}},
 	[780] = {["-"] = {39042, 39044, 38235, 38246, 37850, 38023, 38024, 38025, 37676, 37641, 37749, 38280}},
 	[775] = {["-"] = {31249, 31306, 31347, 31341, 31344, 31944, 31972}},
-	[796] = {
-		["-"] = {34654, 39674, 41150, 41168, 39837, 40239, 40251, 40604, 40481, 40508, 42005, 41303, 41410, 41376, 40860, 41001, 41485, 41472, 41914, 41917, 40585, 40932}
-	},
-	[789] = {
-		["-"] = {46561, 46562, 46266, 46557, 46560, 46543, 46427, 45032, 45034, 45018, 46384, 45150, 45855, 45662, 45402, 45717, 45256, 45333, 46771, 45270, 45347, 45348, 45996, 45442, 45641, 45885, 45737, 45740, 45741}
-	}
+	[796] = {["-"] = {34654, 39674, 41150, 41168, 39837, 40239, 40251, 40604, 40481, 40508, 42005, 41303, 41410, 41376, 40860, 41001, 41485, 41472, 41914, 41917, 40585, 40932}},
+	[789] = {["-"] = {46561, 46562, 46266, 46557, 46560, 46543, 46427, 45032, 45034, 45018, 46384, 45150, 45855, 45662, 45402, 45717, 45256, 45333, 46771, 45270, 45347, 45348, 45996, 45442, 45641, 45885, 45737, 45740, 45741}}
 }
 RDDB["The Lich King"] = {
 	[535] = {
@@ -308,8 +304,7 @@ RDDB["The Lich King"] = {
 			64153, --Black Plague (H)
 			64125, --Squeeze (N, H)
 			64156, --Apathy (H)
-			64157
-			--Curse of Doom (H)
+			64157 --Curse of Doom (H)
 			--63050,--Sanity(NH)
 		},
 		["[-14]Algalon"] = {
@@ -930,13 +925,6 @@ local function MakeDebuffGroup(bossName, spellId, order, isCustom)
 end
 
 local function AddInstanceOptions(options)
-	local EJ_ID
-	for k in pairs(RDDB[curModule] and RDDB[curModule][curInstance] or {}) do
-		EJ_ID = select(3, find(k, "%[(%d+)%-"))
-		if EJ_ID then
-			break
-		end
-	end
 	options.enableall = {
 		type = "execute",
 		order = 5,
@@ -959,45 +947,13 @@ local function AddInstanceOptions(options)
 			RefreshDebuffsOptions()
 		end
 	}
-	options.spacer = {
-		type = "header",
-		order = 11,
-		width = "full",
-		hidden = EJ_ID == nil
-	}
-	options.link = {
-		type = "execute",
-		order = 15,
-		width = "full",
-		name = L["Show in Encounter Journal"],
-		func = function()
-			if not IsAddOnLoaded("Blizzard_EncounterJournal") then
-				LoadAddOn("Blizzard_EncounterJournal")
-			end
-			local instanceID, encounterID, sectionID = EJ_HandleLinkPath(1, EJ_ID)
-			local difficulty = select(3, GetInstanceInfo())
-			if difficulty > 2 and difficulty < 8 then
-				difficulty = difficulty - 2
-			else
-				difficulty = GSRD.db.profile.defaultEJ_difficulty or 4
-			end
-			if InterfaceOptionsFrame:IsShown() then
-				InterfaceOptionsFrameOkay:Click()
-				GameMenuButtonContinue:Click()
-			end
-			EncounterJournal_OpenJournal(difficulty, instanceID)
-		end,
-		hidden = EJ_ID == nil
-	}
 end
 
 local function AddBossOptions(options, name)
 	local order = curBossesOrder[name] * 1000
-	local EJ_ID = select(3, find(name, "%[(%d+)%-"))
-	EJ_ID = tonumber(EJ_ID)
 	local EJ_Order = select(3, find(name, "%-(%d+)%]"))
 	EJ_Order = EJ_Order and EJ_Order .. ") " or ""
-	local bossName = EJ_ID and EJ_GetEncounterInfo(EJ_ID) or StripEJinfo(name)
+	local bossName = StripEJinfo(name)
 	options[name] = {
 		type = "group",
 		name = fmt("|T%s:0|t%s%s", ICON_SKULL, EJ_Order, bossName),
@@ -1030,36 +986,6 @@ local function AddBossOptions(options, name)
 				disabled = function()
 					return not newSpellId or optionDebuffs.args[tostring(newSpellId)]
 				end
-			},
-			spacer = {
-				type = "header",
-				order = 10,
-				width = "full",
-				hidden = EJ_ID == nil
-			},
-			link = {
-				type = "execute",
-				order = 15,
-				width = "full",
-				name = L["Show in Encounter Journal"],
-				func = function()
-					if not IsAddOnLoaded("Blizzard_EncounterJournal") then
-						LoadAddOn("Blizzard_EncounterJournal")
-					end
-					local instanceID, encounterID, sectionID = EJ_HandleLinkPath(1, EJ_ID)
-					local difficulty = select(3, GetInstanceInfo())
-					if difficulty > 2 and difficulty < 8 then
-						difficulty = difficulty - 2
-					else
-						difficulty = GSRD.db.profile.defaultEJ_difficulty or 4
-					end
-					if InterfaceOptionsFrame:IsShown() then
-						InterfaceOptionsFrameOkay:Click()
-						GameMenuButtonContinue:Click()
-					end
-					EncounterJournal_OpenJournal(difficulty, instanceID, encounterID, sectionID)
-				end,
-				hidden = EJ_ID == nil
 			}
 		}
 	}
@@ -1148,11 +1074,7 @@ local function MakeStandardOptions(options)
 		desc = L["New Status"],
 		func = function(info)
 			local name = fmt("raid-debuffs%d", #statuses + 1)
-			Grid2:DbSetValue(
-				"statuses",
-				name,
-				{type = "raid-debuffs", debuffs = {}, color1 = {r = 1, g = .5, b = 1, a = 1}}
-			)
+			Grid2:DbSetValue("statuses", name, {type = "raid-debuffs", debuffs = {}, color1 = {r = 1, g = .5, b = 1, a = 1}})
 			local status = Grid2.setupFunc["raid-debuffs"](name, Grid2:DbGetValue("statuses", name))
 			CalculateAvailableStatuses()
 			MakeOneStatusStandardOptions(options, status, #statuses)
@@ -1185,34 +1107,12 @@ local function MakeStandardOptions(options)
 	options.header3 = {type = "header", order = 52, name = ""}
 end
 
-local function MakeDefaultDifficultyEJ_LinkOption(options)
-	options.difficulty = {
-		type = "select",
-		order = 200,
-		name = "Encounter Journal difficulty",
-		desc = "Default difficulty for Encounter Journal links",
-		get = function()
-			return GSRD.db.profile.defaultEJ_difficulty or 4
-		end,
-		set = function(_, v)
-			GSRD.db.profile.defaultEJ_difficulty = v
-		end,
-		values = {
-			[1] = "(10) " .. PLAYER_DIFFICULTY1,
-			[2] = "(25) " .. PLAYER_DIFFICULTY1,
-			[3] = "(10) " .. PLAYER_DIFFICULTY2,
-			[4] = "(25) " .. PLAYER_DIFFICULTY2
-		}
-	}
-end
-
 local function MakeGeneralOptions(self)
 	local options = {}
 	CalculateAvailableStatuses()
 	self:MakeStatusTitleOptions(statuses[1], options)
 	MakeStandardOptions(options)
 	MakeModulesListOptions(options)
-	--	MakeDefaultDifficultyEJ_LinkOption(options)
 	return options
 end
 
@@ -1312,6 +1212,6 @@ Grid2Options:RegisterStatusOptions(
 		childGroups = "tab",
 		groupOrder = 5,
 		masterStatus = "raid-debuffs",
-		titleIcon = "Interface\\Icons\\Spell_Shadow_Skull" -- DemonicEmpathy",
+		titleIcon = [[Interface\Icons\Spell_Shadow_Skull]]
 	}
 )

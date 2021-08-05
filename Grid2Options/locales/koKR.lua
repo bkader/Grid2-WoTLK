@@ -477,8 +477,6 @@ L["raid-debuffs3"] = "공격대 디버프들(3)"
 L["raid-debuffs4"] = "공격대 디버프들(4)"
 L["raid-debuffs5"] = "공격대 디버프들(5)"
 
-L["boss-shields"] = "우두머리-보호막들"
-
 -- class specific buffs & debuffs statuses
 
 -- shaman
@@ -486,7 +484,6 @@ L["EarthShield"] = "대지의 보호막"
 L["Earthliving"] = "Earthliving"
 L["Riptide"] = "Riptide"
 L["ChainHeal"] = "연쇄 치유"
-L["HealingRain"] = "치유의 물결"
 
 -- Druid
 L["Rejuvenation"] = "Rejuvenation"
@@ -643,34 +640,6 @@ L["A resurrection spell is being casted on the unit"] = "부활 주문이 유닛
 L["Resurrected"] = "부활"
 L["A resurrection spell has been casted on the unit"] = "부활 주문을 유닛에 받았을때 표시합니다."
 
--- power
-L["Mana"] = "마나"
-L["Rage"] = "격노"
-L["Focus"] = "집중"
-L["Energy"] = "기력"
-L["Runic Power"] = "룬 파워"
-
--- shields status
-L["shields"] = "보호막"
-L["Maximum shield amount"] = "최대 보호막 양"
-L["Maximum shield amount value. Only used by bar indicators."] = "Maximum shield amount value. Only used by bar indicators."
-L["Normal"] = "일반"
-L["Medium"] = "중간"
-L["Low"] = "낮음"
-L["Normal shield color"] = "일반 보호막 색상"
-L["Medium shield color"] = "중간 보호막 색상"
-L["Low shield color"] = "낮은 보호막 색상"
-L["Low shield threshold"] = "낮은 보호막 수치"
-L["The value below which a shield is considered low."] = "The value below which a shield is considered low."
-L["Medium shield threshold"] = "중간 보호막 수치"
-L["The value below which a shield is considered medium."] = "The value below which a shield is considered medium."
-L["Custom Shields"] = "사용자 보호막"
--- L["Type shield spell IDs separated by commas."] = ""
-
--- boss-shields status
--- L["Boss"] = ""
--- L["Supported debuffs"] = ""
-
 -- role related statuses
 L["Hide in combat"] = "전투시 숨김"
 L["Hide Damagers"] = "피해시 숨김"
@@ -680,7 +649,6 @@ L["Hide Damagers"] = "피해시 숨김"
 -- L["hostile casts against raid members"] = ""
 -- L["advanced threat detection"] = ""
 -- L["arrows pointing to each raid member"] = ""
--- L["display remaining amount of heal absorb shields"] = ""
 
 -- aoe heals
 L["aoe-"] = "지속-"

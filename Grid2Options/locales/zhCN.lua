@@ -477,8 +477,6 @@ L["pvp"] = "pvp"
 -- L["raid-debuffs4"] = ""
 -- L["raid-debuffs5"] = ""
 
--- L["boss-shields"] = ""
-
 -- class specific buffs & debuffs statuses
 
 -- shaman
@@ -486,7 +484,6 @@ L["pvp"] = "pvp"
 -- L["Earthliving"] = ""
 -- L["Riptide"] = ""
 -- L["ChainHeal"] = ""
--- L["HealingRain"] = ""
 
 -- Druid
 -- L["Rejuvenation"] = ""
@@ -643,34 +640,6 @@ L["Voice Chat"] = "语音"
 -- L["Resurrected"] = ""
 -- L["A resurrection spell has been casted on the unit"] = ""
 
--- power
--- L["Mana"] = ""
--- L["Rage"] = ""
--- L["Focus"] = ""
--- L["Energy"] = ""
--- L["Runic Power"] = ""
-
--- shields status
--- L["shields"] = ""
--- L["Maximum shield amount"] = ""
--- L["Maximum shield amount value. Only used by bar indicators."] = ""
--- L["Normal"] = ""
--- L["Medium"] = ""
--- L["Low"] = ""
--- L["Normal shield color"] = ""
--- L["Medium shield color"] = ""
--- L["Low shield color"] = ""
--- L["Low shield threshold"] = ""
--- L["The value below which a shield is considered low."] = ""
--- L["Medium shield threshold"] = ""
--- L["The value below which a shield is considered medium."] = ""
--- L["Custom Shields"] = ""
--- L["Type shield spell IDs separated by commas."] = ""
-
--- boss-shields status
--- L["Boss"] = ""
--- L["Supported debuffs"] = ""
-
 -- role related statuses
 -- L["Hide in combat"] = ""
 -- L["Hide Damagers"] = ""
@@ -680,7 +649,6 @@ L["Voice Chat"] = "语音"
 -- L["hostile casts against raid members"] = ""
 -- L["advanced threat detection"] = ""
 -- L["arrows pointing to each raid member"] = ""
--- L["display remaining amount of heal absorb shields"] = ""
 
 -- aoe heals
 -- L["aoe-"] = ""

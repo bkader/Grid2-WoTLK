@@ -477,8 +477,6 @@ L["raid-debuffs3"] = "Debuffs de Raid(3)"
 L["raid-debuffs4"] = "Debuffs de Raid(4)"
 L["raid-debuffs5"] = "Debuffs de Raid(5)"
 
-L["boss-shields"] = "escudos de jefes"
-
 -- class specific buffs & debuffs statuses
 
 -- shaman
@@ -486,7 +484,6 @@ L["EarthShield"] = "Escudo de tierra"
 L["Earthliving"] = "Vida terrestre"
 L["Riptide"] = "Mareas Vivas"
 L["ChainHeal"] = "Sanacion en cadena"
-L["HealingRain"] = "Lluvia de sanacion"
 
 -- Druid
 L["Rejuvenation"] = "Rejuvenecimiento"
@@ -643,34 +640,6 @@ L["A resurrection spell is being casted on the unit"] = "Alguien esta resucitand
 L["Resurrected"] = "Resucitado"
 L["A resurrection spell has been casted on the unit"] = "Alguien ya ha resucitado a esta unidad"
 
--- power
-L["Mana"] = "Mana"
-L["Rage"] = "Ira"
-L["Focus"] = "Foco"
-L["Energy"] = "Energia"
-L["Runic Power"] = "Poder Runico"
-
--- shields status
-L["shields"] = "escudos"
-L["Maximum shield amount"] = "Valor maximo"
-L["Maximum shield amount value. Only used by bar indicators."] = "Valor maximo de los escudos. Solo usado por los indicadores de tipo barra."
-L["Normal"] = "Normal"
-L["Medium"] = "Medio"
-L["Low"] = "Bajo"
-L["Normal shield color"] = "Color para escudo normal"
-L["Medium shield color"] = "Color para escudo medio"
-L["Low shield color"] = "Color para escudo bajo"
-L["Low shield threshold"] = "Umbral bajo"
-L["The value below which a shield is considered low."] = "Por debajo de este valor el escudo se considera bajo."
-L["Medium shield threshold"] = "Umbral medio"
-L["The value below which a shield is considered medium."] = "Por debajo de este valor el escudo se considera medio."
-L["Custom Shields"] = "Escudos personalizados"
--- L["Type shield spell IDs separated by commas."] = ""
-
--- boss-shields status
--- L["Boss"] = ""
-L["Supported debuffs"] = "Debuffs soportados"
-
 -- role related statuses
 L["Hide in combat"] = "Ocultar en combate"
 L["Hide Damagers"] = "Ocultar rol de Daño"
@@ -680,7 +649,6 @@ L["highlights your target"] = "resalta tu objetivo"
 L["hostile casts against raid members"] = "casteos hostiles contra los miembros de la raid"
 L["advanced threat detection"] = "deteccion avanzada de amenaza"
 L["arrows pointing to each raid member"] = "flechas apuntando a cada miembro de la raid"
-L["display remaining amount of heal absorb shields"] = "muestra cantidad restante de escudos que absorben sanacion"
 
 -- aoe heals
 L["aoe-"] = "aoe: "

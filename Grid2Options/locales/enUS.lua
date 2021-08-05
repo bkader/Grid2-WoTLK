@@ -70,6 +70,8 @@ L["Frame lock"] = true
 L["Locks/unlocks the grid for movement."] = true
 L["Click through the Grid Frame"] = true
 L["Allows mouse click through the Grid Frame."] = true
+L["Show minimap button"] = true
+L["Toggles showing the minimap button."] = true
 
 L["Display"] = true
 L["Padding"] = true
@@ -477,8 +479,6 @@ L["raid-debuffs3"] = "Raid Debuffs(3)"
 L["raid-debuffs4"] = "Raid Debuffs(4)"
 L["raid-debuffs5"] = "Raid Debuffs(5)"
 
-L["boss-shields"] = true
-
 -- class specific buffs & debuffs statuses
 
 -- shaman
@@ -486,7 +486,6 @@ L["EarthShield"] = true
 L["Earthliving"] = true
 L["Riptide"] = true
 L["ChainHeal"] = true
-L["HealingRain"] = true
 
 -- Druid
 L["Rejuvenation"]= true
@@ -652,32 +651,11 @@ L["Resurrected"] = true
 L["A resurrection spell has been casted on the unit"] = true
 
 -- power
-L["Mana"] = true
-L["Rage"] = true
-L["Focus"] = true
-L["Energy"] = true
-L["Runic Power"] = true
-
--- shields status
-L["shields"] = true
-L["Maximum shield amount"] = true
-L["Maximum shield amount value. Only used by bar indicators."] = true
-L["Normal"] = true
-L["Medium"] = true
-L["Low"] = true
-L["Normal shield color"] = true
-L["Medium shield color"] = true
-L["Low shield color"] = true
-L["Low shield threshold"] = true
-L["The value below which a shield is considered low."] = true
-L["Medium shield threshold"] = true
-L["The value below which a shield is considered medium."] = true
-L["Custom Shields"] = true
-L["Type shield spell IDs separated by commas."] = true
-
--- boss-shields status
-L["Boss"] = true
-L["Supported debuffs"] = true
+L["Mana"] = MANA
+L["Rage"] = RAGE
+L["Focus"] = FOCUS
+L["Energy"] = ENERGY
+L["Runic Power"] = RUNIC_POWER
 
 -- role related statuses
 L["Hide in combat"] = true
@@ -688,7 +666,6 @@ L["highlights your target"] = true
 L["hostile casts against raid members"] = true
 L["advanced threat detection"] = true
 L["arrows pointing to each raid member"] = true
-L["display remaining amount of heal absorb shields"] = true
 
 -- aoe heals
 L["aoe-"] = true

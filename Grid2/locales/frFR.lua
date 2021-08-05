@@ -109,3 +109,7 @@ L["Vertical"] = "Verticale"
 L["Change Layout"] = "Changer la disposition"
 L["Left Click to drag and rearrange units"] = "Clic gauche pour glisser et réorganiser les unités"
 L["Right Click to finish config"] = "Clic droit pour terminer la configuration"
+
+--Minimap button
+L["|cffeda55fLeft-Click|r to open configuration"] = "|cffeda55fClic gauche|r: ouvrir la configuration"
+L["|cffeda55fRight-Click|r to open layouts menu"] = "|cffeda55fClic droit|r: ouvrir le menu des dispositions"
