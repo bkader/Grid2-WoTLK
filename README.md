@@ -6,6 +6,7 @@ Grid2 is fully customizable. New zones (indicators) can be defined in unit frame
 
 Grid2 includes a huge amount of available statuses, but not all enabled by default, look through the configuration and familiarize yourself with the available options and statuses.
 
+Grid2 is fast: consumes between 4 and 10 times less CPU cycles than other similar addons.
 
 To open the configuration UI type "/grid2" or left-click the minimap Icon.
 

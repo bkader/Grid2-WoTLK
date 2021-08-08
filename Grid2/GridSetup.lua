@@ -51,8 +51,7 @@ function Grid2:SetupStatusMap(setup)
 end
 
 function Grid2:Setup()
-	local db = Grid2.db.profile
-	Grid2:SetupIndicators(db.indicators)
-	Grid2:SetupStatuses(db.statuses)
-	Grid2:SetupStatusMap(db.statusMap)
+	Grid2:SetupIndicators(self.db.profile.indicators)
+	Grid2:SetupStatuses(self.db.profile.statuses)
+	Grid2:SetupStatusMap(self.db.profile.statusMap)
 end

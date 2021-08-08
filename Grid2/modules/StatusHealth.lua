@@ -294,7 +294,7 @@ local function CreateFeignDeath(baseKey, dbx)
 end
 
 Grid2.setupFunc["feign-death"] = CreateFeignDeath
-Grid2:DbSetStatusDefaultValue("feign-death", {type = "feign-death", color1 = {r = 1, g = .5, b = 1, a = 1}})
+Grid2:DbSetStatusDefaultValue("feign-death", {type = "feign-death", color1 = {r = 1, g = 0.5, b = 1, a = 1}})
 
 -- health-deficit status
 HealthDeficit.OnEnable = Health_Enable
@@ -324,7 +324,6 @@ local function CreateHealthDeficit(baseKey, dbx)
 end
 
 Grid2.setupFunc["health-deficit"] = CreateHealthDeficit
-
 Grid2:DbSetStatusDefaultValue("health-deficit", {type = "health-deficit", color1 = {r = 1, g = 1, b = 1, a = 1}, threshold = 0.05})
 
 -- heals-incoming status
@@ -337,6 +336,7 @@ do
 	Heals.GetColor = Grid2.statusLibrary.GetColor
 
 	local UnitGUID = UnitGUID
+	local HEALCOMM_FLAGS = HealComm.ALL_HEALS
 	local HEALCOMM_TIMEFRAME = 3
 
 	local function get_active_heal_amount_with_user(unit)
@@ -359,6 +359,7 @@ do
 	end
 
 	function Heals:UpdateDB()
+		HEALCOMM_FLAGS = HealComm.ALL_HEALS
 		HEALCOMM_TIMEFRAME = self.dbx.timeFrame
 		get_active_heal_amount = self.dbx.includePlayerHeals and get_active_heal_amount_with_user or get_active_heal_amount_without_user
 	end
@@ -445,6 +446,34 @@ local dead_cache = {}
 
 Death.GetColor = Grid2.statusLibrary.GetColor
 
+-- Events management
+local _RegisterEvent, _UnregisterEvent
+do
+	local frame
+	local Events = {}
+	function _RegisterEvent(event, func)
+		if not frame then
+			frame = CreateFrame("Frame", nil, Grid2LayoutFrame)
+			frame:SetScript("OnEvent", function(_, event, ...) Events[event](...) end)
+		end
+		if not Events[event] then
+			frame:RegisterEvent(event)
+		end
+		Events[event] = func
+	end
+	function _UnregisterEvent(...)
+		if frame then
+			for i = select("#", ...), 1, -1 do
+				local event = select(i, ...)
+				if Events[event] then
+					frame:UnregisterEvent(event)
+					Events[event] = nil
+				end
+			end
+		end
+	end
+end
+
 local function DeathUpdateUnit(unit, noUpdate)
 	local new = UnitIsDeadOrGhost(unit) and (UnitIsGhost(unit) and textGhost or textDeath) or false
 	if new ~= dead_cache[unit] then
@@ -470,13 +499,13 @@ function Death:Grid_UnitLeft(_, unit)
 end
 
 function Death:OnEnable()
-	RegisterEvent("UNIT_HEALTH", DeathUpdateUnit)
+	_RegisterEvent("UNIT_HEALTH", DeathUpdateUnit)
 	self:RegisterMessage("Grid_UnitUpdated")
 	self:RegisterMessage("Grid_UnitLeft")
 end
 
 function Death:OnDisable()
-	UnregisterEvent("UNIT_HEALTH")
+	_UnregisterEvent("UNIT_HEALTH")
 	self:UnregisterMessage("Grid_UnitUpdated")
 	self:UnregisterMessage("Grid_UnitLeft")
 	wipe(dead_cache)
