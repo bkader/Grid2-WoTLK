@@ -26,8 +26,7 @@ local function Icon_Create(self, parent)
 		else
 			local name = self.name:gsub("%-", "")
 			local i, j = parent:GetName():match("Grid2LayoutHeader(%d+)UnitButton(%d+)")
-			Cooldown =
-				f.Cooldown or CreateFrame("Cooldown", fmt("Grid2%s%02d%02d", name, i, j), f, "CooldownFrameTemplate")
+			Cooldown = f.Cooldown or CreateFrame("Cooldown", fmt("Grid2%s%02d%02d", name, i, j), f, "CooldownFrameTemplate")
 			Cooldown.noCooldownCount = nil
 		end
 		Cooldown:SetReverse(self.dbx.reverseCooldown)

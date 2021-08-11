@@ -10,6 +10,7 @@ local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 local strmatch = string.match
 
 local UnitExists = UnitExists
+local IsRaidLeader = IsRaidLeader
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetPartyAssignment = GetPartyAssignment
 local orig_UnitGroupRolesAssigned = UnitGroupRolesAssigned
@@ -24,6 +25,10 @@ end
 
 local function UnitIsGroupLeader(unit)
 	if IsInRaid() then
+		if unit == "player" then
+			return IsRaidLeader()
+		end
+
 		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(strmatch(unit, "%d+"))
 		return rank and rank == 2
 	elseif GetNumPartyMembers() > 0 then
