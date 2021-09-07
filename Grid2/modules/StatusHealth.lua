@@ -336,7 +336,6 @@ do
 	Heals.GetColor = Grid2.statusLibrary.GetColor
 
 	local UnitGUID = UnitGUID
-	local HEALCOMM_FLAGS = HealComm.ALL_HEALS
 	local HEALCOMM_TIMEFRAME = 3
 
 	local function get_active_heal_amount_with_user(unit)
@@ -359,7 +358,6 @@ do
 	end
 
 	function Heals:UpdateDB()
-		HEALCOMM_FLAGS = HealComm.ALL_HEALS
 		HEALCOMM_TIMEFRAME = self.dbx.timeFrame
 		get_active_heal_amount = self.dbx.includePlayerHeals and get_active_heal_amount_with_user or get_active_heal_amount_without_user
 	end
