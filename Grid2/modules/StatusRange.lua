@@ -30,7 +30,7 @@ local Ranges = {
 local UnitRangeCheck
 local UnitIsInRange
 
-local rezSpell = ({DRUID = 20484, PRIEST = 2006, PALADIN = 7328, SHAMAN = 2008, MONK = 115178, DEATHKNIGHT = 61999, WARLOCK = 20707})[select(2, UnitClass("player"))]
+local rezSpell = ({DRUID = 20484, PRIEST = 2006, PALADIN = 7328, SHAMAN = 2008, DEATHKNIGHT = 61999, WARLOCK = 20707})[select(2, UnitClass("player"))]
 if rezSpell then
 	rezSpell = GetSpellInfo(rezSpell)
 	UnitIsInRange = function(unit)

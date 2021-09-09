@@ -219,22 +219,6 @@ do
 			Grid2:DbSetMap("border", "debuff-Poison", 70)
 			Grid2:DbSetMap("border", "debuff-Curse", 60)
 		end
-	elseif class == "MONK" then
-		MakeDefaultsClass = function()
-			Grid2:DbSetValue("indicators", "corner-top-left", {type = "square", level = 9, location = Location("TOPLEFT"), size = 5})
-			Grid2:DbSetValue("indicators", "side-top", {type = "square", level = 9, location = Location("TOP"), size = 5})
-			Grid2:DbSetValue("indicators", "corner-top-right", {type = "square", level = 9, location = Location("TOPRIGHT"), size = 5})
-			Grid2:DbSetValue("statuses", "buff-EnvelopingMist-mine", {type = "buff", spellName = 124682, mine = true, color1 = {r = 0.2, g = 1, b = 0.2, a = 1}})
-			Grid2:DbSetValue("statuses", "buff-RenewingMist-mine", {type = "buff", spellName = 119611, mine = true, useSpellId = true, color1 = {r = 0.5, g = 1, b = 0, a = 1}})
-			Grid2:DbSetValue("statuses", "buff-LifeCocoon", {type = "buff", spellName = 116849, color1 = {r = 0.4, g = 0, b = 0.8, a = 1}})
-			Grid2:DbSetMap("corner-top-left", "buff-EnvelopingMist-mine", 99)
-			Grid2:DbSetMap("corner-top-right", "buff-RenewingMist-mine", 99)
-			Grid2:DbSetMap("side-top", "buff-LifeCocoon", 99)
-			Grid2:DbSetMap("border", "debuff-Poison", 90)
-			Grid2:DbSetMap("border", "debuff-Disease", 80)
-			Grid2:DbSetMap("border", "debuff-Magic", 70)
-			Grid2:DbSetMap("border", "debuff-Curse", 60)
-		end
 	elseif class == "MAGE" then
 		MakeDefaultsClass = function()
 			Grid2:DbSetValue("statuses", "buff-FocusMagic", {type = "buff", spellName = 54646, color1 = {r = .11, g = .22, b = .33, a = 1}})

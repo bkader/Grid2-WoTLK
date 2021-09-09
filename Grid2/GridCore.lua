@@ -5,13 +5,13 @@ Grid2.versionstring = "Grid2 v" .. GetAddOnMetadata("Grid2", "Version")
 
 if not _G.IsInRaid then
 	_G.IsInRaid = function()
-		return GetNumRaidMembers() > 0
+		return (GetNumRaidMembers() > 0)
 	end
 end
 
 if not IsInGroup then
 	IsInGroup = function()
-		return GetNumPartyMembers() > 0
+		return (GetNumRaidMembers() > 0) or (GetNumPartyMembers() > 0)
 	end
 end
 

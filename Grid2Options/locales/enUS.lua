@@ -514,11 +514,6 @@ L["SpiritOfRedemption"]= true
 L["CircleOfHealing"]= true
 L["PrayerOfHealing"]= true
 
--- monk
-L["EnvelopingMist"]= true
-L["RenewingMist"]= true
-L["LifeCocoon"]= true
-
 -- mage
 L["FocusMagic"]= true
 L["IceArmor"]= true
