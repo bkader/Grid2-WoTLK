@@ -1,3 +1,4 @@
+local Grid2 = Grid2
 local Grid2Layout = Grid2:NewModule("Grid2Layout")
 
 local pairs, ipairs, next = pairs, ipairs, next

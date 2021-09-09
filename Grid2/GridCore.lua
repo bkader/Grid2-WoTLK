@@ -44,7 +44,8 @@ Grid2.defaults = {
 		versions = {},
 		indicators = {},
 		statuses = {},
-		statusMap = {}
+		statusMap = {},
+		icon = {hide = false, radius = 80, minimapPos = 165}
 	}
 }
 

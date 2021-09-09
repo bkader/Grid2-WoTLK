@@ -11,10 +11,10 @@ Grid2Options:AddGeneralOptions("Misc", "Minimap Button", {
 		order = 130,
 		width = "full",
 		get = function()
-			return Grid2.db.profile.mmbutton
+			return not Grid2.db.profile.icon.hide
 		end,
 		set = function()
-			Grid2.db.profile.mmbutton = not Grid2.db.profile.mmbutton
+			Grid2.db.profile.icon.hide = not Grid2.db.profile.icon.hide
 			Grid2:RefreshMMButton()
 		end
 	}

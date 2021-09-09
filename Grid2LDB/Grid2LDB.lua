@@ -8,11 +8,10 @@ local MenuLayoutsShow
 
 local L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
 
-local Grid2Icon = [[Interface\AddOns\Grid2\media\icon]]
 local Grid2LDB = DataBroker:NewDataObject("Grid2", {
 	type = "launcher",
 	label = GetAddOnInfo("Grid2", "Title"),
-	icon = Grid2Icon,
+	icon = [[Interface\AddOns\Grid2\media\icon]],
 	OnClick = function(self, button)
 		if button == "LeftButton" then
 			Grid2:OnChatCommand("")
@@ -91,17 +90,20 @@ local LibDBIcon = LibStub("LibDBIcon-1.0", true)
 if not LibDBIcon then return end
 
 hooksecurefunc(Grid2, "OnEnable", function(self)
-	if not LibDBIcon:IsRegistered("Grid2") then
-		LibDBIcon:Register("Grid2", Grid2LDB, Grid2LDB.icon or Grid2Icon)
+	if self.db.profile.icon == nil then
+		self.db.profile.icon = {hide = false, radius = 80, minimapPos = 165}
 	end
+	if not LibDBIcon:IsRegistered("Grid2") then
+		LibDBIcon:Register("Grid2", Grid2LDB, self.db.profile.icon)
+	end
+	self:RefreshMMButton()
 end)
-hooksecurefunc(Grid2, "PLAYER_ENTERING_WORLD", function(self) self:RefreshMMButton() end)
 
 function Grid2:RefreshMMButton()
-	LibDBIcon:Refresh("Grid2", Grid2Icon)
-	if self.db.profile.mmbutton then
-		LibDBIcon:Show("Grid2")
-	else
+	LibDBIcon:Refresh("Grid2", self.db.profile.icon)
+	if self.db.profile.icon.hide then
 		LibDBIcon:Hide("Grid2")
+	else
+		LibDBIcon:Show("Grid2")
 	end
 end
