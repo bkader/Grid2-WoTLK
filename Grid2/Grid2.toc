@@ -43,6 +43,5 @@ GridIndicator.lua
 GridStatus.lua
 GridSetup.lua
 GridDefaults.lua
-GridBroker.lua
 
 modules.xml

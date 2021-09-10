@@ -15,8 +15,7 @@ local barPrototype = {
 	-- Apply settings to bar (re-align textures)
 	["Update"] = function(self, OnSizeChanged)
 		-- Limit values
-		self.value = math.max(self.min, self.value)
-		self.value = math.min(self.max, self.value)
+		self.value = math.min(self.max, math.max(self.min, self.value))
 
 		-- Alignment variables
 		local progress = (self.value - self.min) / (self.max - self.min)
@@ -80,22 +79,24 @@ local barPrototype = {
 			BLx_, BLy_ = BLx, BLy
 			BRx_, BRy_ = BRx, BRy
 		end
+		local width, height = self:GetSize()
+
 		-- HORIZONTAL (Grow: L -> R, Deplete: R -> L)
 		if self.orientation == "HORIZONTAL" then
 			-- HORIZONTAL_INVERSE (Grow: R -> L, Deplete: L -> R)
 			align1, align2 = "TOPLEFT", "BOTTOMLEFT"
-			xProgress = self:GetWidth() * progress
+			xProgress = width * progress
 		elseif self.orientation == "HORIZONTAL_INVERSE" then
 			-- VERTICAL_INVERSE (Grow: T -> B, Deplete: B -> T)
 			align1, align2 = "TOPRIGHT", "BOTTOMRIGHT"
-			xProgress = self:GetWidth() * progress
+			xProgress = width * progress
 		elseif self.orientation == "VERTICAL_INVERSE" then
 			-- VERTICAL (Grow: B -> T, Deplete: T -> B)
 			align1, align2 = "TOPLEFT", "TOPRIGHT"
-			yProgress = self:GetHeight() * progress
+			yProgress = height * progress
 		elseif self.orientation == "VERTICAL" then
 			align1, align2 = "BOTTOMLEFT", "BOTTOMRIGHT"
-			yProgress = self:GetHeight() * progress
+			yProgress = height * progress
 		end
 		-- Only width/height of parent changed
 		if not OnSizeChanged then
