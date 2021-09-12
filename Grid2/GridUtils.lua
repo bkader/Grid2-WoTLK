@@ -21,7 +21,7 @@ end
 
 local media = LibStub("LibSharedMedia-3.0", true)
 function Grid2:MediaFetch(mediatype, key, def)
-	return (key and media:Fetch(mediatype, key)) or (def and media:Fetch(mediatype, def))
+	return (key and media:Fetch(mediatype, key)) or (def and media:Fetch(mediatype, def)) or def
 end
 
 -- UTF8 string truncate

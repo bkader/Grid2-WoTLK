@@ -33,6 +33,12 @@ L["OOC"] = true
 L["Background Texture"] = true
 L["Select the frame background texture."] = true
 
+L["Tile"] = true
+L["Tile the background texture."] = true
+
+L["Tile size"] = true
+L["The size of the texture pattern."] = true
+
 L["Inner Border Size"] = true
 L["Sets the size of the inner border of each unit frame"] = true
 

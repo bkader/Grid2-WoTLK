@@ -33,6 +33,12 @@ L["OOC"] = "Fuera de combate"
 L["Background Texture"] = "Textura del Fondo"
 L["Select the frame background texture."] = "Elige la textura del fondo de las celdas"
 
+-- L["Tile"] = ""
+-- L["Tile the background texture."] = ""
+
+-- L["Tile size"] = ""
+L["The size of the texture pattern."] = "El tamaño del patrón de textura."
+
 L["Inner Border Size"] = "Grosor borde interior"
 L["Sets the size of the inner border of each unit frame"] = "Ajusta el tamaño del borde interior de las celdas."
 

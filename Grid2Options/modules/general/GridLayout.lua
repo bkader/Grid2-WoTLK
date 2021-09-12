@@ -89,10 +89,26 @@ Grid2Options:AddGeneralOptions("General", "Layout Settings", {
 		end,
 		values = {BACKGROUND = L["BACKGROUND"], LOW = L["LOW"], MEDIUM = L["MEDIUM"], HIGH = L["HIGH"]}
 	},
+	backgroundTexture = {
+		type = "select",
+		dialogControl = "LSM30_Background",
+		order = order_display + 3,
+		name = L["Background Texture"],
+		desc = L["Adjust the background texture."],
+		get = function(info)
+			return Grid2Layout.db.profile.BackgroundTexture or "None"
+		end,
+		set = function(info, v)
+			Grid2Layout.db.profile.BackgroundTexture = v
+			Grid2Layout:UpdateTextures()
+			Grid2Layout:UpdateColor()
+		end,
+		values = AceGUIWidgetLSMlists.background
+	},
 	borderTexture = {
 		type = "select",
 		dialogControl = "LSM30_Border",
-		order = order_display + 3,
+		order = order_display + 3.1,
 		name = L["Border Texture"],
 		desc = L["Adjust the border texture."],
 		get = function(info)
@@ -105,11 +121,75 @@ Grid2Options:AddGeneralOptions("General", "Layout Settings", {
 		end,
 		values = AceGUIWidgetLSMlists.border
 	},
+	background = {
+		type = "color",
+		name = L["Background Color"],
+		desc = L["Adjust background color and alpha."],
+		order = order_display + 3.2,
+		get = function()
+			local settings = Grid2Layout.db.profile
+			return settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA
+		end,
+		set = function(_, r, g, b, a)
+			local settings = Grid2Layout.db.profile
+			settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA = r, g, b, a
+			Grid2Layout:UpdateColor()
+		end,
+		hasAlpha = true
+	},
+	border = {
+		type = "color",
+		name = L["Border Color"],
+		desc = L["Adjust border color and alpha."],
+		order = order_display + 3.3,
+		get = function()
+			local settings = Grid2Layout.db.profile
+			return settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA
+		end,
+		set = function(_, r, g, b, a)
+			local settings = Grid2Layout.db.profile
+			settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA = r, g, b, a
+			Grid2Layout:UpdateColor()
+		end,
+		hasAlpha = true
+	},
+	backgroundTile = {
+		type = "toggle",
+		name = L["Tile"],
+		desc = L["Tile the background texture."],
+		order = order_display + 4,
+		get = function()
+			return Grid2Layout.db.profile.BackgroundTile
+		end,
+		set = function(info, v)
+			Grid2Layout.db.profile.BackgroundTile = v
+			Grid2Layout:UpdateTextures()
+			Grid2Layout:UpdateColor()
+		end
+	},
+	backgroundTileSize = {
+		type = "range",
+		name = L["Tile size"],
+		desc = L["The size of the texture pattern."],
+		order = order_display + 4.5,
+		get = function()
+			return Grid2Layout.db.profile.BackgroundTileSize
+		end,
+		set = function(info, v)
+			Grid2Layout.db.profile.BackgroundTileSize = v
+			Grid2Layout:UpdateTextures()
+			Grid2Layout:UpdateColor()
+		end,
+		min = 0,
+		max = floor(GetScreenWidth()),
+		step = 1.0,
+		bigStep = 1
+	},
 	spacing = {
 		type = "range",
 		name = L["Spacing"],
 		desc = L["Adjust frame spacing."],
-		order = order_display + 4,
+		order = order_display + 5,
 		max = 25,
 		min = 0,
 		step = 1,
@@ -125,7 +205,7 @@ Grid2Options:AddGeneralOptions("General", "Layout Settings", {
 		type = "range",
 		name = L["Padding"],
 		desc = L["Adjust frame padding."],
-		order = order_display + 5,
+		order = order_display + 6,
 		max = 20,
 		min = 0,
 		step = 1,
@@ -141,10 +221,11 @@ Grid2Options:AddGeneralOptions("General", "Layout Settings", {
 		type = "range",
 		name = L["Scale"],
 		desc = L["Adjust Grid scale."],
-		order = order_display + 6,
+		order = order_display + 7,
 		min = 0.5,
 		max = 2.0,
 		step = 0.05,
+		width = "double",
 		isPercent = true,
 		get = function()
 			return Grid2Layout.db.profile.ScaleSize
@@ -153,38 +234,6 @@ Grid2Options:AddGeneralOptions("General", "Layout Settings", {
 			Grid2Layout.db.profile.ScaleSize = v
 			Grid2Layout:Scale()
 		end
-	},
-	border = {
-		type = "color",
-		name = L["Border Color"],
-		desc = L["Adjust border color and alpha."],
-		order = order_display + 7,
-		get = function()
-			local settings = Grid2Layout.db.profile
-			return settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA
-		end,
-		set = function(_, r, g, b, a)
-			local settings = Grid2Layout.db.profile
-			settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA = r, g, b, a
-			Grid2Layout:UpdateColor()
-		end,
-		hasAlpha = true
-	},
-	background = {
-		type = "color",
-		name = L["Background Color"],
-		desc = L["Adjust background color and alpha."],
-		order = order_display + 8,
-		get = function()
-			local settings = Grid2Layout.db.profile
-			return settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA
-		end,
-		set = function(_, r, g, b, a)
-			local settings = Grid2Layout.db.profile
-			settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA = r, g, b, a
-			Grid2Layout:UpdateColor()
-		end,
-		hasAlpha = true
 	},
 	anchorheader = {
 		type = "header",

@@ -33,6 +33,12 @@ L["OOC"] = "Außerhalb des Kampfes"
 L["Background Texture"] = "Hintergrundtextur"
 L["Select the frame background texture."] = "Wähle die Hintergrundtextur des Fensters."
 
+L["Tile"] = "Kacheln"
+L["Tile the background texture."] = "Kachelt die Hintergrundtextur"
+
+L["Tile size"] = "Kachelgröße"
+L["The size of the texture pattern."] = "Die Größe der einzelnen Kacheln."
+
 -- L["Inner Border Size"] = ""
 -- L["Sets the size of the inner border of each unit frame"] = ""
 

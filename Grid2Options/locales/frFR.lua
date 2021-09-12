@@ -33,6 +33,12 @@ L["OOC"] = "Hors combat"
 L["Background Texture"] = "Texture d'arrière-plan"
 L["Select the frame background texture."] = "Définit la texture d'arrière-plan du cadre."
 
+L["Tile"] = "Tuile"
+L["Tile the background texture."] = "Tuile la texture de l'arrière-plan"
+
+L["Tile size"] = "Taille des tuiles"
+L["The size of the texture pattern."] = "La taille du motif de la texture."
+
 L["Inner Border Size"] = "Taille bordure interne"
 L["Sets the size of the inner border of each unit frame"] = "Définit la taille de la bordure interne de chaque cadre d'unité."
 

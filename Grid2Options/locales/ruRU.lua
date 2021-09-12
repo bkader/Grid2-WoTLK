@@ -33,6 +33,12 @@ L["OOC"] = "Вне боя"
 L["Background Texture"] = "Фоновая текстура"
 L["Select the frame background texture."] = "Выбрать фоновую текстуру фрейма"
 
+L["Tile"] = "Заполнение"
+L["Tile the background texture."] = "Заполнение фоновой текстуры"
+
+L["Tile size"] = "Размер заполнения"
+L["The size of the texture pattern."] = "Размер шаблона текстуры."
+
 L["Inner Border Size"] = "Размер внутренней рамки"
 L["Sets the size of the inner border of each unit frame"] = "Установить размер внутренней рамки для каждого фрейма"
 

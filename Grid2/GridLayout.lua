@@ -477,22 +477,17 @@ function Grid2Layout:UpdateTextures()
 	local f = self.frame
 	local p = self.db.profile
 	-- update backdrop data
+	self.frameBackdrop.bgFile = Grid2:MediaFetch("background", p.BackgroundTexture, "Interface\\ChatFrame\\ChatFrameBackground")
 	self.frameBackdrop.edgeFile = Grid2:MediaFetch("border", p.BorderTexture)
+	self.frameBackdrop.tile = p.BackgroundTile
+	self.frameBackdrop.tileSize = p.BackgroundTileSize or 16
 	f:SetBackdrop(self.frameBackdrop)
-	-- create bg texture
-	f.texture = f.texture or f:CreateTexture(nil, "BORDER")
-	f.texture:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
-	f.texture:SetPoint("TOPLEFT", f, "TOPLEFT", 4, -4)
-	f.texture:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -4, 4)
-	f.texture:SetBlendMode("ADD")
-	f.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .2, .2, .2, 0.5)
 end
 
 function Grid2Layout:UpdateColor()
 	local settings = self.db.profile
 	self.frame:SetBackdropBorderColor(settings.BorderR, settings.BorderG, settings.BorderB, settings.BorderA)
 	self.frame:SetBackdropColor(settings.BackgroundR, settings.BackgroundG, settings.BackgroundB, settings.BackgroundA)
-	self.frame.texture:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .2, .2, .2, settings.BackgroundA / 2)
 end
 
 function Grid2Layout:CheckVisibility()

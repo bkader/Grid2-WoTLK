@@ -33,6 +33,12 @@ L["OOC"] = "非战斗"
 -- L["Background Texture"] = ""
 -- L["Select the frame background texture."] = ""
 
+L["Tile"] = "平铺"
+L["Tile the background texture."] = "平铺背景材质。"
+
+L["Tile size"] = "平铺尺寸"
+L["The size of the texture pattern."] = "材质图案的尺寸。"
+
 -- L["Inner Border Size"] = ""
 -- L["Sets the size of the inner border of each unit frame"] = ""
 

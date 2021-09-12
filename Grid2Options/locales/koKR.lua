@@ -33,6 +33,12 @@ L["OOC"] = "비전투"
 L["Background Texture"] = "배경 무늬"
 L["Select the frame background texture."] = "창의 배경 무늬를 선택합니다."
 
+L["Tile"] = "바둑판 배열"
+L["Tile the background texture."] = "배경 텍스쳐를 바둑판 배열합니다."
+
+L["Tile size"] = "바둑판 큭기"
+L["The size of the texture pattern."] = "텍스쳐 패턴의 크기입니다."
+
 L["Inner Border Size"] = "내부 테두리 크기"
 L["Sets the size of the inner border of each unit frame"] = "각 유닛 창의 내부 테두리 크기를 설정합니다."
 

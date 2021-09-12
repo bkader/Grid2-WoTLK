@@ -33,6 +33,12 @@ L["OOC"] = "離開戰鬥"
 L["Background Texture"] = "背景材質"
 L["Select the frame background texture."] = "選擇框架背景材質"
 
+L["Tile"] = "標題"
+L["Tile the background texture."] = "標題的背景材質。"
+
+L["Tile size"] = "標題大小"
+L["The size of the texture pattern."] = "材質圖案的大小"
+
 L["Inner Border Size"] = "內邊框尺寸"
 L["Sets the size of the inner border of each unit frame"] = "設定每一個單位框架的內框大小"
 
