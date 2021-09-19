@@ -452,6 +452,7 @@ L["heals-incoming"] = true
 L["health-current"] = true
 L["health-deficit"] = true
 L["health-low"] = true
+L["health-opacity"] = true
 L["lowmana"] = true
 L["offline"] = true
 L["raid-icon-player"] = true

@@ -2,6 +2,7 @@ local Grid2 = Grid2
 
 local HealthCurrent = Grid2.statusPrototype:new("health-current", false)
 local HealthLow = Grid2.statusPrototype:new("health-low", false)
+local HealthAlpha = Grid2.statusPrototype:new("health-opacity", false)
 local FeignDeath = Grid2.statusPrototype:new("feign-death", false)
 local HealthDeficit = Grid2.statusPrototype:new("health-deficit", false)
 local Heals = Grid2.statusPrototype:new("heals-incoming", false)
@@ -253,6 +254,35 @@ end
 Grid2.setupFunc["health-low"] = CreateHealthLow
 Grid2:DbSetStatusDefaultValue("health-low", {type = "health-low", threshold = 0.4, color1 = {r = 1, g = 0, b = 0, a = 1}})
 
+-- health-opacity status
+HealthAlpha.OnEnable = Health_Enable
+HealthAlpha.OnDisable = Health_Disable
+HealthAlpha.GetColor = Grid2.statusLibrary.GetColor
+
+function HealthAlpha:IsActive(unit)
+	local c, m = UnitHealth(unit), UnitHealthMax(unit)
+	return (c == 0 and m == 0) and false or (math.ceil(HealthCurrent:GetPercent(unit)) == 1)
+end
+
+function HealthAlpha:UpdateDB()
+	self.threshold = self.dbx.threshold
+	self.opacity = self.dbx.opacity
+end
+
+function HealthAlpha:GetPercent(unit)
+	local c, m = UnitHealth(unit), UnitHealthMax(unit)
+	return ((c == 0 and m == 0) or ((c / m) <= self.threshold)) and 1 or (self.opacity or 0.25)
+end
+
+local function CreateHealthAlpha(baseKey, dbx)
+	Grid2:RegisterStatus(HealthAlpha, {"percent"}, baseKey, dbx)
+	HealthAlpha:UpdateDB()
+	return HealthAlpha
+end
+
+Grid2.setupFunc["health-opacity"] = CreateHealthAlpha
+Grid2:DbSetStatusDefaultValue("health-opacity", {type = "health-opacity", threshold = 0.95, opacity = 0.25})
+
 -- feign-death status
 local feign_cache = {}
 
@@ -329,9 +359,7 @@ Grid2:DbSetStatusDefaultValue("health-deficit", {type = "health-deficit", color1
 -- heals-incoming status
 do
 	local HealComm = LibStub:GetLibrary("LibHealComm-4.0", true)
-	if not HealComm then
-		return
-	end
+	if not HealComm then return end
 
 	Heals.GetColor = Grid2.statusLibrary.GetColor
 

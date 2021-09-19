@@ -81,10 +81,11 @@ function Grid2Options:MakeStatusColorThresholdOptions(status, options, optionPar
 end
 
 -- Grid2Options:MakeStatusThresholdOptions()
-function Grid2Options:MakeStatusThresholdOptions(status, options, optionParams, min, max, step)
+function Grid2Options:MakeStatusThresholdOptions(status, options, optionParams, min, max, step, bigStep)
 	min = min or 0
 	max = max or 1
 	step = step or 0.01
+	bigStep = bigStep or step
 	local name = optionParams and optionParams.threshold or L["Threshold"]
 	local desc = optionParams and optionParams.thresholdDesc or L["Threshold at which to activate the status."]
 	options.threshold = {
@@ -101,6 +102,34 @@ function Grid2Options:MakeStatusThresholdOptions(status, options, optionParams, 
 		set = function(_, v)
 			status.dbx.threshold = v
 			status:UpdateAllIndicators()
+			status:UpdateDB()
+		end
+	}
+end
+
+-- Grid2Options:MakeStatusOpacityOptions()
+function Grid2Options:MakeStatusOpacityOptions(status, options, optionParams, min, max, step, bigStep)
+	min = min or 0
+	max = max or 1
+	step = step or 0.01
+	bigStep = bigStep or step
+	local name = optionParams and optionParams.opacity or L["Opacity"]
+	local desc = optionParams and optionParams.opacityDesc or L["Set the opacity."]
+	options.opacity = {
+		type = "range",
+		order = 30,
+		name = name,
+		desc = desc,
+		min = min,
+		max = max,
+		step = step,
+		get = function()
+			return status.dbx.opacity
+		end,
+		set = function(_, v)
+			status.dbx.opacity = v
+			status:UpdateAllIndicators()
+			status:UpdateDB()
 		end
 	}
 end

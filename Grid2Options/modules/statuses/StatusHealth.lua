@@ -55,9 +55,7 @@ Grid2Options:RegisterStatusOptions(
 			end
 		}
 	end,
-	{
-		titleIcon = "Interface\\Icons\\Spell_Holy_DivineProvidence"
-	}
+	{titleIcon = "Interface\\Icons\\Spell_Holy_DivineProvidence"}
 )
 
 Grid2Options:RegisterStatusOptions(
@@ -86,9 +84,21 @@ Grid2Options:RegisterStatusOptions(
 			end
 		}
 	end,
-	{
-		titleIcon = "Interface\\Icons\\Ability_rogue_bloodyeye"
-	}
+	{titleIcon = "Interface\\Icons\\Ability_rogue_bloodyeye"}
+)
+
+Grid2Options:RegisterStatusOptions(
+	"health-opacity",
+	"health",
+	function(self, status, options, optionParams)
+		local min, max, step
+		if status.dbx.threshold > 10 then
+			min, max, step = 1000, 250000, 500
+		end
+		self:MakeStatusThresholdOptions(status, options, optionParams, min, max, step)
+		self:MakeStatusOpacityOptions(status, options, optionParams, 0, 1, 0.01, 0.1)
+	end,
+	{titleIcon = "Interface\\Icons\\Ability_Druid_HealingInstincts"}
 )
 
 Grid2Options:RegisterStatusOptions("health-deficit", "health", Grid2Options.MakeStatusColorThresholdOptions, {titleIcon = "Interface\\Icons\\Spell_shadow_lifedrain"})
