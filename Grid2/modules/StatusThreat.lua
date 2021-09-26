@@ -30,7 +30,7 @@ end
 -- 2 = insecurely tanking.
 -- 3 = securely tanking something
 function Threat:IsActive(unit)
-	local threat = UnitExists(unit) and UnitThreatSituation(unit) -- hack thanks Potje
+	local threat = UnitExists(unit) and UnitThreatSituation(unit)
 	if threat and threat > 0 then
 		return self.activeValue
 	end

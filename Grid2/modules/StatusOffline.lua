@@ -1,8 +1,8 @@
 local Grid2 = Grid2
+local L = Grid2.L
+
 local Offline = Grid2.statusPrototype:new("offline")
 Offline.GetColor = Grid2.statusLibrary.GetColor
-
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 
 local GetTime, UnitIsConnected = GetTime, UnitIsConnected
 local timer

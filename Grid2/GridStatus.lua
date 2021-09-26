@@ -64,6 +64,11 @@ status.OnDisable = Grid2.Dummy
 -- all indicators
 status.UpdateAllIndicators = Grid2.statusLibrary.UpdateAllUnits
 
+function status:IsSuspended()
+	local dbx = self.dbx
+	return (dbx and dbx.playerClass and dbx.playerClass ~= Grid2.playerClass) or nil
+end
+
 function status:UpdateDB(dbx)
 	if dbx then
 		self.dbx = dbx
@@ -150,4 +155,10 @@ end
 
 function Grid2:IterateStatuses(stype)
 	return next, stype and self.statusTypes[stype] or self.statuses
+end
+
+function Grid2:GetStatusByName(name)
+	for key, status in Grid2:IterateStatuses() do
+		if key == name then return status end
+	end
 end

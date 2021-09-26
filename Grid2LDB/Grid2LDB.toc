@@ -2,17 +2,19 @@
 ## Title: Grid2 |cd3ff7d0aLDB|r
 ## Notes: Grid2 Databroker Launcher.
 ## Notes-esES: Lanzador del Grid2 (Databroker)
-## Author: Michael
+## Author: Kader (|cff808080bkader#6361|r)
 ## Version: r721
 ## Dependencies: Grid2
 ## OptionalDeps: LibDataBroker-1.1
-## X-Curse-Packaged-Version: r721
-## X-Curse-Project-Name: Grid2
-## X-Curse-Project-ID: grid2
-## X-Curse-Repository-ID: wow/grid2/mainline
-## X-ReleaseDate: "$Date: 2011-04-14 23:42:17 -0700 (Tue, 14 Apr 2011) $"
-## X-Category: Databroker
-## X-Website: none
+## LoadOnDemand: 0
+## DefaultState: enabled
+
+## X-Credits: Michael
+## X-Category: UnitFrame
+## X-Email: |cff20ff20bkader@mail.com|r
+## X-Website: https://github.com/bkader/Grid2-WoTLK
+## X-Discord: |cff20ff20https://discord.gg/a8z5CyS3eW|r
+## X-Donate: |cff0079c1PayPal|r or |cff246a96Paysera|r at |cff20ff20bkader@mail.com|r
 
 Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua

@@ -1,8 +1,7 @@
 -- Status: CircleofHealing and WildGrowth
 local Grid2 = Grid2
 local AOEM = Grid2:GetModule("Grid2AoeHeals", true)
-if not AOEM then return end
-if AOEM.playerClass ~= "PRIEST" and AOEM.playerClass ~= "DRUID" then return end
+if not AOEM or (AOEM.playerClass ~= "PRIEST" and AOEM.playerClass ~= "DRUID") then return end
 
 local band = bit.band
 local next = next

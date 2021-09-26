@@ -1,6 +1,5 @@
 local Grid2Options = Grid2Options
 local L = Grid2Options.L
-
 Grid2Options:RegisterStatusOptions("range", "target", function(self, status, options, optionParams)
 	local rangeList = {}
 	for range in pairs(status.GetRanges()) do

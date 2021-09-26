@@ -1,7 +1,4 @@
---[[
-	Profiles export&import options
-	General -> Profiles Tab -> Advanced Tab
---]]
+--[[ Profiles Export & Import ]]--
 local Grid2 = Grid2
 local Grid2Options = Grid2Options
 
@@ -286,7 +283,10 @@ end
 
 function Comm:OnCommReceived(prefix, message, distribution, sender)
 	Grid2Options:ConfirmDialog(
-		string.format(L['"%s" has sent you a profile configuration. Do you want to activate received profile ?'], sender or "unknow"),
+		string.format(
+			L['"%s" has sent you a profile configuration. Do you want to activate received profile ?'],
+			sender or "unknow"
+		),
 		function()
 			ImportProfile(sender, message)
 			collectgarbage()

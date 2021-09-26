@@ -14,9 +14,17 @@ function Grid2:HideBlizzardRaidFrames()
 	end
 end
 
-local defaultColor = {r = 0, g = 0, b = 0, a = 0}
-function Grid2:MakeColor(color)
-	return color or defaultColor
+-- Default Colors
+do
+	local defaultColors = {
+		TRANSPARENT = {r = 0, g = 0, b = 0, a = 0},
+		BLACK = {r = 0, g = 0, b = 0, a = 1},
+		WHITE = {r = 1, g = 1, b = 1, a = 1}
+	}
+	function Grid2:MakeColor(color, default)
+		return color or defaultColors[default or "TRANSPARENT"]
+	end
+	Grid2.defaultColors = defaultColors
 end
 
 local media = LibStub("LibSharedMedia-3.0", true)
@@ -61,6 +69,16 @@ function Grid2.CopyTable(src, dst)
 	return dst
 end
 
+-- Remove item by value in a ipairs table
+function Grid2.TableRemoveByValue(t,v)
+	for i=#t,1,-1 do
+		if t[i]==v then
+			tremove(t, i)
+			return
+		end
+	end
+end
+
 -- Creates a location table, used by GridDefaults.lua
 function Grid2.CreateLocation(a, b, c, d)
 	local p = a or "TOPLEFT"
@@ -91,4 +109,46 @@ Grid2.statusLibrary = {
 			self:UpdateIndicators(unit)
 		end
 	end
+}-- Used by bar indicators
+Grid2.AlignPoints = {
+	HORIZONTAL = {
+		[true] = {"TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"}, -- normal Fill
+		[false] = {"BOTTOMRIGHT", "BOTTOMLEFT", "TOPRIGHT", "TOPLEFT"} -- reverse Fill
+	},
+	VERTICAL = {
+		[true] = {"BOTTOMLEFT", "TOPLEFT", "BOTTOMRIGHT", "TOPRIGHT"}, -- normal Fill
+		[false] = {"TOPRIGHT", "BOTTOMRIGHT", "TOPLEFT", "BOTTOMLEFT"} -- reverse Fill
+	}
 }
+
+-- Create/Manage/Sets frame backdrops
+do
+	local format = string.format
+	local tostring = tostring
+	local backdrops = {}
+	-- Generates a backdrop table, reuses tables avoiding to create duplicates
+	function Grid2:GetBackdropTable(edgeFile, edgeSize, bgFile, tile, tileSize, inset)
+		inset = inset or edgeSize
+		local key = format("%s;%s;%d;%s;%d;%d", bgFile or "", edgeFile or "", edgeSize or -1, tostring(tile), tileSize or -1, inset or -1)
+		local backdrop = backdrops[key]
+		if not backdrop then
+			backdrop = {
+				bgFile = bgFile,
+				tile = tile,
+				tileSize = tileSize,
+				edgeFile = edgeFile,
+				edgeSize = edgeSize,
+				insets = {left = inset, right = inset, top = inset, bottom = inset}
+			}
+			backdrops[key] = backdrop
+		end
+		return backdrop
+	end
+	-- Sets a backdrop only if necessary to alleviate game freezes, see ticket #640
+	function Grid2:SetFrameBackdrop(frame, backdrop)
+		if backdrop ~= frame.currentBackdrop then
+			frame:SetBackdrop(backdrop)
+			frame.currentBackdrop = backdrop
+		end
+	end
+end

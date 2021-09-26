@@ -2,21 +2,13 @@ local Grid2Frame = Grid2Frame
 local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
-Grid2Options:RegisterIndicatorOptions(
-	"border",
-	false,
-	function(self, indicator)
-		local options, statuses = {}, {}
-		self:MakeIndicatorBorderCustomOptions(indicator, options)
-		self:MakeIndicatorColorOptions(indicator, options, {
-			color1 = L["Border Background Color"],
-			colorDesc1 = L["Adjust border background color and alpha."],
-			typeKey = "indicators"
-		})
-		self:MakeIndicatorStatusOptions(indicator, statuses)
-		self:AddIndicatorOptions(indicator, statuses, options)
-	end
-)
+Grid2Options:RegisterIndicatorOptions("border", false, function(self, indicator)
+	local options, statuses = {}, {}
+	self:MakeIndicatorBorderCustomOptions(indicator, options)
+	self:MakeIndicatorColorOptions(indicator, options, {color1 = L["Border Background Color"], colorDesc1 = L["Adjust border background color and alpha."], typeKey = "indicators"})
+	self:MakeIndicatorStatusOptions(indicator, statuses)
+	self:AddIndicatorOptions(indicator, statuses, options)
+end)
 
 function Grid2Options:MakeIndicatorBorderCustomOptions(indicator, options)
 	options.borderSize = {

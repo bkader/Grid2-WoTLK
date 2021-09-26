@@ -310,11 +310,42 @@ L["Move the status lower in priority"] = "Bouger le statut en priorité plus bas
 
 L["indicator"] = "indicateur"
 
+L["Maintenance"] = "Maintenance"
+L["Create"] = "Créer"
+L["Icon"] = "Icône"
+L["Max Icons"] = "Icônes max."
+L["Icons per row"] = "Icônes par ligne"
+L["Icon Size"] = "Taille de l'icône"
+L["Icon Spacing"] = "Espacement des icônes"
+L["Direction"] = "Direction"
+L["Select the direction of the main bar."] = "Choisissez la direction de la barre principale"
+
+-- L["Blizzard"] = ""
+L["Blizzard Glow effect is already in use by another indicator, select another effect."] = "L'effet Blizzard Glow est déjà utilisé par un autre indicateur, sélectionnez un autre effet."
+L["Glow Color"] = "Couleur de la lueur"
+L["Choose how to colorize the glow border."] = "Choisissez comment colorer la lueur de bordure."
+L["Sets the glow color to use when the indicator is active."] = "Définit la couleur de lueur à utiliser lorsque l'indicateur est actif."
+L["Glow Effect"] = "Effet de lueur"
+L["Select the glow effect."] = "Sélectionnez l'effet de lueur."
+L["Animation Speed"] = "Vitesse d'animation"
+L["Number of Lines"] = "Nombre de lignes"
+L["Thickness"] = "Épaisseur"
+L["Number of particles"] = "Nombre de particules"
+L["Scale of particles"] = "Échelle des particules"
+L["Pixel"] = "Pixels"
+L["Shine"] = "Éclat"
+
 -- indicator types
+L["background"] = "arrière-plan"
+L["bar"] = "barre"
+L["glowborder"] = "lueur de bordure"
 L["icon"] = "icône"
+L["icons"] = "icônes"
+L["multibar"] = "multi-barre"
+L["portrait"] = "portrait"
+L["shape"] = "forme"
 L["square"] = "carré"
 L["text"] = "texte"
-L["bar"] = "barre"
 
 -- indicators
 L["corner-top-left"] = "coin-haut-gauche"
@@ -653,6 +684,27 @@ L["A resurrection spell is being casted on the unit"] = "Un sort de résurrectio
 L["Resurrected"] = "Ressuscité"
 L["A resurrection spell has been casted on the unit"] = "Un sort de résurrection a été incanté sur l'unité."
 
+-- shields status
+L["shields"] = "bouclier"
+L["Maximum shield amount"] = "Montant maximal du bouclier"
+L["Maximum shield amount value. Only used by bar indicators."] = "Valeur maximale du bouclier. Utilisée uniquement par les indicateurs barres."
+L["Normal"] = "Normal"
+L["Medium"] = "Moyen"
+L["Low"] = "Bas"
+L["Normal shield color"] = "Couleur de bouclier normal"
+L["Medium shield color"] = "Couleur de bouclier moyen"
+L["Low shield color"] = "Couleur de bouclier bas"
+L["Low shield threshold"] = "Seuil minimal de bouclier"
+L["The value below which a shield is considered low."] = "La valeur en dessous de laquelle les boucliers sont considérés bas."
+L["Medium shield threshold"] = "Seul moyen de bouclier"
+L["The value below which a shield is considered medium."] = "La valeur en dessous de laquelle les boucliers sont considérés moyens."
+L["Custom Shields"] = "Boucliers perso."
+L["Type shield spell IDs separated by commas."] = "Entrez les ID des boucliers séparés par des virgules."
+
+-- boss-shields status
+-- L["Boss"] = "Boss"
+-- L["Supported debuffs"] = ""
+
 -- role related statuses
 L["Hide in combat"] = "Cacher en combat"
 L["Hide Damagers"] = "Cacher les damagers"
@@ -662,6 +714,8 @@ L["highlights your target"] = "Met en valeur votre cible"
 L["hostile casts against raid members"] = "incantations hostiles contre les membres du raid"
 L["advanced threat detection"] = "détection avancée de menace"
 L["arrows pointing to each raid member"] = "flèches pointant vers chaque membre du raid"
+-- L["display remaining amount of heal absorb shields"] = ""
+-- L["display damage absorb shields above max hp"] = ""
 
 -- aoe heals
 -- L["aoe-"] = ""

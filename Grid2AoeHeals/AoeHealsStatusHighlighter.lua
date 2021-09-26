@@ -23,16 +23,19 @@ do
 	local timerDelay = 0
 	TimerStart = function(delay, func)
 		timerFrame = CreateFrame("Frame", nil, Grid2LayoutFrame)
-		timerFrame:SetScript("OnUpdate", function(_, elapsed)
-			timerDelay = timerDelay - elapsed
-			if timerDelay <= 0 then
-				timerFrame:Hide()
-				TimerEnabled = false
-				if timerFunc then
-					timerFunc(status)
+		timerFrame:SetScript(
+			"OnUpdate",
+			function(_, elapsed)
+				timerDelay = timerDelay - elapsed
+				if timerDelay <= 0 then
+					timerFrame:Hide()
+					TimerEnabled = false
+					if timerFunc then
+						timerFunc(status)
+					end
 				end
 			end
-		end)
+		)
 		TimerStart = function(delay, func)
 			timerDelay, timerFunc = delay, func
 			timerFrame:Show()
@@ -166,8 +169,4 @@ AOEM.setupFunc["aoe-highlighter"] = function(self, dbx)
 	return {"color", "icon"}
 end
 
-Grid2:DbSetStatusDefaultValue("aoe-highlighter", {
-	type = "aoe-highlighter",
-	highlightStatus = "aoe-neighbors",
-	color1 = {r = 0, g = 0.5, b = 1, a = 1}
-})
+Grid2:DbSetStatusDefaultValue("aoe-highlighter", {type = "aoe-highlighter", highlightStatus = "aoe-neighbors", color1 = {r = 0, g = 0.5, b = 1, a = 1}})

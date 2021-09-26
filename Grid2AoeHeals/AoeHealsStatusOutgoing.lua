@@ -9,9 +9,7 @@ local defaultSpells = {
 	["PRIEST"] = {34861, 23455}, -- {Circle of Healing, Holy Nova, Holy Word: Sanctuary}
 	["DRUID"] = {18562} -- {Swiftmend}
 }
-if not defaultSpells[playerClass] then
-	return
-end
+if not defaultSpells[playerClass] then return end
 
 local next, select, GetTime = next, select, GetTime
 
@@ -43,7 +41,10 @@ end
 local function CombatLogEvent(...)
 	local spellName = select(14, ...)
 	local subEvent = select(3, ...)
-	if (subEvent == "SPELL_HEAL" or subEvent == "SPELL_PERIODIC_HEAL") and spells[spellName] and select(5, ...) == playerGUID then
+	if
+		(subEvent == "SPELL_HEAL" or subEvent == "SPELL_PERIODIC_HEAL") and spells[spellName] and
+			select(5, ...) == playerGUID
+	 then
 		local unit = Grid2:GetUnitidByGUID(select(9, ...))
 		if unit then
 			local prev = heal_cache[unit]
@@ -160,9 +161,4 @@ Grid2.setupFunc["aoe-OutgoingHeals"] = function(baseKey, dbx)
 	return OutgoingHeal
 end
 
-Grid2:DbSetStatusDefaultValue("aoe-OutgoingHeals", {
-	type = "aoe-OutgoingHeals",
-	spells = Grid2.CopyTable(defaultSpells),
-	activeTime = 2,
-	color1 = {r = 0, g = 0.8, b = 1, a = 1}
-})
+Grid2:DbSetStatusDefaultValue("aoe-OutgoingHeals", {type = "aoe-OutgoingHeals", spells = Grid2.CopyTable(defaultSpells), activeTime = 2, color1 = {r = 0, g = 0.8, b = 1, a = 1}})

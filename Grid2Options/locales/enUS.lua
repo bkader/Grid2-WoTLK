@@ -185,6 +185,7 @@ L["all"] = true
 L["Class"] = true
 L["Group"] = true
 L["Role"] = true
+L["Spec"] = true
 L["Name"] = true
 L["Index"] = true
 L["party"] = true
@@ -193,6 +194,18 @@ L["partypet"] = true
 L["raidpet"] = true
 L["Insert"] = true
 L["Copy"] = true
+
+L["Default"] = true
+L["Tank"] = true
+L["Healer"] = true
+L["Dps"] = true
+L["MT"] = true
+L["MA"] = true
+L["Damager"] = true
+L["MainTank"] = true
+L["MainAssist"] = true
+L["Roles"] = true
+L["Groups"] = true
 
 --{{{ Miscelaneous
 L["New"] = true
@@ -309,11 +322,42 @@ L["Move the status lower in priority"] = true
 
 L["indicator"] = true
 
+L["Maintenance"] = true
+L["Create"] = true
+L["Icon"] = true
+L["Max Icons"] = true
+L["Icons per row"] = true
+L["Icon Size"] = true
+L["Icon Spacing"] = true
+L["Direction"] = true
+L["Select the direction of the main bar."] = true
+
+L["Blizzard"] = true
+L["Blizzard Glow effect is already in use by another indicator, select another effect."] = true
+L["Glow Color"] = true
+L["Choose how to colorize the glow border."] = true
+L["Sets the glow color to use when the indicator is active."] = true
+L["Glow Effect"] = true
+L["Select the glow effect."] = true
+L["Animation Speed"] = true
+L["Number of Lines"] = true
+L["Thickness"] = true
+L["Number of particles"] = true
+L["Scale of particles"] = true
+L["Pixel"] = true
+L["Shine"] = true
+
 -- indicator types
+L["background"] = true
+L["bar"] = true
+L["glowborder"] = true
 L["icon"] = true
+L["icons"] = true
+L["multibar"] = true
+L["portrait"] = true
+L["shape"] = true
 L["square"] = true
 L["text"] = true
-L["bar"] = true
 
 -- indicators
 L["corner-top-left"]= true
@@ -351,6 +395,66 @@ L["X Offset"] = true
 L["X - Horizontal Offset"] = true
 L["Y Offset"] = true
 L["Y - Vertical Offset"] = true
+
+L["Adjust the horizontal offset of the text"] = true
+L["Adjust the vertical offset of the text"] = true
+L["Set the font border type."] = true
+L["Orientation"] = true
+L["Set the icons orientation."] = true
+L["Display Squares"] = true
+L["Display flat square textures instead of the icons provided by the statuses."] = true
+L["Select maximum number of icons to display."] = true
+L["Select the number of icons per row."] = true
+L["Adjust the size of the icons, select Zero to use the theme default icon size."] = true
+L["Adjust the space between icons."] = true
+L["Prev. Bar & Reverse"] = true
+L["Whole Background"] = true
+L["Select bar texture."] = true
+L["Color Source"] = true
+L["Select how to colorize the main bar."] = true
+L["Bar color"] = true
+L["Invert"] = true
+L["Swap foreground/background colors on main bar."] = true
+L["Select howto colorize the bar."] = true
+L["Select bar color"] = true
+L["Anchor"] = true
+L["Select howto anchor the background bar."] = true
+L["Add Bar"] = true
+L["Add a new bar"] = true
+L["Delete Bar"] = true
+L["Delete last bar"] = true
+L["This action cannot be undone. Are you sure?"] = true
+L["Del Background"] = true
+L["Add Background"] = true
+L["Enable or disable the background texture"] = true
+L["Portrait Type"] = true
+L["Select the portrait to display."] = true
+L["Inner Border"] = true
+L["2D Model"] = true
+L["Class Icon"] = true
+L["Square"] = true
+L["Rounded Square"] = true
+L["Circle"] = true
+L["Diamond"] = true
+L["Triangle"] = true
+L["Right Triangle"] = true
+L["Semi Circle"] = true
+L["Quarter Circle"] = true
+L["0 degrees"] = true
+L["90 degrees"] = true
+L["180 degrees"] = true
+L["270 degrees"] = true
+L["Select the shape to display"] = true
+L["Rotation"] = true
+L["Select the shape angle"] = true
+L["Adjust the size of the shape, select zero to use the theme default icon size."] = true
+L["Enable Shadow"] = true
+L["Display a Shadow under the Shape."] = true
+L["Extra Size"] = true
+L["Extra size of the shadow shape."] = true
+L["Swap Colors"] = true
+L["Swap border and square colors. Square will be filled with the border color and linked statuses colors will be applied to the border."] = true
+L["Adjust the font size, select zero to use the theme default font size."] = true
 
 --{{{ Statuses
 L["-color"] = ":color"
@@ -659,6 +763,32 @@ L["Focus"] = FOCUS
 L["Energy"] = ENERGY
 L["Runic Power"] = RUNIC_POWER
 
+-- shields status
+L["shields"] = true
+L["Maximum shield amount"] = true
+L["Value used by bar indicators. Select zero to use players Maximum Health."] = true
+L["Normal"] = true
+L["Medium"] = true
+L["Low"] = true
+L["Normal shield color"] = true
+L["Medium shield color"] = true
+L["Low shield color"] = true
+L["Low shield threshold"] = true
+L["The value below which a shield is considered low."] = true
+L["Medium shield threshold"] = true
+L["The value below which a shield is considered medium."] = true
+L["Custom Shields"] = true
+L["Type shield spell IDs separated by commas."] = true
+
+-- shields-overflow status
+L["shields-overflow"] = true
+
+-- heal-absorbs status
+L["heal-absorbs"] = true
+L["Maximum absorb amount"] = true
+L["Medium absorb threshold"] = true
+L["Low absorb threshold"] = true
+
 -- role related statuses
 L["Hide in combat"] = true
 L["Hide Damagers"] = true
@@ -668,6 +798,8 @@ L["highlights your target"] = true
 L["hostile casts against raid members"] = true
 L["advanced threat detection"] = true
 L["arrows pointing to each raid member"] = true
+L["display remaining amount of heal absorb shields"] = true
+L["display damage absorb shields above max hp"] = true
 
 -- aoe heals
 L["aoe-"] = true

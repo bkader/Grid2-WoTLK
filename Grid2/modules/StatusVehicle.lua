@@ -1,7 +1,8 @@
 local Grid2 = Grid2
-local Vehicle = Grid2.statusPrototype:new("vehicle")
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
+local L = Grid2.L
 local UnitHasVehicleUI = UnitHasVehicleUI
+
+local Vehicle = Grid2.statusPrototype:new("vehicle")
 
 Vehicle.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
 

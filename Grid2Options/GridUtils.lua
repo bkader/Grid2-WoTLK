@@ -1,9 +1,31 @@
---[[
-	Miscelaneous/shared functions and variables
---]]
+--[[ Miscelaneous/shared functions and variables ]]--
+local Grid2 = Grid2
 local Grid2Options = Grid2Options
 local L = Grid2Options.L
 local LG = Grid2Options.LG
+
+local AceGUI = LibStub("AceGUI-3.0", true)
+
+-------------------------------------------------------------------------------------------------
+-- Modified Multiline Editbox that vertical fills the parent container even in AceConfigDialog Flow layouts.
+-- The multiline editbox must be the last defined element in an AceConfigTable.
+-------------------------------------------------------------------------------------------------
+do
+	local WidgetType, container = "Grid2ExpandedEditBox"
+	local function Resize(frame, width, height)
+		if not container then -- container used as recursion lock
+			container = frame.obj.parent
+			frame.obj:SetHeight(frame:GetTop() - container.frame:GetBottom() - 2)
+			container = nil
+		end
+	end
+	AceGUI:RegisterWidgetType(WidgetType, function()
+		local widget = AceGUI:Create("MultiLineEditBox")
+		widget.type = WidgetType
+		widget.frame:HookScript("OnSizeChanged", Resize)
+		return widget
+	end, 1)
+end
 
 -- Helper points tables
 Grid2Options.pointMap = {
@@ -73,15 +95,61 @@ Grid2Options.pointValueListExtra = {
 	["9"] = L["BOTTOMRIGHT"]
 }
 
-Grid2Options.fontFlagsValues = {
-	["NONE"] = L["Soft"],
-	["OUTLINE"] = string.format("%s, %s", L["Soft"], L["Thin"]),
-	["THICKOUTLINE"] = string.format("%s, %s", L["Soft"], L["Thick"]),
-	["MONOCHROME"] = L["Sharp"],
-	["MONOCHROME, OUTLINE"] = string.format("%s, %s", L["Sharp"], L["Thin"]),
-	["MONOCHROME, THICKOUTLINE"] = string.format("%s, %s", L["Sharp"], L["Thick"])
-}
+-- Font Flags and Shadow
+do
+	local fontFlagsValues = {
+		["NONE"] = L["Soft"],
+		["OUTLINE"] = string.format("%s,%s", L["Soft"], L["Thin"]),
+		["THICKOUTLINE"] = string.format("%s,%s", L["Soft"], L["Thick"]),
+		["MONOCHROME"] = L["Sharp"],
+		["MONOCHROME, OUTLINE"] = string.format("%s,%s", L["Sharp"], L["Thin"]),
+		["MONOCHROME, THICKOUTLINE"] = string.format("%s,%s", L["Sharp"], L["Thick"])
+	}
+	local fontFlagsShadowValues = {
+		["0;NONE"] = L["Soft"],
+		["0;OUTLINE"] = string.format("%s,%s", L["Soft"], L["Thin"]),
+		["0;THICKOUTLINE"] = string.format("%s,%s", L["Soft"], L["Thick"]),
+		["0;MONOCHROME"] = L["Sharp"],
+		["0;MONOCHROME, OUTLINE"] = string.format("%s,%s", L["Sharp"], L["Thin"]),
+		["0;MONOCHROME, THICKOUTLINE"] = string.format("%s,%s", L["Sharp"], L["Thick"]),
+		["1;NONE"] = string.format("%s+%s", L["Soft"], L["Shadow"]),
+		["1;OUTLINE"] = string.format("%s,%s+%s", L["Soft"], L["Thin"], L["Shadow"]),
+		["1;THICKOUTLINE"] = string.format("%s,%s+%s", L["Soft"], L["Thick"], L["Shadow"]),
+		["1;MONOCHROME"] = string.format("%s+%s", L["Sharp"], L["Shadow"]),
+		["1;MONOCHROME, OUTLINE"] = string.format("%s,%s+%s", L["Sharp"], L["Thin"], L["Shadow"]),
+		["1;MONOCHROME, THICKOUTLINE"] = string.format("%s,%s+%s", L["Sharp"], L["Thick"], L["Shadow"])
+	}
+	local FONT_FLAGS_DEFAULT = "0"
+	local fontFlagsShadowDefValues = Grid2.CopyTable(fontFlagsShadowValues)
+	fontFlagsShadowDefValues[FONT_FLAGS_DEFAULT] = string.format("*%s*", L["Default"])
+	-- public
+	Grid2Options.fontFlagsValues = fontFlagsValues
+	Grid2Options.fontFlagsShadowValues = fontFlagsShadowValues
+	Grid2Options.fontFlagsShadowDefValues = fontFlagsShadowDefValues
+	Grid2Options.FONT_FLAGS_DEFAULT = FONT_FLAGS_DEFAULT
+end
 
+-- Grid2Option:UnpackColor()
+function Grid2Options:UnpackColor(color, colorKey)
+	color = color or Grid2.defaultColors[colorKey or "TRANSPARENT"]
+	return color.r, color.g, color.b, color.a
+end
+
+-- Grid2Option:PackColor()
+function Grid2Options:PackColor(r, g, b, a, dbx, key)
+	if dbx then
+		local c = dbx[key] or {}
+		c.r, c.g, c.b, c.a = r, g, b, a
+		dbx[key] = c
+		return c
+	end
+	return {r = r, g = g, b = b, a = a}
+end
+
+-- Refresh AceConfig options window
+function Grid2Options:NotifyChange() -- do not use self variable inside this function (self can be nil or ~=Grid2Options)
+	LibStub("AceConfigRegistry-3.0"):NotifyChange("Grid2")
+end
 -- Grid2Options:EnableLoadOnDemand()
 -- Delays the creation of indicators and statuses options, until the user clicks on each option,
 -- reducing initial memory usage and load time. Instead of the real options, a "description" type option
@@ -104,7 +172,7 @@ do
 			elseif info[1] == "indicators" then
 				self:MakeIndicatorChildOptions_(Grid2.indicators[key])
 			end
-			LibStub("AceConfigRegistry-3.0"):NotifyChange("Grid2")
+			Grid2Options:NotifyChange()
 		end
 	}
 	function Grid2Options:EnableLoadOnDemand(enabled)
@@ -114,7 +182,9 @@ do
 				wipe(options)
 				options.openManager = openManager
 			end
-			for _, f in ipairs({"MakeIndicatorsOptions", "MakeStatusesOptions", "MakeIndicatorChildOptions", "MakeStatusChildOptions"}) do
+			for _, f in ipairs(
+				{"MakeIndicatorsOptions", "MakeStatusesOptions", "MakeIndicatorChildOptions", "MakeStatusChildOptions"}
+			) do
 				self[f .. "_"] = self[f]
 				self[f] = Hook
 			end
@@ -185,7 +255,7 @@ do
 	function Grid2Options:MakeTitleOptions(options, title, subtitle, desc, icon, coords)
 		options.title = {
 			type = "description",
-			order = 1,
+			order = 0,
 			width = "full",
 			fontSize = "large",
 			image = icon,
@@ -349,43 +419,83 @@ function Grid2Options:CopyOptionsTable(src, dst)
 	return dst
 end
 
+-- Goto the specified options section.
+function Grid2Options:SelectGroup(...)
+	LibStub("AceConfigDialog-3.0"):SelectGroup("Grid2", ...)
+end
+
+-- Grid2Options.MEDIA_FONT_DEFAULT
+-- Grid2Options.MEDIA_VALUE_DEFAULT
+-- Grid2Options.GetFontsValues()
+-- Grid2Optoins.GetStatusBarValues()
+do
+	local fonts, bars
+	local self = Grid2Options
+	local media = LibStub("LibSharedMedia-3.0", true)
+	-- Calculate and save libSharedMedia font key for STANDARD_TEXT_FONT
+	for key, font in pairs(media:HashTable("font") or {}) do
+		if font == STANDARD_TEXT_FONT then
+			Grid2Options.MEDIA_FONT_DEFAULT = key
+			break
+		end
+	end
+	Grid2Options.MEDIA_VALUE_DEFAULT = string.format("*%s*", L["Default"])
+	Grid2Options.GetFontValues = function()
+		fonts = fonts or self:CopyOptionsTable(AceGUIWidgetLSMlists.font)
+		fonts[self.MEDIA_VALUE_DEFAULT] =
+			media:Fetch("font", Grid2Frame.db.profile.font or self.MEDIA_FONT_DEFAULT) or STANDARD_TEXT_FONT
+		return fonts
+	end
+	Grid2Options.GetStatusBarValues = function()
+		bars = bars or self:CopyOptionsTable(AceGUIWidgetLSMlists.statusbar)
+		bars[self.MEDIA_VALUE_DEFAULT] =
+			media:Fetch("statusbar", Grid2Frame.db.profile.barTexture or "Gradient") or "Gradient"
+		return bars
+	end
+end
+
 -- Grid2Options:ConfirmDialog()
-function Grid2Options:ConfirmDialog(message, funcAccept, funcCancel)
-	local t
-	if StaticPopupDialogs["GRID2OPTIONS_CONFIRM_DIALOG"] then
-		t = StaticPopupDialogs["GRID2OPTIONS_CONFIRM_DIALOG"]
-		wipe(t)
-	else
-		t = {}
-		StaticPopupDialogs["GRID2OPTIONS_CONFIRM_DIALOG"] = t
+-- Grid2Options:ShowEditDialog()
+do
+	StaticPopupDialogs["GRID2OPTIONS_GENERAL_DIALOG"] = {
+		timeout = 0,
+		whileDead = 1,
+		hideOnEscape = 1,
+		button1 = ACCEPT,
+		button2 = CANCEL
+	}
+
+	local function ShowDialog(message, textDefault, funcAccept, funcCancel, textAccept, textCancel)
+		local t = StaticPopupDialogs["GRID2OPTIONS_GENERAL_DIALOG"]
+		t.OnShow = function(self)
+			if textDefault then
+				self.editBox:SetText(textDefault)
+			end
+			self:SetFrameStrata("TOOLTIP")
+		end
+		t.OnHide = function(self)
+			self:SetFrameStrata("DIALOG")
+		end
+		t.hasEditBox = textDefault and true or nil
+		t.text = message
+		t.button1 = funcAccept and (textAccept or ACCEPT) or nil
+		t.button2 = funcCancel and (textCancel or CANCEL) or nil
+		t.OnCancel = funcCancel
+		t.OnAccept = funcAccept and function(self)
+				funcAccept(textDefault and self.editBox:GetText())
+			end or nil
+		StaticPopup_Show("GRID2OPTIONS_GENERAL_DIALOG")
 	end
-	t.preferredIndex = STATICPOPUP_NUMDIALOGS
-	t.text = message
-	t.button1 = ACCEPT
-	t.button2 = CANCEL
-	local dialog, oldstrata
-	t.OnAccept = function()
-		if funcAccept then
-			(funcAccept)()
-		end
-		if dialog and oldstrata then
-			dialog:SetFrameStrata(oldstrata)
-		end
+
+	function Grid2Options:MessageDialog(message, funcAccept)
+		ShowDialog(message, nil, funcAccept or Grid2.Dummy)
 	end
-	t.OnCancel = function()
-		if funcCancel then
-			(funcCancel)()
-		end
-		if dialog and oldstrata then
-			dialog:SetFrameStrata(oldstrata)
-		end
+
+	function Grid2Options:ConfirmDialog(message, funcAccept, funcCancel, textAccept, textCancel)
+		ShowDialog(message, nil, funcAccept, funcCancel or Grid2.Dummy, textAccept, textCancel)
 	end
-	t.timeout = 0
-	t.whileDead = 1
-	t.hideOnEscape = 1
-	dialog = StaticPopup_Show("GRID2OPTIONS_CONFIRM_DIALOG")
-	if dialog then
-		oldstrata = dialog:GetFrameStrata()
-		dialog:SetFrameStrata("TOOLTIP")
+
+	function Grid2Options:ShowEditDialog(message, text, funcAccept, funcCancel)
+		ShowDialog(message, text or "", funcAccept, funcCancel or Grid2.Dummy)
 	end
 end

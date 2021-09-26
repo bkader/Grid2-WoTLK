@@ -2,16 +2,21 @@
 ..\FrameXML\UI.xsd">
 <Script file="Libs\LibStub\LibStub.lua"/>
 <Script file="Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua"/>
+<Include file="Libs\LibCompat-1.0\lib.xml"/>
 <Script file="Libs\AceAddon-3.0\AceAddon-3.0.lua"/>
 <Script file="Libs\AceEvent-3.0\AceEvent-3.0.lua"/>
 <Script file="Libs\AceTimer-3.0\AceTimer-3.0.lua"/>
 <Script file="Libs\AceDB-3.0\AceDB-3.0.lua"/>
 <Script file="Libs\AceLocale-3.0\AceLocale-3.0.lua"/>
 <Script file="Libs\AceConsole-3.0\AceConsole-3.0.lua"/>
+<Include file="Libs\AceComm-3.0\AceComm-3.0.xml"/>
+<Script file="Libs\AceSerializer-3.0\AceSerializer-3.0.lua"/>
 <Script file="Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua"/>
 <Script file="Libs\LibMapData-1.0\LibMapData-1.0.lua"/>
 <Script file="Libs\LibDualSpec-1.0\LibDualSpec-1.0.lua"/>
 <Include file="Libs\LibHealComm-4.0\LibHealComm-4.0.xml"/>
+<Script file="Libs\SpecializedAbsorbs-1.0\SpecializedAbsorbs-1.0.lua"/>
 <Script file="Libs\LibResComm-1.0\LibResComm-1.0.lua"/>
 <Include file="Libs\LibBabble-Zone-3.0\lib.xml"/>
+<Script file="Libs\SpecializedLibGlow-1.0\SpecializedLibGlow-1.0.lua"/>
 </Ui>

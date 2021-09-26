@@ -1,9 +1,8 @@
 local Grid2 = Grid2
-local L = LibStub("AceLocale-3.0"):GetLocale("Grid2Options")
-local LG = LibStub("AceLocale-3.0"):GetLocale("Grid2")
-local ACD3
-
 local Grid2Layout = Grid2Layout
+
+local L = LibStub("AceLocale-3.0"):GetLocale("Grid2Options")
+local ACD3
 
 local Grid2Options = {
 	options = {
@@ -38,7 +37,7 @@ local Grid2Options = {
 	typeMakeOptions = {},
 	optionParams = {},
 	L = L,
-	LG = LG,
+	LG = Grid2.L,
 	SpellEditDialogControl = type(LibStub("AceGUI-3.0").WidgetVersions["Aura_EditBox"]) == "number" and "Aura_EditBox" or nil
 }
 LibStub("AceConsole-3.0"):Embed(Grid2Options)

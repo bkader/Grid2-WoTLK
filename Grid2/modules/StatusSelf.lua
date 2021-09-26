@@ -1,17 +1,16 @@
 local Grid2 = Grid2
+local L = Grid2.L
+
 local Status = Grid2.statusPrototype:new("self")
 Status.GetColor = Grid2.statusLibrary.GetColor
-
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 local UnitIsUnit = UnitIsUnit
 
 function Status:IsActive(unit)
 	return UnitIsUnit(unit, "player")
 end
 
-local text = L["Me"]
 function Status:GetText()
-	return text
+	return L["Me"]
 end
 
 local function Create(baseKey, dbx)

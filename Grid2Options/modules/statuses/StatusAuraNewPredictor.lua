@@ -4,6 +4,7 @@ local Grid2Options = Grid2Options
 local ipairs = ipairs
 local strlower = string.lower
 local strmatch = string.match
+local format = string.format
 local GetSpellInfo = GetSpellInfo
 
 -- translated&colorized players class names table
@@ -24,7 +25,7 @@ function AuraPredictor:Initialize()
 	classNames = {[""] = ""}
 	for class, translation in pairs(LOCALIZED_CLASS_NAMES_MALE) do
 		local c = RAID_CLASS_COLORS[class]
-		classNames[class] = string.format(", |cff%.2x%.2x%.2x%s|r ", c.r * 255, c.g * 255, c.b * 255, translation)
+		classNames[class] = format(", |cff%.2x%.2x%.2x%s|r ", c.r * 255, c.g * 255, c.b * 255, translation)
 	end
 	AuraPredictor.OnInitialize = nil -- Only one initialization for all instances
 end
@@ -40,10 +41,10 @@ function AuraPredictor:GetValues(text, values, max)
 		local spellName, _, spellIcon = GetSpellInfo(spellID)
 		values[spellID] = self:GetSpellDescription(spellID, spellName, spellIcon, "")
 	elseif text ~= "" then
-		max = 12
+		max = max or 12
 		text = "^" .. strlower(suffix or text)
 		-- search buffs or debuffs
-		for className, spells in pairs(self.spells) do
+		for className, spells in pairs(self.spells or {}) do
 			max = self:GetTableValues(spells, values, text, max, className)
 			if max == 0 then
 				return
@@ -117,10 +118,8 @@ function AuraPredictor:GetSpellKey(spellID, category)
 end
 
 function AuraPredictor:GetSpellDescription(spellID, spellName, spellIcon, className, isBoss)
-	className =
-		isBoss and string.format(", |TInterface\\TargetingFrame\\UI-TargetingFrame-Skull:0|t|cFFff0000%s|r ", className) or
-		classNames[className]
-	return string.format("|T%s:0|t%s %s, %s%d|r", spellIcon, spellName, className, GRAY_FONT_COLOR_CODE, spellID)
+	className = isBoss and format(", |TInterface\\TargetingFrame\\UI-TargetingFrame-Skull:0|t|cFFff0000%s|r ", className) or classNames[className]
+	return format("|T%s:0|t%s %s, %s%d|r", spellIcon, spellName, className, GRAY_FONT_COLOR_CODE, spellID)
 end
 
 -- Registering EditBoxGrid2Buffs and EditBoxGrid2Debuffs to use with AceConfigTable dialogControl

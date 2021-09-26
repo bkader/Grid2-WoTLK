@@ -1,6 +1,4 @@
---[[
-	New indicator options
---]]
+--[[ New indicator options ]] --
 local Grid2 = Grid2
 local Grid2Options = Grid2Options
 local L = Grid2Options.L
@@ -39,6 +37,25 @@ local function NewIndicator()
 				dbx.orientation = "HORIZONTAL"
 			end
 			Grid2:DbSetIndicator(newIndicatorName .. "-color", {type = "bar-color"})
+		elseif (newIndicatorValues.type == "multibar") then
+			dbx.level = 3
+			dbx.textureColor = {r = 0, g = 0, b = 0, a = 1}
+			local point = newIndicatorValues.relPoint
+			if point == "LEFT" or point == "RIGHT" then
+				dbx.width = 4
+				dbx.orientation = "VERTICAL"
+			elseif point ~= "CENTER" then
+				dbx.height = 4
+				dbx.orientation = "HORIZONTAL"
+			end
+			Grid2:DbSetIndicator(newIndicatorName .. "-color", {type = "multibar-color"})
+		elseif (newIndicatorValues.type == "icons") then
+			dbx.level = 8
+		elseif (newIndicatorValues.type == "portrait") then
+			dbx.level = 4
+		elseif (newIndicatorValues.type == "shape") then
+			dbx.level = 6
+			dbx.size = defaults.shape.size
 		end
 		Grid2:DbSetIndicator(newIndicatorName, dbx)
 		-- Create runtime indicator
@@ -49,6 +66,7 @@ local function NewIndicator()
 			indicator:Layout(f)
 		end)
 		-- Create indicator options
+		newIndicatorValues.name = ""
 		Grid2Options:MakeIndicatorOptions(indicator)
 	end
 end
@@ -74,11 +92,17 @@ end
 
 function Grid2Options:MakeNewIndicatorOptions()
 	local options = self.indicatorOptions
-	self:MakeTitleOptions(options, L["indicators"], L["Options for %s."]:format(L["indicators"]), nil, "Interface\\ICONS\\Spell_ChargePositive")
+	self:MakeTitleOptions(
+		options,
+		L["indicators"],
+		L["Options for %s."]:format(L["indicators"]),
+		nil,
+		"Interface\\ICONS\\Spell_ChargePositive"
+	)
 	options.newIndicatorName = {
 		type = "input",
 		order = 2,
-		width = "full",
+		width = "double",
 		name = L["Name"],
 		desc = L["Name of the new indicator"],
 		usage = L["<CharacterOnlyString>"],
@@ -93,7 +117,6 @@ function Grid2Options:MakeNewIndicatorOptions()
 		type = "select",
 		order = 3,
 		name = L["Type"],
-		width = "half",
 		desc = L["Type of indicator to create"],
 		values = Grid2Options.indicatorTypes,
 		get = function()
@@ -126,6 +149,7 @@ function Grid2Options:MakeNewIndicatorOptions()
 	options.newIndicator = {
 		type = "execute",
 		order = 9,
+		width = "double",
 		name = L["Create Indicator"],
 		desc = L["Create a new indicator."],
 		func = NewIndicator,

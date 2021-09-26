@@ -1,9 +1,6 @@
---[[
-	General -> Misc Tab -> Hide Raid Frames section
---]]
+--[[ Hide Raid Frames ]]--
 local Grid2 = Grid2
 local Grid2Options = Grid2Options
-
 local L = Grid2Options.L
 
 Grid2Options:AddGeneralOptions("Misc", "Blizzard Raid Frames", {

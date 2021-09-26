@@ -307,11 +307,42 @@ L["Move the status lower in priority"] = "우선 순위를 낮은 상태로 움�
 
 L["indicator"] = "지시기"
 
+-- L["Maintenance"] = ""
+-- L["Create"] = ""
+-- L["Icon"] = ""
+-- L["Max Icons"] = ""
+-- L["Icons per row"] = ""
+-- L["Icon Size"] = ""
+-- L["Icon Spacing"] = ""
+-- L["Direction"] = ""
+-- L["Select the direction of the main bar."] = ""
+
+-- L["Blizzard"] = ""
+-- L["Blizzard Glow effect is already in use by another indicator, select another effect."] = ""
+-- L["Glow Color"] = ""
+-- L["Choose how to colorize the glow border."] = ""
+-- L["Sets the glow color to use when the indicator is active."] = ""
+-- L["Glow Effect"] = ""
+-- L["Select the glow effect."] = ""
+-- L["Animation Speed"] = ""
+-- L["Number of Lines"] = ""
+-- L["Thickness"] = ""
+-- L["Number of particles"] = ""
+-- L["Scale of particles"] = ""
+-- L["Pixel"] = ""
+-- L["Shine"] = ""
+
 -- indicator types
+-- L["background"] = ""
+L["bar"] = "바"
+-- L["glowborder"] = ""
 L["icon"] = "아이콘"
+-- L["icons"] = ""
+-- L["multibar"] = ""
+-- L["portrait"] = ""
+-- L["shape"] = ""
 L["square"] = "네모"
 L["text"] = "문자"
-L["bar"] = "바"
 
 -- indicators
 L["corner-top-left"] = "모시리-좌측 상단"
@@ -645,6 +676,27 @@ L["Casting resurrection"] = "부활 시전"
 L["A resurrection spell is being casted on the unit"] = "부활 주문이 유닛에게 시전될때 표시합니다."
 L["Resurrected"] = "부활"
 L["A resurrection spell has been casted on the unit"] = "부활 주문을 유닛에 받았을때 표시합니다."
+
+-- shields status
+L["shields"] = "보호막"
+L["Maximum shield amount"] = "최대 보호막 양"
+L["Maximum shield amount value. Only used by bar indicators."] = "Maximum shield amount value. Only used by bar indicators."
+L["Normal"] = "일반"
+L["Medium"] = "중간"
+L["Low"] = "낮음"
+L["Normal shield color"] = "일반 보호막 색상"
+L["Medium shield color"] = "중간 보호막 색상"
+L["Low shield color"] = "낮은 보호막 색상"
+L["Low shield threshold"] = "낮은 보호막 수치"
+L["The value below which a shield is considered low."] = "The value below which a shield is considered low."
+L["Medium shield threshold"] = "중간 보호막 수치"
+L["The value below which a shield is considered medium."] = "The value below which a shield is considered medium."
+L["Custom Shields"] = "사용자 보호막"
+-- L["Type shield spell IDs separated by commas."] = ""
+
+-- boss-shields status
+-- L["Boss"] = ""
+-- L["Supported debuffs"] = ""
 
 -- role related statuses
 L["Hide in combat"] = "전투시 숨김"

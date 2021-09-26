@@ -44,6 +44,7 @@ function Grid2Options:MakeStatusAuraListOptions(status, options, optionParams)
 		order = 155,
 		width = "full",
 		name = "",
+		dialogControl = "Grid2ExpandedEditBox",
 		multiline = math.min(8, #status.dbx.auras),
 		get = function()
 			local auras = {}
@@ -142,7 +143,7 @@ function Grid2Options:MakeStatusAuraCommonOptions(status, options, optionParams)
 		options.colorCount = {
 			type = "select",
 			order = 5,
-			width = "double",
+			width = "half",
 			name = L["Color count"],
 			desc = L["Select how many colors the status must provide."],
 			get = function()
@@ -314,13 +315,8 @@ Grid2Options:RegisterStatusOptions("debuff", "debuff", function(self, status, op
 	self:MakeStatusDeleteOptions(status, options, optionParams)
 end)
 
-Grid2Options:RegisterStatusOptions(
-	"debuffType",
-	"debuff",
-	function(self, status, options, optionParams)
-		self:MakeStatusColorOptions(status, options, optionParams)
-		self:MakeStatusBlinkThresholdOptions(status, options, optionParams)
-		self:MakeStatusDebuffTypeFilterOptions(status, options, optionParams)
-	end,
-	{groupOrder = 10}
-)
+Grid2Options:RegisterStatusOptions("debuffType", "debuff", function(self, status, options, optionParams)
+	self:MakeStatusColorOptions(status, options, optionParams)
+	self:MakeStatusBlinkThresholdOptions(status, options, optionParams)
+	self:MakeStatusDebuffTypeFilterOptions(status, options, optionParams)
+end, {groupOrder = 10})

@@ -1,9 +1,6 @@
---[[
-	General > Layouts Tab > General & Advanced Tabs
---]]
+--[[ General & Advanced Tabs ]]--
 local Grid2 = Grid2
 local Grid2Options = Grid2Options
-
 local L = Grid2Options.L
 
 -- MakeLayoutsOptions()
@@ -36,7 +33,6 @@ do
 				desc = desc and L[desc] or
 					L["Select which layout to use for %s person raids."]:format(strsub(raidType, -2)),
 				order = order + 5,
-				width = "double",
 				get = GetLayout,
 				set = SetLayout,
 				values = GetValues,
@@ -45,7 +41,6 @@ do
 			options[raidType .. "Test"] = {
 				type = "execute",
 				name = L["Test"],
-				width = "half",
 				desc = L["Test the layout."],
 				order = order + 10,
 				func = TestMode,

@@ -1,4 +1,5 @@
 local Grid2 = Grid2
+local L = Grid2.L
 
 local Role = Grid2.statusPrototype:new("role")
 local Leader = Grid2.statusPrototype:new("leader")
@@ -6,40 +7,20 @@ local Assistant = Grid2.statusPrototype:new("raid-assistant")
 local MasterLooter = Grid2.statusPrototype:new("master-looter")
 local DungeonRole = Grid2.statusPrototype:new("dungeon-role")
 
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 local strmatch = string.match
-
 local UnitExists = UnitExists
 local IsRaidLeader = IsRaidLeader
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetPartyAssignment = GetPartyAssignment
-local orig_UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
 local MAIN_TANK = MAIN_TANK
 local MAIN_ASSIST = MAIN_ASSIST
 local next = next
 
-local function IsInRaid()
-	return GetNumRaidMembers() > 0
-end
-
-local function UnitIsGroupLeader(unit)
-	if IsInRaid() then
-		if unit == "player" then
-			return IsRaidLeader()
-		end
-
-		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(strmatch(unit, "%d+"))
-		return rank and rank == 2
-	elseif GetNumPartyMembers() > 0 then
-		return UnitIsPartyLeader(unit)
-	end
-end
-
-local function UnitGroupRolesAssigned(unit)
-	local isTank, isHeal, isDPS = orig_UnitGroupRolesAssigned(unit)
-	return isTank and "TANK" or isHeal and "HEALER" or isDPS and "DAMAGER" or "NONE"
-end
+local IsInRaid = Grid2.IsInRaid
+local UnitIterator = Grid2.UnitIterator
+local UnitIsGroupLeader = Grid2.UnitIsGroupLeader
+local UnitGroupRolesAssigned = Grid2.UnitGroupRolesAssigned
 
 local function GetTexCoordsForRoleSmallCircle(role)
 	if (role == "TANK") then
@@ -110,44 +91,17 @@ function Role:UpdateActiveUnits()
 	end
 end
 
-function Role:UpdatePartyUnits(event)
-	for i = 1, 5 do
-		local unit = Grid2.party_units[i]
-		if not UnitExists(unit) then
-			break
-		end
-		local role = (GetPartyAssignment("MAINTANK", unit) and "MAINTANK") or (GetPartyAssignment("MAINASSIST", unit) and "MAINASSIST") or nil
-		if role ~= role_cache[unit] then
-			role_cache[unit] = role
-			if event then
-				self:UpdateIndicators(unit)
-			end
-		end
-	end
-end
-
-function Role:UpdateRaidUnits(event)
-	local units = Grid2.raid_units
-	for i = 1, 40 do
-		local name, _, _, _, _, _, _, _, _, role = GetRaidRosterInfo(i)
-		if not name then
-			break
-		end
-		local unit = units[i]
-		if role ~= role_cache[unit] then
-			role_cache[unit] = role
-			if event then
-				self:UpdateIndicators(unit)
-			end
-		end
-	end
-end
-
 function Role:UpdateAllUnits(event)
-	if IsInRaid() then
-		self:UpdateRaidUnits(event)
-	else
-		self:UpdatePartyUnits(event)
+	for unit, owner in UnitIterator() do
+		if owner == nil then
+			local role = UnitGroupRolesAssigned(unit)
+			if role ~= role_cache[unit] then
+				role_cache[unit] = role
+				if event then
+					self:UpdateIndicators(unit)
+				end
+			end
+		end
 	end
 end
 
@@ -230,9 +184,7 @@ function Assistant:UpdateAllUnits(event)
 	local units = Grid2.raid_units
 	for i = 1, 40 do
 		local name, rank = GetRaidRosterInfo(i)
-		if not name then
-			break
-		end
+		if not name then break end
 		local assis = rank == 1 or nil
 		local unit = units[i]
 		if assis ~= assis_cache[unit] then

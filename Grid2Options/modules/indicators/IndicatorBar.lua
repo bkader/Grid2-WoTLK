@@ -89,7 +89,9 @@ end
 -- Grid2Options:MakeIndicatorBarDisplayOptions()
 function Grid2Options:MakeIndicatorBarAppearanceOptions(indicator, options)
 	self:MakeHeaderOptions(options, "Appearance")
-	if indicator.dbx.parentBar then return end
+	if indicator.dbx.parentBar then
+		return
+	end
 	options.orientation = {
 		type = "select",
 		order = 15,
@@ -119,7 +121,7 @@ function Grid2Options:MakeIndicatorBarAppearanceOptions(indicator, options)
 		name = L["Bar Width"],
 		desc = L["Choose zero to set the bar to the same width as parent frame"],
 		min = 0,
-		max = 75,
+		max = 150,
 		step = 1,
 		get = function()
 			return indicator.dbx.width
@@ -138,7 +140,7 @@ function Grid2Options:MakeIndicatorBarAppearanceOptions(indicator, options)
 		name = L["Bar Height"],
 		desc = L["Choose zero to set the bar to the same height as parent frame"],
 		min = 0,
-		max = 75,
+		max = 150,
 		step = 1,
 		get = function()
 			return indicator.dbx.height

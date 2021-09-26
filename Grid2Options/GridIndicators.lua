@@ -1,6 +1,4 @@
---[[
-	Indicators options
---]]
+--[[ Indicators options ]]--
 local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
@@ -11,7 +9,7 @@ Grid2Options.indicatorIconPath = "Interface\\Addons\\Grid2Options\\media\\indica
 -- Creatable indicators list
 Grid2Options.indicatorTypes = {}
 -- Indicators sort order
-Grid2Options.indicatorTypesOrder = {alpha = 1, border = 2, bar = 3, text = 4, square = 5, icon = 6}
+Grid2Options.indicatorTypesOrder = {background = 1, alpha = 2, border = 3, glowborder = 4, multibar = 5, bar = 6, text = 7, square = 8, shape = 9, icon = 10, icons = 11, portrait = 12}
 
 -- Register indicator options
 function Grid2Options:RegisterIndicatorOptions(type, isCreatable, funcMakeOptions, optionParams)

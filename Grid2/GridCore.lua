@@ -1,31 +1,8 @@
-Grid2 = LibStub("AceAddon-3.0"):NewAddon("Grid2", "AceEvent-3.0", "AceTimer-3.0", "AceConsole-3.0")
+local Grid2 = LibStub("AceAddon-3.0"):NewAddon("Grid2", "AceEvent-3.0", "AceTimer-3.0", "AceConsole-3.0", "LibCompat-1.0")
+_G.Grid2 = Grid2
+
 Grid2.versionstring = "Grid2 v" .. GetAddOnMetadata("Grid2", "Version")
-
--- missing function for this expansion
-
-if not _G.IsInRaid then
-	_G.IsInRaid = function()
-		return (GetNumRaidMembers() > 0)
-	end
-end
-
-if not IsInGroup then
-	IsInGroup = function()
-		return (GetNumRaidMembers() > 0) or (GetNumPartyMembers() > 0)
-	end
-end
-
-if not _G.GetNumGroupMembers then
-	_G.GetNumGroupMembers = function()
-		return IsInRaid() and GetNumRaidMembers() or GetNumPartyMembers()
-	end
-end
-
-if not _G.GetNumSubgroupMembers then
-	_G.GetNumSubgroupMembers = function()
-		return GetNumPartyMembers()
-	end
-end
+Grid2.L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
 
 Grid2.debugFrame = Grid2DebugFrame or ChatFrame1
 function Grid2:Debug(s, ...)
@@ -114,8 +91,9 @@ function Grid2:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("Grid2DB", self.defaults)
 
 	self.debugging = self.db.profile.debug
+	self.playerClass = select(2, UnitClass("player"))
 
-	local LibDualSpec = LibStub("LibDualSpec-1.0")
+	local LibDualSpec = LibStub("LibDualSpec-1.0", true)
 	if LibDualSpec then
 		LibDualSpec:EnhanceDatabase(self.db, "Grid2")
 	end
@@ -123,7 +101,12 @@ function Grid2:OnInitialize()
 	local media = LibStub("LibSharedMedia-3.0", true)
 	media:Register("statusbar", "Gradient", "Interface\\Addons\\Grid2\\media\\gradient32x32")
 	media:Register("statusbar", "Grid2 Flat", "Interface\\Addons\\Grid2\\media\\white16x16")
+	media:Register("statusbar", "Grid2 GlowH", "Interface\\Addons\\Grid2\\media\\glowh")
+	media:Register("statusbar", "Grid2 GlowV", "Interface\\Addons\\Grid2\\media\\glowv")
 	media:Register("border", "Grid2 Flat", "Interface\\Addons\\Grid2\\media\\white16x16")
+	media:Register("border", "Grid2 Pixel", "Interface\\Addons\\Grid2\\media\\border1px")
+	media:Register("background", "Blizzard Quest Title Highlight", "Interface\\QuestFrame\\UI-QuestTitleHighlight")
+	media:Register("background", "Blizzard ChatFrame Background", "Interface\\ChatFrame\\ChatFrameBackground")
 
 	self:InitializeOptions()
 

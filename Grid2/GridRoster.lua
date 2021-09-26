@@ -3,7 +3,7 @@ local Grid2 = Grid2
 
 local pairs, next = pairs, next
 local UnitName, UnitGUID, UnitExists = UnitName, UnitGUID, UnitExists
-local IsInRaid, IsInGroup, GetNumGroupMembers = IsInRaid, IsInGroup, GetNumGroupMembers
+local IsInRaid, IsInGroup, GetNumGroupMembers = Grid2.IsInRaid, Grid2.IsInGroup, Grid2.GetNumGroupMembers
 
 -- realm name
 local my_realm = GetRealmName()

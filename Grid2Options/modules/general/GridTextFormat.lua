@@ -18,6 +18,7 @@
 		"%d" = represents duration, becomes translated to/from: "%.0f" or "%.1f" (floating point number)
 		"%s" = represents stacks,   becomes translated to/from: "%d" (integer number)
 --]]
+local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
 -- Posible values for "Display tenths of a second" options

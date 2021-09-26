@@ -1,6 +1,4 @@
---[[
-	Layouts test mode
---]]
+--[[ Layouts test mode ]] --
 local Grid2 = Grid2
 local Grid2Layout = Grid2:GetModule("Grid2Layout")
 local Grid2Frame = Grid2:GetModule("Grid2Frame")
@@ -12,6 +10,7 @@ local frameLayout
 local frames
 local layoutName
 local savedScale
+local LSM
 
 function Grid2Layout:ShowFrames(enabled)
 	for type, headers in pairs(self.groups) do
@@ -39,9 +38,9 @@ local function LayoutGetTestFrame(i)
 	end
 	f:SetBackdrop({
 		bgFile = texture,
+		edgeFile = "Interface\\Addons\\Grid2\\media\\white16x16",
 		tile = false,
 		tileSize = 0,
-		edgeFile = "Interface\\Addons\\Grid2\\media\\white16x16",
 		edgeSize = 1,
 		insets = {left = 1, right = 1, top = 1, bottom = 1}
 	})
@@ -98,8 +97,10 @@ do
 			LayoutHide(false)
 		end
 		if not texture then
-			local media = LibStub("LibSharedMedia-3.0", true)
-			texture = media:Fetch("statusbar", Grid2Frame.db.profile.frameTexture) or "Interface\\Addons\\Grid2\\media\\gradient32x32"
+			LSM = LSM or LibStub("LibSharedMedia-3.0", true)
+			texture =
+				LSM:Fetch("statusbar", Grid2Frame.db.profile.frameTexture) or
+				"Interface\\Addons\\Grid2\\media\\gradient32x32"
 		end
 		if not frameLayout then
 			frameLayout = Grid2Layout.frame
@@ -135,7 +136,9 @@ do
 end
 
 local function LayoutRefresh()
-	if not layoutName then return end
+	if not layoutName then
+		return
+	end
 
 	Grid2Layout:ShowFrames(false)
 
@@ -147,17 +150,7 @@ local function LayoutRefresh()
 	local Padding = settings.Padding
 	local w = width - inset * 2
 	local h = height - inset * 2
-	local ux, uy, vx, vy, px, py, realCols, realRows =
-		LayoutGetVectors(
-		settings.groupAnchor,
-		settings.horizontal,
-		Spacing,
-		Spacing,
-		width + Padding,
-		height + Padding,
-		colCount,
-		rowCount
-	)
+	local ux, uy, vx, vy, px, py, realCols, realRows = LayoutGetVectors(settings.groupAnchor, settings.horizontal, Spacing, Spacing, width + Padding, height + Padding, colCount, rowCount)
 	px = px + inset
 	py = py + inset
 	local i = 1
@@ -178,10 +171,7 @@ local function LayoutRefresh()
 			i = i + 1
 		end
 	end
-	frameLayout:SetSize(
-		Spacing * 2 + realCols * (width + Padding) - Padding,
-		Spacing * 2 + realRows * (height + Padding) - Padding
-	)
+	frameLayout:SetSize(Spacing * 2 + realCols * (width + Padding) - Padding, Spacing * 2 + realRows * (height + Padding) - Padding)
 end
 
 local function LayoutEnable(self, name)

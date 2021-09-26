@@ -75,8 +75,7 @@ Grid2Options:RegisterStatusOptions(
 	}
 )
 
-Grid2Options:RegisterStatusOptions("color", "color",
-function(self, status, options, optionParams)
+Grid2Options:RegisterStatusOptions("color", "color", function(self, status, options, optionParams)
 	self:MakeStatusColorOptions(status, options, optionParams)
 	self:MakeStatusDeleteOptions(status, options, optionParams)
 end)

@@ -14,7 +14,7 @@ local function RegisterIndicatorStatus(indicator, status, priority)
 	Grid2:DbSetMap(indicator.name, status.name, priority)
 	indicator:RegisterStatus(status, priority)
 	-- special case for auras
-	local type = status.dbx.type
+	local type = status.dbx and status.dbx.type
 	if type == "buff" or type == "debuff" or type == "debuffType" then
 		Grid2:RefreshAuras()
 	end

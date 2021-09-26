@@ -412,6 +412,7 @@ RDDB["The Lich King"] = {
 		},
 		["[-12]Lich King"] = {
 			72133, --Pain and Suffering
+			70337, --Necrotic Plague
 			68981, --Remorseless Winter
 			69242, --Soul Shriek
 			69409, --Soul Reaper
@@ -476,11 +477,14 @@ local function CalculateAvailableStatuses()
 			statuses[#statuses + 1] = status
 		end
 	end
-	table.sort(statuses, function(a, b)
-		local index_a = tonumber(select(3, find(a.name, "(%d+)")) or 1)
-		local index_b = tonumber(select(3, find(b.name, "(%d+)")) or 1)
-		return index_a < index_b
-	end)
+	table.sort(
+		statuses,
+		function(a, b)
+			local index_a = tonumber(select(3, find(a.name, "(%d+)")) or 1)
+			local index_b = tonumber(select(3, find(b.name, "(%d+)")) or 1)
+			return index_a < index_b
+		end
+	)
 	wipe(statusesList)
 	for index, status in ipairs(statuses) do
 		statuses[status] = index
@@ -961,6 +965,7 @@ local function AddBossOptions(options, name)
 		args = {
 			name = {
 				type = "input",
+				dialogControl = "Grid2ExpandedEditBox",
 				order = 1,
 				width = "full",
 				name = L["New raid debuff"],
@@ -1055,11 +1060,7 @@ local function MakeOneStatusStandardOptions(options, status, index)
 		name = "",
 		args = statusOptions
 	}
-	Grid2Options:MakeStatusStandardOptions(
-		status,
-		statusOptions,
-		{color1 = GetLocalizedStatusName(status.name), width = "full"}
-	)
+	Grid2Options:MakeStatusStandardOptions(status, statusOptions, {color1 = GetLocalizedStatusName(status.name), width = "full"})
 end
 
 local function MakeStandardOptions(options)

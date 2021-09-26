@@ -5,32 +5,26 @@
 ## Notes-ruRU: Модульный, легкий, отображающий на экране область группы/рейда в виде сетки.
 ## Notes-zhCN: 小巧的轻量级模块化队伍框架
 ## Notes-zhTW: 精簡的團隊框架功能
-## Author: Pastamancer & Maia, Jerry, Toadkiller, Shinizu @ Dalaran-WoW / Warmane
-## X-Curse-Packaged-Version: r721
-## X-Curse-Project-Name: Grid2
-## X-Curse-Project-ID: grid2
-## X-Curse-Repository-ID: wow/grid2/mainline
 
-## OptionalDeps: Ace3, Clique
-## SavedVariables: Grid2DB
-## DefaultState: enabled
-## LoadOnDemand: 0
-
+## Author: Kader (|cff808080bkader#6361|r)
 ## Version: r721
-# SubVersion: 115
-## X-ReleaseDate: "$Date: 2012-02-23 21:30:30 +1000 (Tuesday, 23 Feb 2021) $"
+## OptionalDeps: Ace3, Clique
+## LoadOnDemand: 0
+## DefaultState: enabled
+## SavedVariables: Grid2DB
+
+## X-Date: 2021-09-25 @ 10:15 AM |cff808080UTC|r
+## X-Credits: Michael, Pastamancer & Maia, Jerry, Toadkiller
 ## X-Category: UnitFrame
+## X-Email: |cff20ff20bkader@mail.com|r
+## X-Website: https://github.com/bkader/Grid2-WoTLK
+## X-Discord: |cff20ff20https://discord.gg/a8z5CyS3eW|r
+## X-Donate: |cff0079c1PayPal|r or |cff246a96Paysera|r at |cff20ff20bkader@mail.com|r
 
-# Ace Libraries
 embeds.xml
-
-#Templates
 templates.xml
-
-#Locales
 locales.xml
 
-# Grid
 GridCore.lua
 GridUtils.lua
 GridRoster.lua

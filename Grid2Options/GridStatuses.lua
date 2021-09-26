@@ -1,6 +1,4 @@
---[[
-	Statuses options
---]]
+--[[ Statuses options ]]--
 local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
@@ -20,12 +18,7 @@ Grid2Options.statusTypesIcons = {
 -- categories
 Grid2Options.categories = {
 	buff = {name = L["Buffs"], order = 10, icon = "Interface\\Icons\\Spell_Holy_HealingAura.", title = L["New Buff"]},
-	debuff = {
-		name = L["Debuffs"],
-		order = 20,
-		icon = "Interface\\Icons\\Ability_creature_disease_05",
-		title = L["New Debuff"]
-	},
+	debuff = {name = L["Debuffs"], order = 20, icon = "Interface\\Icons\\Ability_creature_disease_05", title = L["New Debuff"]},
 	color = {name = L["Colors"], order = 30, icon = "Interface\\Addons\\Grid2\\media\\icon", title = L["New Color"]},
 	health = {name = L["Health&Heals"], order = 40, icon = "Interface\\Icons\\INV_Potion_167"},
 	mana = {name = L["Mana&Power"], order = 50, icon = "Interface\\Icons\\INV_Potion_168"},
@@ -148,14 +141,7 @@ function Grid2Options:MakeStatusTitleOptions(status, options, optionParams)
 	if not (options.title or (optionParams and optionParams.hideTitle)) then
 		local group = self:GetStatusGroup(status)
 		local name = fmt("%s  |cFF8681d1[%s]|r", group.name, self:GetStatusCompIndicatorsText(status))
-		self:MakeTitleOptions(
-			options,
-			name,
-			group.desc,
-			optionParams and optionParams.titleDesc,
-			group.icon,
-			group.iconCoords
-		)
+		self:MakeTitleOptions(options, name, group.desc, optionParams and optionParams.titleDesc, group.icon, group.iconCoords)
 	end
 end
 
@@ -168,8 +154,6 @@ function Grid2Options:MakeStatusChildOptions(status, options)
 		self:MakeStatusTitleOptions(status, options, optionParams)
 	end
 end
-
--- {{ Published methods
 
 -- Register options for a status
 -- Variables to control title appearance in optionParams:
@@ -254,5 +238,3 @@ function Grid2Options:MakeStatusesOptions(options)
 		end
 	end
 end
-
--- }}

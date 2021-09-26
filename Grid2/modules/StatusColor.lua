@@ -1,6 +1,5 @@
 local Grid2 = Grid2
-
-local L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
+local L = Grid2.L
 
 local UnitClass = UnitClass
 local UnitIsEnemy = UnitIsEnemy

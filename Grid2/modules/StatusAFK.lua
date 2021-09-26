@@ -1,9 +1,10 @@
 local Grid2 = Grid2
+local L = Grid2.L
+
 local AFK = Grid2.statusPrototype:new("afk")
 AFK.GetColor = Grid2.statusLibrary.GetColor
 AFK.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
 
-local L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
 local UnitIsAFK = UnitIsAFK
 
 function AFK:UpdateUnit(_, unit)

@@ -64,7 +64,7 @@ Grid2Options:RegisterStatusOptions(
 	function(self, status, options, optionParams)
 		local min, max, step
 		if status.dbx.threshold > 10 then
-			min, max, step = 1000, 250000, 500
+			min, max, step = 1000, 100000, 500
 		end
 		self:MakeStatusColorOptions(status, options, optionParams)
 		self:MakeStatusThresholdOptions(status, options, optionParams, min, max, step)
@@ -93,7 +93,7 @@ Grid2Options:RegisterStatusOptions(
 	function(self, status, options, optionParams)
 		local min, max, step
 		if status.dbx.threshold > 10 then
-			min, max, step = 1000, 250000, 500
+			min, max, step = 1000, 100000, 500
 		end
 		self:MakeStatusThresholdOptions(status, options, optionParams, min, max, step)
 		self:MakeStatusOpacityOptions(status, options, optionParams, 0, 1, 0.01, 0.1)

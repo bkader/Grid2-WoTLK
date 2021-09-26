@@ -307,11 +307,42 @@ L["Move the status lower in priority"] = "Status nach unten in der Prioritätenl
 
 L["indicator"] = "Indikator"
 
+-- L["Maintenance"] = ""
+-- L["Create"] = ""
+-- L["Icon"] = ""
+-- L["Max Icons"] = ""
+-- L["Icons per row"] = ""
+-- L["Icon Size"] = ""
+-- L["Icon Spacing"] = ""
+-- L["Direction"] = ""
+-- L["Select the direction of the main bar."] = ""
+
+-- L["Blizzard"] = ""
+-- L["Blizzard Glow effect is already in use by another indicator, select another effect."] = ""
+-- L["Glow Color"] = ""
+-- L["Choose how to colorize the glow border."] = ""
+-- L["Sets the glow color to use when the indicator is active."] = ""
+-- L["Glow Effect"] = ""
+-- L["Select the glow effect."] = ""
+-- L["Animation Speed"] = ""
+-- L["Number of Lines"] = ""
+-- L["Thickness"] = ""
+-- L["Number of particles"] = ""
+-- L["Scale of particles"] = ""
+-- L["Pixel"] = ""
+-- L["Shine"] = ""
+
 -- indicator types
+-- L["background"] = ""
+L["bar"] = "Leiste"
+-- L["glowborder"] = ""
 L["icon"] = "Symbol"
+-- L["icons"] = ""
+-- L["multibar"] = ""
+-- L["portrait"] = ""
+-- L["shape"] = ""
 L["square"] = "Quadrat"
 L["text"] = "Text"
-L["bar"] = "Leiste"
 
 -- indicators
 L["corner-top-left"] = "Ecke oben Links"
@@ -646,6 +677,27 @@ L["Display status only for dead units"] = "Zeige Status nur für tote Einheiten"
 -- L["A resurrection spell is being casted on the unit"] = ""
 L["Resurrected"] = "Wiederbelebt"
 -- L["A resurrection spell has been casted on the unit"] = ""
+
+-- shields status
+-- L["shields"] = ""
+-- L["Maximum shield amount"] = ""
+-- L["Maximum shield amount value. Only used by bar indicators."] = ""
+-- L["Normal"] = ""
+-- L["Medium"] = ""
+-- L["Low"] = ""
+-- L["Normal shield color"] = ""
+-- L["Medium shield color"] = ""
+-- L["Low shield color"] = ""
+-- L["Low shield threshold"] = ""
+-- L["The value below which a shield is considered low."] = ""
+-- L["Medium shield threshold"] = ""
+-- L["The value below which a shield is considered medium."] = ""
+-- L["Custom Shields"] = ""
+-- L["Type shield spell IDs separated by commas."] = ""
+
+-- boss-shields status
+-- L["Boss"] = ""
+-- L["Supported debuffs"] = ""
 
 -- role related statuses
 -- L["Hide in combat"] = ""

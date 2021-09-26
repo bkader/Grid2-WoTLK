@@ -307,11 +307,42 @@ L["Move the status lower in priority"] = "Переместитт статус н
 
 L["indicator"] = "Индикатор"
 
+-- L["Maintenance"] = ""
+-- L["Create"] = ""
+-- L["Icon"] = ""
+-- L["Max Icons"] = ""
+-- L["Icons per row"] = ""
+-- L["Icon Size"] = ""
+-- L["Icon Spacing"] = ""
+-- L["Direction"] = ""
+-- L["Select the direction of the main bar."] = ""
+
+-- L["Blizzard"] = ""
+-- L["Blizzard Glow effect is already in use by another indicator, select another effect."] = ""
+-- L["Glow Color"] = ""
+-- L["Choose how to colorize the glow border."] = ""
+-- L["Sets the glow color to use when the indicator is active."] = ""
+-- L["Glow Effect"] = ""
+-- L["Select the glow effect."] = ""
+-- L["Animation Speed"] = ""
+-- L["Number of Lines"] = ""
+-- L["Thickness"] = ""
+-- L["Number of particles"] = ""
+-- L["Scale of particles"] = ""
+-- L["Pixel"] = ""
+-- L["Shine"] = ""
+
 -- indicator types
+-- L["background"] = ""
+L["bar"] = "Полоса"
+-- L["glowborder"] = ""
 L["icon"] = "Иконка"
+L["icons"] = "иконки"
+L["multibar"] = "многозадачная полоса"
+L["portrait"] = "портрет"
+-- L["shape"] = ""
 L["square"] = "Квадрат"
 L["text"] = "Текст"
-L["bar"] = "Полоса"
 
 -- indicators
 L["corner-top-left"] = "в верхнем левом углу"
@@ -646,6 +677,27 @@ L["Dead Units"] = "Мертвые юниты"
 -- L["A resurrection spell is being casted on the unit"] = ""
 -- L["Resurrected"] = ""
 -- L["A resurrection spell has been casted on the unit"] = ""
+
+-- shields status
+L["shields"] = "щит"
+L["Maximum shield amount"] = "Максимальное количество щитов"
+-- L["Maximum shield amount value. Only used by bar indicators."] = ""
+L["Normal"] = "Нормал"
+L["Medium"] = "Средняя"
+L["Low"] = "Низкий"
+L["Normal shield color"] = "Нормальный цвет щита"
+L["Medium shield color"] = "Цвет для среднего поглощения щита"
+L["Low shield color"] = "Низкий цвет щита"
+L["Low shield threshold"] = "Низкий порог защиты"
+L["The value below which a shield is considered low."] = "Значение, ниже которого щит считается низким."
+L["Medium shield threshold"] = "Среднее поглощение щита"
+L["The value below which a shield is considered medium."] = "Значение, ниже которого щит считается средним."
+-- L["Custom Shields"] = ""
+-- L["Type shield spell IDs separated by commas."] = ""
+
+-- boss-shields status
+-- L["Boss"] = ""
+-- L["Supported debuffs"] = ""
 
 -- role related statuses
 -- L["Hide in combat"] = ""

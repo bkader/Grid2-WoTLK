@@ -1,6 +1,4 @@
---[[
-	Grid2 frames/cells options
---]]
+--[[ Grid2 frames/cells options ]] --
 local Grid2 = Grid2
 local Grid2Options = Grid2Options
 
@@ -78,7 +76,7 @@ Grid2Options:AddGeneralOptions("General", "Frames", {
 		name = L["Frame Width"],
 		desc = L["Adjust the width of each unit's frame."],
 		min = 10,
-		max = 100,
+		max = 150,
 		step = 1,
 		get = function()
 			return Grid2Frame.db.profile.frameWidth

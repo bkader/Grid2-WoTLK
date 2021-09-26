@@ -104,11 +104,4 @@ AOEM.setupFunc["aoe-PrayerOfHealing"] = function(self, dbx)
 	UpdateDB(self, dbx)
 end
 
-Grid2:DbSetStatusDefaultValue("aoe-PrayerOfHealing", {
-	type = "aoe-PrayerOfHealing",
-	healthDeficit = 10000,
-	minPlayers = 5,
-	maxSolutions = 1,
-	radius = 30,
-	color1 = {r = 0, g = 1, b = 0.5, a = 1}
-})
+Grid2:DbSetStatusDefaultValue("aoe-PrayerOfHealing", {type = "aoe-PrayerOfHealing", healthDeficit = 10000, minPlayers = 5, maxSolutions = 1, radius = 30, color1 = {r = 0, g = 1, b = 0.5, a = 1}})

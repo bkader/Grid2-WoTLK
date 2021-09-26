@@ -5,23 +5,24 @@ local BuffSubTypes = {
 	["Buff"] = 1,
 	["Buffs Group"] = {},
 	["Buffs Group: Defensive Cooldowns"] = {
+		-- Paladin
 		6940, --Hand of Sacrifice
 		31850, --Ardent Defender
 		498, --Divine Protection
-		-- War
+		-- Warrior
 		2565, --Shield Block
 		871, --Shield Wall
 		12975, --Last Stand
-		--Druid
+		-- Druid
 		61336, --Survival Instincts
 		22812, --Barkskin
 		22842, --Frenzied Regeneration
-		--Dk
+		-- Death Knight
 		55233, --Vampiric Blood
 		49028, --Dancing Rune Weapon
 		48792, --Icebound Fortitude
 		48707, --Anti-Magic Shell
-		--Priest
+		-- Priest
 		33206, --Pain Suppression
 		47788 --Guardian Spirit
 	}
@@ -33,7 +34,7 @@ local ColorizeByValues = {L["Number of stacks"], L["Remaining time"]}
 
 local NewAuraUsageDescription = L['You can include a descriptive prefix using separators "@#>"'] .. " " .. L["examples: Druid@Regrowth Chimaeron>Low Health"]
 
--- {{ Shared code
+-- Shared code
 local NewAuraHandlerMT = {
 	Init = function(self)
 		self.name = ""
@@ -159,9 +160,8 @@ local NewAuraHandlerMT = {
 	end
 }
 NewAuraHandlerMT.__index = NewAuraHandlerMT
--- }}
 
---{{ Buff Creation options
+-- Buff Creation options
 local NewBuffHandler = setmetatable({type = "buff", subType = "Buff", subTypes = BuffSubTypes, color = {r = 1, g = 1, b = 1, a = 1}}, NewAuraHandlerMT)
 
 NewBuffHandler.options = {
@@ -210,7 +210,7 @@ NewBuffHandler.options = {
 	newStatusColorCount = {
 		type = "select",
 		order = 5.4,
-		width = "double",
+		width = "half",
 		name = L["Color count"],
 		desc = L["Select how many colors the status must provide."],
 		get = "GetColorCount",
@@ -236,9 +236,8 @@ NewBuffHandler.options = {
 NewBuffHandler:Init()
 
 Grid2Options:RegisterStatusCategoryOptions("buff", NewBuffHandler.options)
---}}
 
---{{ Debuff Creation options
+-- Debuff Creation options
 local NewDebuffHandler = setmetatable({type = "debuff", subType = "Debuff", subTypes = DebuffSubTypes, color = {r = 1, g = .2, b = .2, a = 1}}, NewAuraHandlerMT)
 
 NewDebuffHandler.options = {

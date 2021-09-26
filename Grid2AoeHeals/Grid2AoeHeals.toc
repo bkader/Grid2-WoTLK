@@ -2,14 +2,17 @@
 ## Title: Grid2 |cd1ff7d0aAOE Heals|r
 ## Notes: Display best targets for AOE Heals
 ## Notes-esES: Muestra los mejores objetivos para las curas de area
-## Author: Michael
+## Author: Kader (|cff808080bkader#6361|r)
+## Version: r721
 ## Dependencies: Grid2
 ## DefaultState: disabled
-## Version: r721
-## X-Curse-Packaged-Version: r721
-## X-Curse-Project-Name: Grid2
-## X-Curse-Project-ID: grid2
-## X-Curse-Repository-ID: wow/grid2/mainline
+## SavedVariables: Grid2DB
+## X-Credits: Michael
+## X-Category: UnitFrame
+## X-Email: |cff20ff20bkader@mail.com|r
+## X-Website: https://github.com/bkader/Grid2-WoTLK
+## X-Discord: |cff20ff20https://discord.gg/a8z5CyS3eW|r
+## X-Donate: |cff0079c1PayPal|r or |cff246a96Paysera|r at |cff20ff20bkader@mail.com|r
 
 AoeHeals.lua
 AoeHealsMapData.lua

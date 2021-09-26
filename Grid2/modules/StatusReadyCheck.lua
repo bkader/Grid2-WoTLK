@@ -1,7 +1,7 @@
 local Grid2 = Grid2
-local ReadyCheck = Grid2.statusPrototype:new("ready-check")
+local L = Grid2.L
 
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
+local ReadyCheck = Grid2.statusPrototype:new("ready-check")
 
 local readyChecking, timerClearStatus, timerClearProcess
 local readyStatuses = {}

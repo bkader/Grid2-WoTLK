@@ -18,17 +18,17 @@
 local Grid2 = Grid2
 local AOEM = Grid2:NewModule("Grid2AoeHeals")
 
-AOEM.defaultDB = {profile = { updateRate = 0.25, showInCombat = true, showInRaid = false}}
+AOEM.defaultDB = {profile = {updateRate = 0.25, showInCombat = true, showInRaid = false}}
 AOEM.playerClass = select(2, UnitClass("player"))
 
-local IsInRaid = IsInRaid
+local IsInRaid = Grid2.IsInRaid
 local Grid2Layout = Grid2Layout
 local UnitExists = UnitExists
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsVisible = UnitIsVisible
 local InCombatLockdown = InCombatLockdown
 local GetPlayerMapPosition = GetPlayerMapPosition
-local GetNumGroupMembers = GetNumGroupMembers
+local GetNumGroupMembers = Grid2.GetNumGroupMembers
 local next = next
 local min = math.min
 local max = math.max
@@ -39,9 +39,11 @@ local tinsert = table.insert
 local tostring = tostring
 local bit_band = bit.band
 
-if not _G.UnitGetIncomingHeals then
-	local HealComm = LibStub("LibHealComm-4.0", true)
-	_G.UnitGetIncomingHeals = function(unit, healer)
+local UnitGetIncomingHeals = _G.UnitGetIncomingHeals
+if not UnitGetIncomingHeals then
+	local HealComm
+	UnitGetIncomingHeals = function(unit, healer)
+		HealComm = HealComm or LibStub("LibHealComm-4.0", true)
 		if HealComm and healer then
 			return HealComm:GetCasterHealAmount(UnitGUID(healer), HealComm.CASTED_HEALS, GetTime() + 5)
 		elseif HealComm then
@@ -52,7 +54,6 @@ if not _G.UnitGetIncomingHeals then
 	end
 end
 
---{{
 local raidSizes = {raid40 = 25, raid25 = 25, raid20 = 20, raid15 = 15, raid10 = 10, party = 5, solo = 5}
 
 local frame, timer
@@ -67,9 +68,8 @@ local rosterValid  -- True if roster units are up to date
 local rosterPosValid  -- True if roster units position and health data was updated
 
 local mapValid, mapWidth, mapHeight
---}}
 
---{{ Misc functions
+-- Misc functions
 
 local function ClearAllIndicators()
 	for _, status in next, statuses do
@@ -123,7 +123,7 @@ local function Init()
 	end
 end
 
---{{ Timer
+-- Timer
 
 local function TimerEvent()
 	mapWidth, mapHeight = AOEM:MapGetSize()
@@ -156,7 +156,7 @@ local function SetTimer(enable)
 	end
 end
 
---{{{{ statuses private methods
+-- statuses private methods
 
 local function status_GetRoster()
 	return roster
@@ -226,13 +226,15 @@ local function status_GetHighlightMask(self, unit)
 	end
 end
 
---{{{{ statuses public interface methods
+-- statuses public interface methods
 
 local function UpdateTimerState(InCombat)
 	if InCombat == nil then
 		InCombat = InCombatLockdown()
 	end
-	local disabled = (AOEM.db.profile.showInCombat and (not InCombat)) or (AOEM.db.profile.showInRaid and (not IsInRaid())) or (GetNumGroupMembers() == 0)
+	local disabled =
+		(AOEM.db.profile.showInCombat and (not InCombat)) or (AOEM.db.profile.showInRaid and (not IsInRaid())) or
+		(GetNumGroupMembers() == 0)
 	SetTimer(not disabled)
 end
 
@@ -327,7 +329,7 @@ local function status_GetColor(self, unit)
 	return color.r, color.g, color.b, color.a
 end
 
---{{ Statuses Creation
+-- Statuses Creation
 
 local function Create(baseKey, dbx)
 	local setupFunc = AOEM.setupFunc[baseKey]
@@ -366,7 +368,7 @@ AOEM.setupFunc = {}
 AOEM.hlStatuses = hlStatuses
 AOEM.statuses = statuses
 
---{{ Module methods
+-- Module methods
 function AOEM:OnModuleInitialize()
 	for key in next, self.setupFunc do
 		Grid2.setupFunc[key] = Create

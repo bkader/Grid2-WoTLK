@@ -1,9 +1,10 @@
 local Grid2 = Grid2
+local L = Grid2.L
+
 local PvP = Grid2.statusPrototype:new("pvp")
 PvP.GetColor = Grid2.statusLibrary.GetColor
 PvP.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
 
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 local IsInInstance, UnitIsPVP, UnitIsPVPFreeForAll = IsInInstance, UnitIsPVP, UnitIsPVPFreeForAll
 
 local pvpText = L["PvP"]

@@ -121,8 +121,6 @@ local function UpdateDB(self, dbx)
 	healthThreshold = healthDeficit * dbx.minPlayers
 end
 
---}}
-
 AOEM.setupFunc["aoe-ChainHeal"] = function(self, dbx)
 	AOEM.chCreated = true -- uggly/hackish special case
 	self.isChainHeal = true
@@ -134,12 +132,4 @@ AOEM.setupFunc["aoe-ChainHeal"] = function(self, dbx)
 	UpdateDB(self, dbx)
 end
 
-Grid2:DbSetStatusDefaultValue("aoe-ChainHeal", {
-	type = "aoe-ChainHeal",
-	healthDeficit = 10000,
-	minPlayers = 4,
-	maxSolutions = 5,
-	radius = 12.5,
-	keepPrevHeals = true,
-	color1 = {r = 0, g = 1, b = 0, a = 1}
-})
+Grid2:DbSetStatusDefaultValue("aoe-ChainHeal", {type = "aoe-ChainHeal", healthDeficit = 10000, minPlayers = 4, maxSolutions = 5, radius = 12.5, keepPrevHeals = true, color1 = {r = 0, g = 1, b = 0, a = 1}})

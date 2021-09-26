@@ -31,7 +31,7 @@ local function ZoneChanged()
 	end
 end
 
---{{ Public methods
+-- Public methods
 
 -- Enable zone change tracking
 function AOEM:MapEnable()
@@ -60,4 +60,3 @@ function AOEM:MapGetSize()
 	end
 	return curMapWidth, curMapHeight
 end
---}}

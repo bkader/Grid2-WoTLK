@@ -1,3 +1,4 @@
+--[[ Minimap Options ]]--
 local Grid2 = Grid2
 if not Grid2.dataobj then return end
 local L = Grid2Options.L

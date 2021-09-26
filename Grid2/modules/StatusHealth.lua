@@ -1,4 +1,5 @@
 local Grid2 = Grid2
+local L = Grid2.L
 
 local HealthCurrent = Grid2.statusPrototype:new("health-current", false)
 local HealthLow = Grid2.statusPrototype:new("health-low", false)
@@ -8,7 +9,6 @@ local HealthDeficit = Grid2.statusPrototype:new("health-deficit", false)
 local Heals = Grid2.statusPrototype:new("heals-incoming", false)
 local Death = Grid2.statusPrototype:new("death", true)
 
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 local GetTime = GetTime
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax

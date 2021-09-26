@@ -1,8 +1,9 @@
 local Grid2 = Grid2
+local L = Grid2.L
+
 local Target = Grid2.statusPrototype:new("target")
 Target.GetColor = Grid2.statusLibrary.GetColor
 
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 local UnitIsUnit, UnitGUID = UnitIsUnit, UnitGUID
 local curTarget
 
@@ -34,9 +35,8 @@ function Target:IsActive(unit)
 	return UnitIsUnit(unit, "target")
 end
 
-local text = L["target"]
 function Target:GetText()
-	return text
+	return L["target"]
 end
 
 local function Create(baseKey, dbx)

@@ -1,7 +1,4 @@
---[[
-	Layouts Editor
-	General > Layouts Tab > Advanced Tab
---]]
+--[[ Layouts Editor ]]--
 local Grid2 = Grid2
 local Grid2Options = Grid2Options
 
@@ -344,17 +341,7 @@ local function CreateLayout(name)
 		Grid2Layout.db.global.customLayouts = layouts
 	end
 	layouts[name] = {
-		meta = {
-			raid40 = true,
-			raid25 = true,
-			raid20 = true,
-			raid15 = true,
-			raid10 = true,
-			party = true,
-			pvp = true,
-			arena = true,
-			solo = true
-		},
+		meta = {raid40 = true, raid25 = true, raid20 = true, raid15 = true, raid10 = true, party = true, pvp = true, arena = true, solo = true},
 		defaults = {toggleForVehicle = true, showPlayer = true, showParty = true, showRaid = true, showSolo = true},
 		[1] = CreateNewGroupHeader()
 	}

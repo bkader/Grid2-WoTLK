@@ -57,7 +57,9 @@ do
 				if layout.meta[partyType] and name ~= "None" then
 					local option = menuTable[index]
 					if not option then
-						option = {func = SetLayout, checked = function() return name == layoutName end}
+						option = {func = SetLayout, checked = function()
+								return name == layoutName
+							end}
 						menuTable[index] = option
 					end
 					option.text = L[name]
@@ -87,7 +89,9 @@ do
 end
 
 local LibDBIcon = LibStub("LibDBIcon-1.0", true)
-if not LibDBIcon then return end
+if not LibDBIcon then
+	return
+end
 
 hooksecurefunc(Grid2, "OnEnable", function(self)
 	if self.db.profile.icon == nil then

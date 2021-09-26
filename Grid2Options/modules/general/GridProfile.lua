@@ -1,6 +1,4 @@
---[[
-	General -> Profiles Tab -> General & Advanced Tabs
---]]
+--[[ Profiles Tab ]] --
 local Grid2 = Grid2
 local Grid2Options = Grid2Options
 local L = Grid2Options.L
@@ -21,8 +19,5 @@ Grid2Options:AddGeneralOptions("Profiles", nil, {
 	order = 100,
 	name = name,
 	desc = L["Options for %s."]:format(name),
-	args = {
-		general = profileOptions or {},
-		advanced = Grid2Options.ExportImportOptions or {}
-	}
+	args = {general = profileOptions or {}, advanced = Grid2Options.ExportImportOptions or {}}
 })

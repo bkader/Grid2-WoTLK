@@ -396,13 +396,9 @@ local function status_UpdateDB(self)
 		self.UpdateState = status_UpdateStateDebuffType
 	else
 		if dbx.auras then
-			self.UpdateState =
-				(dbx.mine == 2 and status_UpdateStateGroupNotMine) or (dbx.mine and status_UpdateStateGroupMine) or
-				status_UpdateStateGroup
+			self.UpdateState = (dbx.mine == 2 and status_UpdateStateGroupNotMine) or (dbx.mine and status_UpdateStateGroupMine) or status_UpdateStateGroup
 		else
-			self.UpdateState =
-				(dbx.mine == 2 and status_UpdateStateNotMine) or (dbx.mine and status_UpdateStateMine) or
-				status_UpdateState
+			self.UpdateState = (dbx.mine == 2 and status_UpdateStateNotMine) or (dbx.mine and status_UpdateStateMine) or status_UpdateState
 		end
 	end
 	if self.enabled then

@@ -184,7 +184,7 @@ do
 			name = L["Health deficit"],
 			desc = L["Minimum health deficit of units to enable the status."],
 			min = 0,
-			softMax = 250000,
+			softMax = 100000,
 			step = 1,
 			bigStep = 500,
 			get = function()

@@ -3,6 +3,8 @@ local Location = Grid2.CreateLocation
 local type, pairs = type, pairs
 local defaultFont = "Friz Quadrata TT"
 
+local DB_VERSION = 9
+
 -- Database manipulation functions
 
 function Grid2:DbSetStatusDefaultValue(name, value)
@@ -52,7 +54,10 @@ end
 -- Default configurations
 
 local function MakeDefaultsCommon()
-	Grid2:DbSetValue("indicators", "alpha", {type = "alpha", color1 = {r = 0, g = 0, b = 0, a = 1}})
+	Grid2:DbSetValue("indicators", "button", {type = "button", level = 1, location = Location("CENTER")})
+	Grid2:DbSetValue("indicators", "background", {type = "background"})
+
+	Grid2:DbSetValue("indicators", "alpha", {type = "alpha"})
 	Grid2:DbSetMap("alpha", "range", 99)
 	Grid2:DbSetMap("alpha", "death", 98)
 	Grid2:DbSetMap("alpha", "offline", 97)
@@ -61,16 +66,8 @@ local function MakeDefaultsCommon()
 	Grid2:DbSetMap("border", "health-low", 55)
 	Grid2:DbSetMap("border", "target", 50)
 
-	Grid2:DbSetValue("indicators", "health", {
-		type = "bar",
-		childBar = "heals",
-		level = 2,
-		location = Location("CENTER"),
-		texture = "Gradient",
-		color1 = {r = 0, g = 0, b = 0, a = 1}
-	})
+	Grid2:DbSetValue("indicators", "health", {type = "bar", childBar = "heals", level = 2, location = Location("CENTER"), texture = "Gradient", color1 = {r = 0, g = 0, b = 0, a = 1}})
 	Grid2:DbSetMap("health", "health-current", 99)
-
 	Grid2:DbSetValue("indicators", "health-color", {type = "bar-color"})
 	Grid2:DbSetMap("health-color", "classcolor", 99)
 
@@ -91,7 +88,7 @@ local function MakeDefaultsCommon()
 	Grid2:DbSetValue("indicators", "icon-left", {type = "icon", level = 8, location = Location("LEFT", -2), size = 12, fontSize = 8})
 	Grid2:DbSetMap("icon-left", "raid-icon-player", 155)
 
-	Grid2:DbSetValue("indicators", "text-up", {type = "text", level = 7, location = Location("TOP", 0, -8), textlength = 6, fontSize = 8, font = defaultFont})
+	Grid2:DbSetValue("indicators", "text-up", {type = "text", level = 7, location = Location("TOP", 0, -8), textlength = 6, fontSize = 8})
 	Grid2:DbSetMap("text-up", "health-deficit", 50)
 	Grid2:DbSetMap("text-up", "feign-death", 96)
 	Grid2:DbSetMap("text-up", "death", 95)
@@ -106,7 +103,7 @@ local function MakeDefaultsCommon()
 	Grid2:DbSetMap("text-up-color", "vehicle", 70)
 	Grid2:DbSetMap("text-up-color", "charmed", 65)
 
-	Grid2:DbSetValue("indicators", "text-down", {type = "text", level = 6, location = Location("BOTTOM", 0, 4), textlength = 6, fontSize = 8, font = defaultFont})
+	Grid2:DbSetValue("indicators", "text-down", {type = "text", level = 6, location = Location("BOTTOM", 0, 4), textlength = 6, fontSize = 10})
 	Grid2:DbSetMap("text-down", "name", 99)
 	Grid2:DbSetValue("indicators", "text-down-color", {type = "text-color"})
 	Grid2:DbSetMap("text-down-color", "classcolor", 99)
@@ -135,7 +132,7 @@ do
 		end
 	elseif class == "DRUID" then
 		MakeDefaultsClass = function()
-			Grid2:DbSetValue("statuses", "buff-Lifebloom-mine", { type = "buff", spellName = 33763, mine = true, colorCount = 3, color1 = {r = .2, g = .7, b = .2, a = 1}, color2 = {r = .6, g = .9, b = .6, a = 1}, color3 = {r = 1, g = 1, b = 1, a = 1}})
+			Grid2:DbSetValue("statuses", "buff-Lifebloom-mine", {type = "buff", spellName = 33763, mine = true, colorCount = 3, color1 = {r = .2, g = .7, b = .2, a = 1}, color2 = {r = .6, g = .9, b = .6, a = 1}, color3 = {r = 1, g = 1, b = 1, a = 1}})
 			Grid2:DbSetValue("statuses", "buff-Rejuvenation-mine", {type = "buff", spellName = 774, mine = true, color1 = {r = 1, g = 0, b = .6, a = 1}})
 			Grid2:DbSetValue("statuses", "buff-Regrowth-mine", {type = "buff", spellName = 8936, mine = true, color1 = {r = .5, g = 1, b = 0, a = 1}})
 			Grid2:DbSetValue("statuses", "buff-WildGrowth-mine", {type = "buff", spellName = 48438, mine = true, color1 = {r = 0.2, g = .9, b = .2, a = 1}})
@@ -147,7 +144,7 @@ do
 			Grid2:DbSetMap("side-top", "buff-Regrowth-mine", 99)
 			Grid2:DbSetValue("indicators", "side-top-color", {type = "text-color"})
 			Grid2:DbSetMap("side-top-color", "buff-Regrowth-mine", 99)
-			Grid2:DbSetValue("indicators", "corner-top-right", {type = "text", level = 9, location = Location("TOPRIGHT"), textlength = 12, fontSize = 8, font = defaultFont, duration = true})
+			Grid2:DbSetValue("indicators", "corner-top-right", { type = "text", level = 9, location = Location("TOPRIGHT"), textlength = 12, fontSize = 8, font = defaultFont, duration = true})
 			Grid2:DbSetMap("corner-top-right", "buff-Rejuvenation-mine", 99)
 			Grid2:DbSetValue("indicators", "corner-top-right-color", {type = "text-color"})
 			Grid2:DbSetMap("corner-top-right-color", "buff-Rejuvenation-mine", 99)
@@ -272,25 +269,75 @@ end
 -- Plugins can hook this function to initialize or update values in database
 function Grid2:UpdateDefaults()
 	local version = Grid2:DbGetValue("versions", "Grid2") or 0
-	if version >= 3 then
+	if version >= DB_VERSION then
 		return
 	end
 
 	if version == 0 then
 		MakeDefaultsCommon()
 		MakeDefaultsClass()
-	end
-
-	if version < 2 then
+	else
 		-- Upgrade health&heals indicator
 		local health = Grid2:DbGetValue("indicators", "health")
 		local heals = Grid2:DbGetValue("indicators", "heals")
-		if health and heals then
-			health.childBar = "heals"
-			heals.parentBar = "health"
+
+		if version < 2 then
+			if health and heals then
+				health.childBar = "heals"
+				heals.parentBar = "health"
+			end
+		elseif version < 4 then
+			if heals and heals.parentBar then
+				heals.anchorTo = heals.parentBar
+				heals.parentBar = nil
+			end
+			if health and health.childBar then
+				health.childBar = nil
+			end
+		end
+		if version < 5 then
+			for _, status in pairs(self.db.profile.statuses) do
+				if status.auras and (status.type == "buff" or status.type == "debuff") then
+					status.type = status.type .. "s" -- Convert type: buff -> buffs , debuff -> debuffs
+					if status.type == "debuffs" then
+						status.useWhiteList = true
+					end
+				end
+			end
+		end
+		if version < 7 then
+			Grid2:DbSetValue("indicators", "background", {type = "background"})
+		end
+		if version < 8 then
+			-- upgrade multibars
+			for _, dbx in pairs(self.db.profile.indicators) do
+				if dbx.type == "multibar" then
+					local opacity = math.min(dbx.opacity or 1, dbx.invertColor and 0.8 or 1)
+					dbx.textureColor = dbx.textureColor or {}
+					dbx.textureColor.a = math.min(dbx.textureColor.a or 1, opacity)
+					dbx.backColor = dbx.backColor or (dbx.invertColor and {r = 0, g = 0, b = 0, a = 1}) -- now invert color needs a background color&texture
+					dbx.backAnchor = dbx.backColor and (dbx.backMainAnchor and 1 or 2) -- change background anchor codes, now nil means fills the whole background
+					for i = 1, (dbx.barCount or 0) do
+						local bar = dbx["bar" .. i] or {}
+						bar.color = bar.color or {}
+						bar.color.a = math.min(opacity, bar.color.a or 1)
+						dbx[i], dbx["bar" .. i] = bar, nil
+					end
+					dbx.barCount, dbx.opacity, dbx.backMainAnchor = nil, nil, nil
+				end
+			end
+		end
+		if version < 9 then
+			-- upgrade class filter
+			for _, dbx in pairs(self.db.profile.statuses) do
+				if dbx.playerClass then
+					dbx.load = {playerClass = {[dbx.playerClass] = true}}
+					dbx.playerClass = nil
+				end
+			end
 		end
 	end
 
 	-- Set database version
-	Grid2:DbSetValue("versions", "Grid2", 3)
+	Grid2:DbSetValue("versions", "Grid2", DB_VERSION)
 end

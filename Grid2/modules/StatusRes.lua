@@ -1,8 +1,9 @@
 local Grid2 = Grid2
+local L = Grid2.L
+
 local Resurrection = Grid2.statusPrototype:new("resurrection")
 Resurrection.GetBorder = Grid2.statusLibrary.GetBorder
 
-local L = LibStub:GetLibrary("AceLocale-3.0"):GetLocale("Grid2")
 local LRC = LibStub:GetLibrary("LibResComm-1.0")
 
 local next, GetTime, UnitExists = next, GetTime, UnitExists
