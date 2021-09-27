@@ -73,7 +73,7 @@ end
 function Grid2Options:GetStatusGroup(status)
 	local key = self:GetStatusCategory(status)
 	if key and status.name then
-		return self.statusOptions[key] and self.statusOptions[key].args and self.statusOptions[key][status.name]
+		return self.statusOptions[key] and self.statusOptions[key].args and self.statusOptions[key].args[status.name]
 	end
 end
 

@@ -364,17 +364,16 @@ do
 	Heals.GetColor = Grid2.statusLibrary.GetColor
 
 	local UnitGUID = UnitGUID
-	local HEALCOMM_FLAGS = HealComm.ALL_HEALS
 	local HEALCOMM_TIMEFRAME = 3
 
 	local function get_active_heal_amount_with_user(unit)
 		local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
-		return HealComm:GetHealAmount(UnitGUID(unit), HEALCOMM_FLAGS, time)
+		return HealComm:GetHealAmount(UnitGUID(unit), HealComm.ALL_HEALS, time)
 	end
 
 	local function get_active_heal_amount_without_user(unit)
 		local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
-		return HealComm:GetOthersHealAmount(UnitGUID(unit), HEALCOMM_FLAGS, time)
+		return HealComm:GetOthersHealAmount(UnitGUID(unit), HealComm.ALL_HEALS, time)
 	end
 
 	local get_active_heal_amount = get_active_heal_amount_with_user
@@ -382,12 +381,12 @@ do
 	local function get_effective_heal_amount(unit)
 		local guid = UnitGUID(unit)
 		local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
-		local heal = HealComm:GetHealAmount(guid, HEALCOMM_FLAGS, time)
+		local heal = HealComm:GetHealAmount(guid, HealComm.ALL_HEALS, time)
 		return heal and heal * HealComm:GetHealModifier(guid) or 0
 	end
 
 	function Heals:UpdateDB()
-		HEALCOMM_FLAGS = (self.dbx.flags and self.dbx.flags > 1 and self.dbx.flags) or HealComm.ALL_HEALS
+		self.minimum = self.dbx.flags and self.dbx.flags > 1 and self.dbx.flags or 0
 		HEALCOMM_TIMEFRAME = self.dbx.timeFrame or 3
 		get_active_heal_amount = self.dbx.includePlayerHeals and get_active_heal_amount_with_user or get_active_heal_amount_without_user
 	end
@@ -445,7 +444,11 @@ do
 		if c == 0 or m == 0 or m == c then
 			return 0
 		end
+
 		local h = get_effective_heal_amount(unit)
+		if not h or h <= (self.minimum or 0) then
+			return 0
+		end
 		return ((h + c) >= m) and ((m - c) / m) or (h / m)
 	end
 
