@@ -325,15 +325,6 @@ function Grid2:UpdateDefaults()
 				end
 			end
 		end
-		if version < 9 then
-			-- upgrade class filter
-			for _, dbx in pairs(self.db.profile.statuses) do
-				if dbx.playerClass then
-					dbx.load = {playerClass = {[dbx.playerClass] = true}}
-					dbx.playerClass = nil
-				end
-			end
-		end
 	end
 
 	-- Set database version

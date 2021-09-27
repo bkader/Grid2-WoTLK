@@ -134,20 +134,14 @@ do
 	end
 
 	-- Shamelessly copied from Omen - thanks!
-	local tablePool = setmetatable({}, {__mode = "kv"})
+	local tablePool = {}
+	setmetatable(tablePool, {__mode = "kv"})
 
 	-- get a new table
-	local function newTable(...)
-		local t = next(tablePool)
-		if t then
-			tablePool[t] = nil
-			for i = 1, select("#", ...) do
-				t[i] = select(i, ...)
-			end
-			return t
-		else
-			return {...}
-		end
+	local function newTable()
+		local t = next(tablePool) or {}
+		tablePool[t] = nil
+		return t
 	end
 
 	-- delete table and return to pool
