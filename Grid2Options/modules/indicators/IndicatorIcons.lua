@@ -119,7 +119,7 @@ function Grid2Options:MakeIndicatorAuraIconsSizeOptions(indicator, options, opti
 		type = "range",
 		order = 16,
 		name = L["Icon Size"],
-		desc = L["Adjust the size of the icons, select Zero to use the theme default icon size."],
+		desc = L["Adjust the size of the icons, select Zero to use the default icon size."],
 		min = 0,
 		max = 50,
 		step = 1,

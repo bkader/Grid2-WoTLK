@@ -160,7 +160,6 @@ do
 		options.barMainStatus = {
 			type = "select",
 			order = 50.5,
-			width = 0.9,
 			name = L["Status"],
 			desc = function()
 				local status = indicator.statuses[1]
@@ -177,7 +176,6 @@ do
 		options.barMainDirection = {
 			type = "select",
 			order = 50.7,
-			width = 0.9,
 			name = L["Direction"],
 			desc = L["Select the direction of the main bar."],
 			get = function()
@@ -193,7 +191,6 @@ do
 			type = "select",
 			dialogControl = "LSM30_Statusbar",
 			order = 51,
-			width = 0.9,
 			name = L["Texture"],
 			desc = L["Select bar texture."],
 			get = function(info)
@@ -211,7 +208,6 @@ do
 		options.barMainColorSource = {
 			type = "select",
 			order = 51.5,
-			width = 0.9,
 			name = L["Color Source"],
 			desc = L["Select how to colorize the main bar."],
 			get = function()
@@ -234,7 +230,6 @@ do
 		options.barMainOpacity = {
 			type = "range",
 			order = 51.7,
-			width = 0.9,
 			name = L["Opacity"],
 			desc = L["Set the opacity."],
 			min = 0,
@@ -252,7 +247,7 @@ do
 		options.barMainColor = {
 			type = "color",
 			order = 52,
-			width = 0.4,
+			width = "half",
 			name = L["Color"],
 			desc = L["Bar color"],
 			hasAlpha = true,
@@ -276,7 +271,7 @@ do
 			type = "toggle",
 			name = L["Invert"],
 			desc = L["Swap foreground/background colors on main bar."],
-			width = 0.4,
+			width = "half",
 			order = 53,
 			tristate = false,
 			get = function()
@@ -302,7 +297,6 @@ do
 			options["Status" .. i] = {
 				type = "select",
 				order = 50 + i * 5 + 1.0,
-				width = 0.9,
 				name = L["Status"],
 				desc = function()
 					local status = indicator.statuses[i + 1]
@@ -322,7 +316,6 @@ do
 			options["barAnchorTo" .. i] = {
 				type = "select",
 				order = 50 + i * 5 + 1.1,
-				width = 0.9,
 				name = L["Anchor & Direction"],
 				desc = L["Select where to anchor the bar and optional you can reverse the grow direction."],
 				get = function()
@@ -340,7 +333,6 @@ do
 				type = "select",
 				dialogControl = "LSM30_Statusbar",
 				order = 50 + i * 5 + 1.2,
-				width = 0.9,
 				name = L["Texture"],
 				desc = L["Select bar texture."],
 				get = function(info)
@@ -356,7 +348,6 @@ do
 			options["barColorSource" .. i] = {
 				type = "select",
 				order = 50 + i * 5 + 1.3,
-				width = 0.9,
 				name = L["Color Source"],
 				desc = L["Select howto colorize the bar."],
 				get = function()
@@ -376,7 +367,6 @@ do
 			options["barOpacity" .. i] = {
 				type = "range",
 				order = 50 + i * 5 + 1.5,
-				width = 0.9,
 				name = L["Opacity"],
 				desc = L["Set the opacity."],
 				min = 0,
@@ -395,7 +385,6 @@ do
 				type = "color",
 				hasAlpha = true,
 				order = 50 + i * 5 + 1.6,
-				width = 0.9,
 				name = L["Color"],
 				desc = L["Select bar color"],
 				get = function()
@@ -425,7 +414,6 @@ do
 				type = "select",
 				dialogControl = "LSM30_Statusbar",
 				order = 101,
-				width = 0.9,
 				name = L["Texture"],
 				desc = L["Adjust the background texture."],
 				get = function(info)
@@ -443,7 +431,6 @@ do
 			options.backAnchor = {
 				type = "select",
 				order = 101.5,
-				width = 0.9,
 				name = L["Anchor"],
 				desc = L["Select how to anchor the background bar."],
 				get = function()
@@ -458,7 +445,6 @@ do
 			options.backColor = {
 				type = "color",
 				order = 102,
-				width = 0.9,
 				name = L["Color"],
 				desc = L["Background Color"],
 				hasAlpha = true,
@@ -487,7 +473,6 @@ do
 			type = "execute",
 			order = 151,
 			name = L["Add Bar"],
-			width = 0.9,
 			desc = L["Add a new bar"],
 			func = function(info)
 				indicator.dbx[#indicator.dbx + 1] = {color = {a = 1}}
@@ -502,7 +487,6 @@ do
 			type = "execute",
 			order = 152,
 			name = L["Delete Bar"],
-			width = 0.9,
 			desc = L["Delete last bar"],
 			func = function(info)
 				local index = #indicator.dbx
@@ -524,7 +508,6 @@ do
 			type = "execute",
 			name = indicator.dbx.backColor and L["Del Background"] or L["Add Background"],
 			desc = L["Enable or disable the background texture"],
-			width = 0.9,
 			order = 153,
 			func = function(info)
 				indicator.dbx.invertColor = nil

@@ -3,7 +3,7 @@
 ## Notes: Grid2 Databroker Launcher.
 ## Notes-esES: Lanzador del Grid2 (Databroker)
 ## Author: Kader (|cff808080bkader#6361|r)
-## Version: r721
+## Version: r731
 ## Dependencies: Grid2
 ## OptionalDeps: LibDataBroker-1.1
 ## LoadOnDemand: 0

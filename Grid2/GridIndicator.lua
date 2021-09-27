@@ -63,11 +63,10 @@ function indicator:SetStatusPriority(status, priority)
 		self.priorities[status] = priority
 		self:SortStatuses()
 	end
-	status.priorities[self] = priority
 end
 
 function indicator:GetStatusPriority(status)
-	return status.priorities[self]
+	return self.priorities[status]
 end
 
 function indicator:GetStatusIndex(status)

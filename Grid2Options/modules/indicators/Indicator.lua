@@ -139,7 +139,7 @@ do
 				options[status.name] = {
 					type = "toggle",
 					order = 500 - map[status],
-					width = 1.7,
+					width = "double",
 					name = Grid2Options.LocalizeStatus(status),
 					desc = L["Select statuses to display with the indicator"],
 					get = function()
@@ -151,7 +151,7 @@ do
 				options[status.name .. "U"] = {
 					type = "execute",
 					order = 500.1 - map[status],
-					width = 0.15,
+					width = "half",
 					image = "Interface\\Addons\\Grid2Options\\media\\arrow-up",
 					imageWidth = 16,
 					imageHeight = 14,
@@ -166,7 +166,7 @@ do
 				options[status.name .. "D"] = {
 					type = "execute",
 					order = 500.2 - map[status],
-					width = 0.15,
+					width = "half",
 					image = "Interface\\Addons\\Grid2Options\\media\\arrow-down",
 					imageWidth = 16,
 					imageHeight = 14,
