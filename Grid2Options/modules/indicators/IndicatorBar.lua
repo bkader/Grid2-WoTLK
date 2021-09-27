@@ -107,13 +107,7 @@ function Grid2Options:MakeIndicatorBarAppearanceOptions(indicator, options)
 			indicator:SetOrientation(v)
 			Grid2Frame:WithAllFrames(indicator, "Layout")
 		end,
-		values = {
-			["DEFAULT"] = L["DEFAULT"],
-			["VERTICAL"] = L["VERTICAL"],
-			["VERTICAL_INVERSE"] = L["VERTICAL"] .. " inverse",
-			["HORIZONTAL"] = L["HORIZONTAL"],
-			["HORIZONTAL_INVERSE"] = L["HORIZONTAL"] .. " inverse"
-		}
+		values = {["DEFAULT"] = L["DEFAULT"], ["VERTICAL"] = L["VERTICAL"], ["HORIZONTAL"] = L["HORIZONTAL"]}
 	}
 	options.barWidth = {
 		type = "range",
@@ -195,6 +189,20 @@ function Grid2Options:MakeIndicatorBarAppearanceOptions(indicator, options)
 		end,
 		hidden = function()
 			return not indicator.dbx.backColor
+		end
+	}
+	options.reverseFill = {
+		type = "toggle",
+		name = L["Reverse Fill"],
+		desc = L["Fill the bar in reverse."],
+		order = 47,
+		tristate = false,
+		get = function()
+			return indicator.dbx.reverseFill
+		end,
+		set = function(_, v)
+			indicator.dbx.reverseFill = v or nil
+			self:RefreshIndicator(indicator, "Layout")
 		end
 	}
 end

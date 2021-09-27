@@ -3,265 +3,18 @@ local Grid2Frame = Grid2Frame
 local GetTime = GetTime
 local min = min
 
-local AlignPoints = {
-	HORIZONTAL = {"TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"},
-	HORIZONTAL_INVERSE = {"TOPRIGHT", "TOPLEFT", "BOTTOMRIGHT", "BOTTOMLEFT"},
-	VERTICAL = {"BOTTOMLEFT", "TOPLEFT", "BOTTOMRIGHT", "TOPRIGHT"},
-	VERTICAL_INVERSE = {"TOPLEFT", "BOTTOMLEFT", "TOPRIGHT", "BOTTOMRIGHT"}
-}
-
--- Emulate blizzard statusbar with advanced features (more grow directions)
-local barPrototype = {
-	-- Apply settings to bar (re-align textures)
-	["Update"] = function(self, OnSizeChanged)
-		-- Limit values
-		self.value = math.min(self.max, math.max(self.min, self.value))
-
-		-- Alignment variables
-		local progress = (self.value - self.min) / (self.max - self.min)
-		local align1, align2
-		local xProgress, yProgress
-		local TLx, TLy, BLx, BLy, TRx, TRy, BRx, BRy
-		local TLx_, TLy_, BLx_, BLy_, TRx_, TRy_, BRx_, BRy_
-
-		-- Do not flip/rotate textures
-		local orientation = self.orientation
-		if not self.rotate then
-			if orientation == "HORIZONTAL_INVERSE" then
-				orientation = "HORIZONTAL"
-			elseif orientation == "VERTICAL_INVERSE" then
-				orientation = "VERTICAL"
-			end
-		end
-
-		-- HORIZONTAL (Grow: L -> R, Deplete: R -> L)
-		if orientation == "HORIZONTAL" then
-			-- HORIZONTAL_INVERSE (Grow: R -> L, Deplete: L -> R)
-			TLx, TLy = 0.0, 0.0
-			TRx, TRy = 1.0, 0.0
-			BLx, BLy = 0.0, 1.0
-			BRx, BRy = 1.0, 1.0
-
-			TLx_, TLy_ = TLx, TLy
-			TRx_, TRy_ = TRx * progress, TRy
-			BLx_, BLy_ = BLx, BLy
-			BRx_, BRy_ = BRx * progress, BRy
-		elseif orientation == "HORIZONTAL_INVERSE" then
-			-- VERTICAL_INVERSE (Grow: T -> B, Deplete: B -> T)
-			TLx, TLy = 1.0, 0.0
-			TRx, TRy = 0.0, 0.0
-			BLx, BLy = 1.0, 1.0
-			BRx, BRy = 0.0, 1.0
-
-			TLx_, TLy_ = TLx * progress, TLy
-			TRx_, TRy_ = TRx, TRy
-			BLx_, BLy_ = BLx * progress, BLy
-			BRx_, BRy_ = BRx, BRy
-		elseif orientation == "VERTICAL_INVERSE" then
-			-- VERTICAL (Grow: B -> T, Deplete: T -> B)
-			TLx, TLy = 0.0, 1.0
-			TRx, TRy = 0.0, 0.0
-			BLx, BLy = 1.0, 1.0
-			BRx, BRy = 1.0, 0.0
-
-			TLx_, TLy_ = TLx, TLy
-			TRx_, TRy_ = TRx, TRy
-			BLx_, BLy_ = BLx * progress, BLy
-			BRx_, BRy_ = BRx * progress, BRy
-		elseif orientation == "VERTICAL" then
-			TLx, TLy = 1.0, 0.0
-			TRx, TRy = 1.0, 1.0
-			BLx, BLy = 0.0, 0.0
-			BRx, BRy = 0.0, 1.0
-
-			TLx_, TLy_ = TLx * progress, TLy
-			TRx_, TRy_ = TRx * progress, TRy
-			BLx_, BLy_ = BLx, BLy
-			BRx_, BRy_ = BRx, BRy
-		end
-		local width, height = self:GetSize()
-
-		-- HORIZONTAL (Grow: L -> R, Deplete: R -> L)
-		if self.orientation == "HORIZONTAL" then
-			-- HORIZONTAL_INVERSE (Grow: R -> L, Deplete: L -> R)
-			align1, align2 = "TOPLEFT", "BOTTOMLEFT"
-			xProgress = width * progress
-		elseif self.orientation == "HORIZONTAL_INVERSE" then
-			-- VERTICAL_INVERSE (Grow: T -> B, Deplete: B -> T)
-			align1, align2 = "TOPRIGHT", "BOTTOMRIGHT"
-			xProgress = width * progress
-		elseif self.orientation == "VERTICAL_INVERSE" then
-			-- VERTICAL (Grow: B -> T, Deplete: T -> B)
-			align1, align2 = "TOPLEFT", "TOPRIGHT"
-			yProgress = height * progress
-		elseif self.orientation == "VERTICAL" then
-			align1, align2 = "BOTTOMLEFT", "BOTTOMRIGHT"
-			yProgress = height * progress
-		end
-		-- Only width/height of parent changed
-		if not OnSizeChanged then
-			-- Stretch bg accross complete frame
-			self.bg:ClearAllPoints()
-			self.bg:SetAllPoints()
-			self.bg:SetTexCoord(TLx, TLy, BLx, BLy, TRx, TRy, BRx, BRy)
-
-			-- Set alignment
-			self.fg:ClearAllPoints()
-			self.fg:SetPoint(align1)
-			self.fg:SetPoint(align2)
-
-			-- Stretch texture
-			self.fg:SetTexCoord(TLx_, TLy_, BLx_, BLy_, TRx_, TRy_, BRx_, BRy_)
-		end
-
-		-- Create statusbar illusion
-		if xProgress then
-			self.fg:SetWidth(xProgress > 0 and xProgress or 0.1)
-		end
-		if yProgress then
-			self.fg:SetHeight(yProgress > 0 and yProgress or 0.1)
-		end
-	end,
-	-- Need to update progress!
-	["OnSizeChanged"] = function(self, width, height)
-		self:Update(true)
-	end,
-	-- Blizzard like SetMinMaxValues
-	["SetMinMaxValues"] = function(self, minVal, maxVal)
-		local update = false
-		if minVal and type(minVal) == "number" then
-			self.min = minVal
-			update = true
-		end
-		if maxVal and type(maxVal) == "number" then
-			self.max = maxVal
-			update = true
-		end
-
-		if update then
-			self:Update()
-		end
-	end,
-	["GetMinMaxValues"] = function(self)
-		return self.min, self.max
-	end,
-	-- Blizzard like SetValue
-	["SetValue"] = function(self, value)
-		if value and type(value) == "number" then
-			self.value = value
-			self:Update()
-		end
-	end,
-	["GetValue"] = function(self)
-		return self.value
-	end,
-	-- Blizzard like SetOrientation (added: HORIZONTAL_INVERSE, VERTICAL_INVERSE)
-	["SetOrientation"] = function(self, orientation)
-		if
-			orientation == "HORIZONTAL" or orientation == "HORIZONTAL_INVERSE" or orientation == "VERTICAL" or
-				orientation == "VERTICAL_INVERSE"
-		 then
-			self.orientation = orientation
-			self:Update()
-		end
-	end,
-	["GetOrientation"] = function(self)
-		return self.orientation
-	end,
-	-- Blizzard like SetRotatesTexture (added: flip texture for right->left, bottom->top)
-	["SetRotatesTexture"] = function(self, rotate)
-		if rotate and type(rotate) == "boolean" then
-			self.rotate = rotate
-
-			self:Update()
-		end
-	end,
-	["GetRotatesTexture"] = function(self)
-		return self.rotate
-	end,
-	-- Blizzard like SetStatusBarTexture
-	["SetStatusBarTexture"] = function(self, texture)
-		self.fg:SetTexture(texture)
-		self.bg:SetTexture(texture)
-	end,
-	["GetStatusBarTexture"] = function(self)
-		return self.fg:GetTexture()
-	end,
-	-- Set bar color
-	["SetForegroundColor"] = function(self, r, g, b, a)
-		self.fg:SetVertexColor(r, g, b, a)
-	end,
-	["GetForegroundColor"] = function(self)
-		return self.fg:GetVertexColor()
-	end,
-	-- Set background color
-	["SetBackgroundColor"] = function(self, r, g, b, a)
-		self.bg:SetVertexColor(r, g, b, a)
-	end,
-	["GetBackgroundColor"] = function(self)
-		return self.bg:GetVertexColor()
-	end,
-	-- Convenience methods
-	["SetTexture"] = function(self, texture)
-		self:SetStatusBarTexture(texture)
-	end,
-	["GetTexture"] = function(self)
-		return self:GetStatusBarTexture()
-	end,
-	["SetVertexColor"] = function(self, r, g, b, a)
-		self:SetForegroundColor(r, g, b, a)
-	end,
-	["GetVertexColor"] = function(self)
-		return self.fg:GetVertexColor()
-	end,
-	-- Internal variables
-	["min"] = 0,
-	["max"] = 1,
-	["value"] = 0.5,
-	["rotate"] = true,
-	["orientation"] = "HORIZONTAL"
-}
+local barPrototype = Grid2.StatusBarPrototype
+local AlignPoints = Grid2.AlignPoints
 
 local function CreateSimpleStatusBar(name, parent)
-	-- Create statusbar (inherit prototype)
-	bar = CreateFrame("FRAME", name, parent)
-	local fg = bar:CreateTexture(nil, "ARTWORK")
-	local bg = bar:CreateTexture(nil, "BACKGROUND")
-	bar.fg = fg
-	bar.bg = bg
-	bg:Hide()
-	for key, value in pairs(barPrototype) do
-		bar[key] = value
-	end
-	bar.SetStatusBarColor = barPrototype.SetForegroundColor
-	bar:SetRotatesTexture(false)
-	bar:HookScript("OnSizeChanged", bar.OnSizeChanged)
-	bar.GetObjectType = function(self)
-		return "StatusBar"
-	end
-
-	return bar
+	return barPrototype:New(name, parent)
 end
 
 local function CreateStatusBar(self, typ, parent)
 	local bar = parent[self.name]
 	if not (bar and bar:GetObjectType() == typ) then
 		-- Create statusbar (inherit prototype)
-		bar = CreateFrame("FRAME", nil, parent)
-		local fg = bar:CreateTexture(nil, "ARTWORK")
-		local bg = bar:CreateTexture(nil, "BACKGROUND")
-		bar.fg = fg
-		bar.bg = bg
-		bg:Hide()
-		for key, value in pairs(barPrototype) do
-			bar[key] = value
-		end
-		bar.SetStatusBarColor = barPrototype.SetForegroundColor
-		bar:SetRotatesTexture(false)
-		bar:HookScript("OnSizeChanged", bar.OnSizeChanged)
-		bar.GetObjectType = function(self)
-			return typ
-		end
+		bar = barPrototype:New(nil, parent)
 		parent[self.name] = bar
 	end
 	return bar
@@ -291,6 +44,7 @@ local function Bar_Layout(self, parent)
 	local level = parent:GetFrameLevel() + self.frameLevel
 	Bar:ClearAllPoints()
 	Bar:SetOrientation(orient)
+	Bar:SetReverseFill(self.reverseFill)
 	Bar:SetFrameLevel(level)
 	Bar:SetPoint(self.anchor, parent.container, self.anchorRel, self.offsetx, self.offsety)
 	Bar:SetStatusBarTexture(self.texture)
@@ -409,6 +163,7 @@ local function Bar_UpdateDB(self, dbx)
 	self.width = dbx.width
 	self.height = dbx.height
 	self.orientation = dbx.orientation
+	self.reverseFill = dbx.reverseFill
 	self.backColor = dbx.backColor
 	self.Create = Bar_CreateHH
 	self.GetBlinkFrame = Bar_GetBlinkFrame

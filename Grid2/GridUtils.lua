@@ -109,16 +109,14 @@ Grid2.statusLibrary = {
 			self:UpdateIndicators(unit)
 		end
 	end
-}-- Used by bar indicators
+}
+
+-- Used by bar indicators
 Grid2.AlignPoints = {
-	HORIZONTAL = {
-		[true] = {"TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"}, -- normal Fill
-		[false] = {"BOTTOMRIGHT", "BOTTOMLEFT", "TOPRIGHT", "TOPLEFT"} -- reverse Fill
-	},
-	VERTICAL = {
-		[true] = {"BOTTOMLEFT", "TOPLEFT", "BOTTOMRIGHT", "TOPRIGHT"}, -- normal Fill
-		[false] = {"TOPRIGHT", "BOTTOMRIGHT", "TOPLEFT", "BOTTOMLEFT"} -- reverse Fill
-	}
+	HORIZONTAL = {"TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT"},
+	HORIZONTAL_INVERSE = {"TOPRIGHT", "TOPLEFT", "BOTTOMRIGHT", "BOTTOMLEFT"},
+	VERTICAL = {"BOTTOMLEFT", "TOPLEFT", "BOTTOMRIGHT", "TOPRIGHT"},
+	VERTICAL_INVERSE = {"TOPLEFT", "BOTTOMLEFT", "TOPRIGHT", "BOTTOMRIGHT"}
 }
 
 -- Create/Manage/Sets frame backdrops

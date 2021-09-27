@@ -1,7 +1,7 @@
 local Grid2 = Grid2
 local Location = Grid2.CreateLocation
 local type, pairs = type, pairs
-local defaultFont = "Friz Quadrata TT"
+local defaultFont = Grid2.defaultFont or "Friz Quadrata TT"
 
 local DB_VERSION = 9
 
@@ -54,7 +54,6 @@ end
 -- Default configurations
 
 local function MakeDefaultsCommon()
-	Grid2:DbSetValue("indicators", "button", {type = "button", level = 1, location = Location("CENTER")})
 	Grid2:DbSetValue("indicators", "background", {type = "background"})
 
 	Grid2:DbSetValue("indicators", "alpha", {type = "alpha"})
@@ -261,8 +260,7 @@ do
 			Grid2:DbSetMap("icon-right", "raid-icon-target", 90)
 		end
 	else
-		MakeDefaultsClass = function()
-		end
+		MakeDefaultsClass = function() end
 	end
 end
 

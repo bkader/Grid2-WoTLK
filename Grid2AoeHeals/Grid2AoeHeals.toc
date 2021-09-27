@@ -6,7 +6,6 @@
 ## Version: r721
 ## Dependencies: Grid2
 ## DefaultState: disabled
-## SavedVariables: Grid2DB
 ## X-Credits: Michael
 ## X-Category: UnitFrame
 ## X-Email: |cff20ff20bkader@mail.com|r

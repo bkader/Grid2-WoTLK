@@ -181,6 +181,7 @@ Grid2Frame = Grid2:NewModule("Grid2Frame")
 Grid2Frame.defaultDB = {
 	profile = {
 		debug = false,
+		font = "Friz Quadrata TT",
 		frameHeight = 48,
 		frameWidth = 48,
 		frameBorder = 2,

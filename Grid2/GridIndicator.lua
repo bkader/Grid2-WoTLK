@@ -29,6 +29,10 @@ function indicator:CreateFrame(ftype, parent)
 	return f
 end
 
+function indicator:AddFrame(f, parent)
+	parent[self.name] = f
+end
+
 function indicator:Update(parent, unit)
 	self:OnUpdate(parent, unit, self:GetCurrentStatus(unit))
 end
@@ -64,7 +68,6 @@ end
 
 function indicator:GetStatusPriority(status)
 	return status.priorities[self]
-	-- return self.priorities[status]
 end
 
 function indicator:GetStatusIndex(status)

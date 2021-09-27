@@ -445,7 +445,7 @@ do
 				order = 101.5,
 				width = 0.9,
 				name = L["Anchor"],
-				desc = L["Select howto anchor the background bar."],
+				desc = L["Select how to anchor the background bar."],
 				get = function()
 					return indicator.dbx.backAnchor or 0
 				end,
