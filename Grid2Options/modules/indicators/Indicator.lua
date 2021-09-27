@@ -8,6 +8,7 @@ local L = Grid2Options.L
 Grid2Options.indicatorDefaultValues = {
 	icon = {size = 16, fontSize = 8},
 	square = {size = 5},
+	shape = {size = 5},
 	text = {duration = true, stack = false, textlength = 12, fontSize = 8, font = "Friz Quadrata TT"}
 }
 

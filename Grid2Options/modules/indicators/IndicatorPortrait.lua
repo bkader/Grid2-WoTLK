@@ -4,8 +4,8 @@ Grid2Options:RegisterIndicatorOptions("portrait", true, function(self, indicator
 		local layout = {}
 		self:MakeIndicatorLocationOptions(indicator, layout)
 		self:MakeIndicatorPortraitOptions(indicator, layout)
-		self:AddIndicatorOptions(indicator, nil, layout)
 		self:MakeIndicatorDeleteOptions(indicator, layout)
+		self:AddIndicatorOptions(indicator, nil, layout)
 	end
 )
 
