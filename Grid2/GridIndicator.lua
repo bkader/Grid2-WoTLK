@@ -39,9 +39,11 @@ end
 
 function indicator:RegisterStatus(status, priority)
 	if not self.priorities[status] then
-		self.priorities[status] = priority
-		self.statuses[#self.statuses + 1] = status
-		self:SortStatuses()
+		if not status.suspended then
+			self.statuses[#self.statuses + 1] = status
+			self.priorities[status] = priority
+			self:SortStatuses()
+		end
 		status:RegisterIndicator(self)
 	end
 end
@@ -59,7 +61,7 @@ function indicator:SortStatuses()
 end
 
 function indicator:SetStatusPriority(status, priority)
-	if self.priorities[status] then
+	if not status.suspended and self.priorities[status] then
 		self.priorities[status] = priority
 		self:SortStatuses()
 	end
@@ -90,7 +92,7 @@ function indicator:GetCurrentStatus(unit)
 	end
 end
 
---{{ Update functions
+-- Update functions
 function indicator:UpdateBlink(parent, unit)
 	local status, state = self:GetCurrentStatus(unit)
 	local func = self.GetBlinkFrame
@@ -105,7 +107,6 @@ function indicator:UpdateNoBlink(parent, unit)
 end
 
 indicator.Update = indicator.UpdateBlink
---}}
 
 function Grid2:RegisterIndicator(indicator, types)
 	local name = indicator.name
@@ -114,6 +115,46 @@ function Grid2:RegisterIndicator(indicator, types)
 		local t = self.indicatorTypes[itype] or {}
 		self.indicatorTypes[itype] = t
 		t[name] = indicator
+	end
+end
+
+function Grid2:WakeUpIndicator(indicator)
+	local statuses = indicator.statuses
+	for i = 1, #statuses do
+		statuses[i]:RegisterIndicator(indicator)
+	end
+	if indicator.UpdateDB then
+		indicator:UpdateDB()
+	end
+	indicator.suspended = nil
+	if indicator.sideKick then
+		self:WakeUpIndicator(indicator.sideKick)
+	end
+	if indicator.childName then
+		self:WakeUpIndicator(self.indicators[indicator.childName])
+	end
+	if indicator.OnWakeUp then
+		indicator:OnWakeUp()
+	end
+end
+
+function Grid2:SuspendIndicator(indicator)
+	if indicator.childName then
+		self:SuspendIndicator(self.indicators[indicator.childName])
+	end
+	if indicator.sideKick then
+		self:SuspendIndicator(indicator.sideKick)
+	end
+	local statuses = indicator.statuses
+	for i = 1, #statuses do
+		statuses[i]:UnregisterIndicator(indicator)
+	end
+	if indicator.Disable then
+		Grid2Frame:WithAllFrames(indicator, "Disable")
+	end
+	indicator.suspended = true
+	if indicator.OnSuspend then
+		indicator:OnSuspend()
 	end
 end
 
@@ -130,6 +171,7 @@ function Grid2:UnregisterIndicator(indicator)
 	for _, t in pairs(self.indicatorTypes) do
 		t[name] = nil
 	end
+	indicator.suspended = nil
 	if indicator.sideKick then
 		Grid2:UnregisterIndicator(indicator.sideKick)
 		indicator.sideKick = nil

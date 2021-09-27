@@ -2,51 +2,8 @@ local Grid2 = Grid2
 local next, pairs = next, pairs
 local GetInspectSpecialization = Grid2.GetInspectSpecialization
 
+local SpecIcons = Grid2.SpecIcons
 local Portraits = {}
-
-local SpecIcons = {
-	-- Death Knight
-	[250] = "Interface\\Icons\\spell_deathknight_bloodpresence", --> Blood
-	[251] = "Interface\\Icons\\spell_deathknight_frostpresence", --> Frost
-	[252] = "Interface\\Icons\\spell_deathknight_unholypresence", --> Unholy
-	-- Druid
-	[102] = "Interface\\Icons\\spell_nature_starfall", --> Balance
-	[103] = "Interface\\Icons\\ability_druid_catform", --> Feral
-	[104] = "Interface\\Icons\\ability_racial_bearform", --> Tank
-	[105] = "Interface\\Icons\\spell_nature_healingtouch", --> Restoration
-	-- Hunter
-	[253] = "Interface\\Icons\\ability_hunter_beasttaming", --> Beastmastery
-	[254] = "Interface\\Icons\\ability_hunter_focusedaim", --> Marksmalship
-	[255] = "Interface\\Icons\\ability_hunter_swiftstrike", --> Survival
-	-- Mage
-	[62] = "Interface\\Icons\\spell_holy_magicalsentry", --> Arcane
-	[63] = "Interface\\Icons\\spell_fire_flamebolt", --> Fire
-	[64] = "Interface\\Icons\\spell_frost_frostbolt02", --> Frost
-	-- Paldin
-	[65] = "Interface\\Icons\\spell_holy_holybolt", --> Holy
-	[66] = "Interface\\Icons\\ability_paladin_shieldofthetemplar", --> Protection
-	[70] = "Interface\\Icons\\spell_holy_auraoflight", --> Ret
-	-- Priest
-	[256] = "Interface\\Icons\\spell_holy_powerwordshield", --> Discipline
-	[257] = "Interface\\Icons\\spell_holy_guardianspirit", --> Holy
-	[258] = "Interface\\Icons\\spell_shadow_shadowwordpain", --> Shadow
-	-- Rogue
-	[259] = "Interface\\Icons\\ability_rogue_eviscerate", --> Assassination
-	[260] = "Interface\\Icons\\ability_backstab", --> Combat
-	[261] = "Interface\\Icons\\ability_stealth", --> Subtlty
-	-- Shaman
-	[262] = "Interface\\Icons\\spell_nature_lightning", --> Elemental
-	[263] = "Interface\\Icons\\spell_shaman_improvedstormstrike", --> Enhancement
-	[264] = "Interface\\Icons\\spell_nature_healingwavegreater", --> Restoration
-	-- Warlock
-	[265] = "Interface\\Icons\\spell_shadow_deathcoil", --> Affliction
-	[266] = "Interface\\Icons\\spell_shadow_metamorphosis", --> Demonology
-	[267] = "Interface\\Icons\\spell_shadow_rainoffire", --> Destruction
-	-- Warrior
-	[71] = "Interface\\Icons\\ability_warrior_savageblow", --> Arms
-	[72] = "Interface\\Icons\\ability_warrior_innerrage", --> Fury
-	[73] = "Interface\\Icons\\ability_warrior_defensivestance" --> Protection
-}
 
 local function Portrait_Create(self, parent)
 	local frame = self:CreateFrame("Frame", parent)
@@ -55,6 +12,7 @@ local function Portrait_Create(self, parent)
 		frame.portraitBack = frame.portraitBack or frame:CreateTexture(nil, "BACKGROUND")
 		frame.portraitBack:SetAllPoints()
 	end
+	self:OnUpdate(parent, "player")
 end
 
 local function Portrait_OnUpdateSpec(self, parent, unit)
@@ -113,9 +71,6 @@ local function Portrait_Disable(self, parent)
 	f:Hide()
 	f:SetParent(nil)
 	f:ClearAllPoints()
-	if f.portraitModel then
-		f.portraitModel:Hide()
-	end
 	if f.portraitTexture then
 		f.portraitTexture:Hide()
 	end
@@ -128,7 +83,6 @@ local function Portrait_OnSuspend(self)
 	Portraits[self] = nil
 	if not next(Portraits) then
 		Grid2:UnregisterEvent("UNIT_PORTRAIT_UPDATE")
-		Grid2:UnregisterEvent("UNIT_MODEL_CHANGED")
 	end
 end
 
@@ -151,7 +105,6 @@ local function Portrait_UpdateDB(self, dbx)
 	end
 	if not next(Portraits) then
 		Grid2:RegisterEvent("UNIT_PORTRAIT_UPDATE", UpdatePortraits)
-		Grid2:RegisterEvent("UNIT_MODEL_CHANGED", UpdatePortraits)
 	end
 	Portraits[self] = true
 	self.dbx = dbx

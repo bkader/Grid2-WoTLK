@@ -59,8 +59,29 @@ local function MakeStatusDungeonRoleOptions(self, status, options, optionParams)
 	}
 end
 
+local function MakeStatusSpecOptions(self, status, options, optionParams)
+	options.hideInCombat = {
+		type = "toggle",
+		name = L["Hide in combat"],
+		desc = L["Hide in combat"],
+		width = "full",
+		order = 40,
+		get = function()
+			return status.dbx.hideInCombat
+		end,
+		set = function(_, v)
+			status.dbx.hideInCombat = v or nil
+			status:SetHideInCombat(v)
+			if status.UpdateAllUnits then
+				status:UpdateAllUnits()
+			end
+		end
+	}
+end
+
 Grid2Options:RegisterStatusOptions("leader", "role", MakeStatusRoleOptions, {titleIcon = "Interface\\GroupFrame\\UI-Group-LeaderIcon"})
 Grid2Options:RegisterStatusOptions("raid-assistant", "role", MakeStatusRoleOptions, {titleIcon = "Interface\\GroupFrame\\UI-Group-AssistantIcon"})
 Grid2Options:RegisterStatusOptions("master-looter", "role", MakeStatusRoleOptions, {titleIcon = "Interface\\GroupFrame\\UI-Group-MasterLooter"})
 Grid2Options:RegisterStatusOptions("role", "role", MakeStatusRoleOptions, {color1 = MAIN_ASSIST, color2 = MAIN_TANK, width = "full", titleIcon = "Interface\\GroupFrame\\UI-Group-MainTankIcon"})
 Grid2Options:RegisterStatusOptions("dungeon-role", "role", MakeStatusDungeonRoleOptions, {color1 = LG["DAMAGER"], color2 = LG["HEALER"], color3 = LG["TANK"], width = "full", titleIcon = "Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES", titleIconCoords = {0, 0.65, 0, 0.65}})
+Grid2Options:RegisterStatusOptions("spec", "role", MakeStatusSpecOptions, {titleIcon = "Interface\\Icons\\ability_paladin_shieldofthetemplar"})

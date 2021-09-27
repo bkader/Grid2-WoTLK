@@ -61,6 +61,9 @@ end
 -- Remove indicator options from AceConfigTable
 function Grid2Options:DeleteIndicatorOptions(indicator)
 	self.indicatorOptions[indicator.name] = nil
+	if indicator.OnDelete then
+		indicator:OnDelete()
+	end
 end
 
 -- Create all indicators options (dont remove options param, is used by openmanager)

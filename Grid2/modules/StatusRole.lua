@@ -6,6 +6,7 @@ local Leader = Grid2.statusPrototype:new("leader")
 local Assistant = Grid2.statusPrototype:new("raid-assistant")
 local MasterLooter = Grid2.statusPrototype:new("master-looter")
 local DungeonRole = Grid2.statusPrototype:new("dungeon-role")
+local Spec = Grid2.statusPrototype:new("spec")
 
 local strmatch = string.match
 local UnitExists = UnitExists
@@ -19,8 +20,11 @@ local next = next
 
 local IsInRaid = Grid2.IsInRaid
 local UnitIterator = Grid2.UnitIterator
+local GetNumGroupMembers = Grid2.GetNumGroupMembers
 local UnitIsGroupLeader = Grid2.UnitIsGroupLeader
 local UnitGroupRolesAssigned = Grid2.UnitGroupRolesAssigned
+local GetInspectSpecialization = Grid2.GetInspectSpecialization
+local groupCount = 0
 
 local function GetTexCoordsForRoleSmallCircle(role)
 	if (role == "TANK") then
@@ -91,17 +95,41 @@ function Role:UpdateActiveUnits()
 	end
 end
 
-function Role:UpdateAllUnits(event)
-	for unit, owner in UnitIterator() do
-		if owner == nil then
-			local role = UnitGroupRolesAssigned(unit)
-			if role ~= role_cache[unit] then
-				role_cache[unit] = role
-				if event then
-					self:UpdateIndicators(unit)
-				end
+function Role:UpdatePartyUnits(event)
+	groupCount = GetNumGroupMembers()
+	for i = 1, groupCount do
+		local unit = Grid2.party_units[i]
+		if not UnitExists(unit) then break end -- whoops!
+		local role = (GetPartyAssignment("MAINTANK", unit)) and "MAINTANK" or (GetPartyAssignment("MAINASSIST", unit)) and "MAINASSIST" or nil
+		if role ~= role_cache[unit] then
+			role_cache[unit] = role
+			if event then
+				self:UpdateIndicators(unit)
 			end
 		end
+	end
+end
+
+function Role:UpdateRaidUnits(event)
+	groupCount = GetNumGroupMembers()
+	local units = Grid2.raid_units
+	for i = 1, groupCount do
+		local name, _, _, _, _, _, _, _, _, role = GetRaidRosterInfo(i)
+		if not name then break end -- whoops!
+		if role ~= role_cache[units[i]] then
+			role_cache[units[i]] = role
+			if event then
+				self:UpdateIndicators(units[i])
+			end
+		end
+	end
+end
+
+function Role:UpdateAllUnits(event)
+	if IsInRaid() then
+		self:UpdateRaidUnits(event)
+	else
+		self:UpdatePartyUnits(event)
 	end
 end
 
@@ -180,17 +208,18 @@ function Assistant:UpdateActiveUnits()
 end
 
 function Assistant:UpdateAllUnits(event)
-	if not IsInRaid() then return end
-	local units = Grid2.raid_units
-	for i = 1, 40 do
-		local name, rank = GetRaidRosterInfo(i)
-		if not name then break end
-		local assis = rank == 1 or nil
-		local unit = units[i]
-		if assis ~= assis_cache[unit] then
-			assis_cache[unit] = assis
-			if event then
-				self:UpdateIndicators(unit)
+	if IsInRaid() then
+		groupCount = GetNumGroupMembers()
+		local units = Grid2.raid_units
+		for i = 1, groupCount do
+			local name, rank = GetRaidRosterInfo(i)
+			if not name then break end -- whoops!
+			local assis = rank == 1 or nil
+			if assis ~= assis_cache[units[i]] then
+				assis_cache[units[i]] = assis
+				if event then
+					self:UpdateIndicators(units[i])
+				end
 			end
 		end
 	end
@@ -450,13 +479,12 @@ function DungeonRole:UpdateDB()
 	TexCoordfunc = self.dbx.useAlternateIcons and GetTexCoordsForRoleSmall or GetTexCoordsForRoleSmallCircle
 end
 
-local function Create(baseKey, dbx)
+local function CreateDungeonRole(baseKey, dbx)
 	Grid2:RegisterStatus(DungeonRole, {"color", "text", "icon"}, baseKey, dbx)
-
 	return DungeonRole
 end
 
-Grid2.setupFunc["dungeon-role"] = Create
+Grid2.setupFunc["dungeon-role"] = CreateDungeonRole
 
 Grid2:DbSetStatusDefaultValue("dungeon-role", {
 	type = "dungeon-role",
@@ -466,3 +494,66 @@ Grid2:DbSetStatusDefaultValue("dungeon-role", {
 	color3 = {r = 0, g = 0, b = 0.75}, --tank
 	opacity = 0.75
 })
+
+-- Specialization status
+
+local spec_cache = {}
+local SpecIcons = Grid2.SpecIcons
+Spec.SetHideInCombat = SetHideInCombat
+
+function Spec:UpdateActiveUnits()
+	for unit in next, spec_cache do
+		self:UpdateIndicators(unit)
+	end
+end
+
+function Spec:UpdateAllUnits(event)
+	for unit, owner in UnitIterator() do
+		if owner == nil then
+			local spec = GetInspectSpecialization(unit)
+			if spec ~= spec_cache[unit] then
+				spec_cache[unit] = spec
+				if event then
+					self:UpdateIndicators(unit)
+				end
+			end
+		end
+	end
+end
+
+function Spec:Grid_UnitLeft(_, unit)
+	spec_cache[unit] = nil
+end
+
+function Spec:OnEnable()
+	self:SetHideInCombat(self.dbx.hideInCombat)
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
+	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
+	self:RegisterMessage("Grid_UnitLeft")
+	self:UpdateAllUnits()
+end
+
+function Spec:OnDisable()
+	self:SetHideInCombat()
+	self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
+	self:UnregisterEvent("RAID_ROSTER_UPDATE")
+	self:UnregisterMessage("Grid_UnitLeft")
+	wipe(spec_cache)
+end
+
+function Spec:IsActive(unit)
+	return spec_cache[unit]
+end
+
+function Spec:GetIcon(unitid)
+	local spec = spec_cache[unitid]
+	return spec and SpecIcons[spec]
+end
+
+local function CreateSpec(baseKey, dbx)
+	Grid2:RegisterStatus(Spec, {"icon"}, baseKey, dbx)
+	return Spec
+end
+
+Grid2.setupFunc["spec"] = CreateSpec
+Grid2:DbSetStatusDefaultValue("spec", {type = "spec"})

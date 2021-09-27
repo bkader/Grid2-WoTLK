@@ -1,11 +1,11 @@
 local L = Grid2Options.L
 
 Grid2Options:RegisterIndicatorOptions("portrait", true, function(self, indicator)
-		local layout = {}
-		self:MakeIndicatorLocationOptions(indicator, layout)
-		self:MakeIndicatorPortraitOptions(indicator, layout)
-		self:MakeIndicatorDeleteOptions(indicator, layout)
-		self:AddIndicatorOptions(indicator, nil, layout)
+		local options = {}
+		self:MakeIndicatorLocationOptions(indicator, options)
+		self:MakeIndicatorPortraitOptions(indicator, options)
+		self:AddIndicatorOptions(indicator, nil, options)
+		self:MakeIndicatorDeleteOptions(indicator, options)
 	end
 )
 

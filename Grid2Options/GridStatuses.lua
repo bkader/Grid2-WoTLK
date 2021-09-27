@@ -72,7 +72,9 @@ end
 -- returns AceConfigTable status group option
 function Grid2Options:GetStatusGroup(status)
 	local key = self:GetStatusCategory(status)
-	return self.statusOptions[key].args[status.name]
+	if key and status.name then
+		return self.statusOptions[key] and self.statusOptions[key].args and self.statusOptions[key][status.name]
+	end
 end
 
 -- returns the AceConfigTable status options (the args field in group option)
