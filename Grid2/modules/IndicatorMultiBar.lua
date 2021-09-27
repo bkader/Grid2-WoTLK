@@ -220,7 +220,7 @@ local function Bar_UpdateDB(self)
 	local dbx = self.dbx
 	local l = dbx.location
 	local theme = Grid2Frame.db.profile
-	local orientation = dbx.orientation
+	local orientation = dbx.orientation or Grid2Frame.db.profile.orientation
 	local backColor = dbx.backColor
 	local texColor = dbx.textureColor and dbx.textureColor.r and dbx.textureColor
 	self.foreColor = dbx.invertColor and backColor or texColor
