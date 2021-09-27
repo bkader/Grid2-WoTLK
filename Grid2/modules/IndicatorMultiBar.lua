@@ -1,7 +1,9 @@
 local Grid2 = Grid2
 local Grid2Frame = Grid2Frame
+
 local min, max = math.min, math.max
 local pairs, ipairs = pairs, ipairs
+local CreateFrame = CreateFrame
 
 local AlignPoints = Grid2.AlignPoints
 local SetSizeMethods = {HORIZONTAL = "SetWidth", VERTICAL = "SetHeight"}
@@ -163,7 +165,10 @@ local function Bar_Layout(self, parent)
 	local textures = bar.myTextures or {barTexture}
 	for i = 1, barCount do
 		local setup = self.bars[i]
-		local texture = textures[i + 1] or bar:CreateTexture()
+		local f = CreateFrame("Frame", nil, bar)
+		f:SetFrameLevel(bar:GetFrameLevel() + i)
+		f:SetAllPoints()
+		local texture = textures[i + 1] or f:CreateTexture()
 		texture:Hide()
 		texture:ClearAllPoints()
 		texture.mySetSize = texture[self.SetSizeMethod]

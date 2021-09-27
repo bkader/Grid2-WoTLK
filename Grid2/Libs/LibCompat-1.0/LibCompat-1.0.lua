@@ -147,15 +147,11 @@ do
 	-- delete table and return to pool
 	local function delTable(t)
 		if type(t) == "table" then
-			for k, v in pairs(t) do
-				if type(v) == "table" then
-					delTable(v)
-				end
+			for k, _ in pairs(t) do
 				t[k] = nil
 			end
 			t[true] = true
 			t[true] = nil
-			setmetatable(t, nil)
 			tablePool[t] = true
 		end
 		return nil
@@ -581,7 +577,7 @@ do
 					ticker._delay = ticker._delay - elapsed
 					i = i + 1
 				else
-					ticker._callback(ticker, LibCompat.SafeUnpack(ticker._args))
+					ticker._callback(ticker)
 
 					if ticker._iterations == -1 then
 						ticker._delay = ticker._duration
@@ -612,14 +608,13 @@ do
 		waitFrame:Show()
 	end
 
-	local function CreateTicker(duration, callback, iterations, ...)
+	local function CreateTicker(duration, callback, iterations)
 		local ticker = setmetatable({}, TickerMetatable)
 
 		ticker._iterations = iterations or -1
 		ticker._duration = duration
 		ticker._delay = duration
 		ticker._callback = callback
-		ticker._args = LibCompat.SafePack(...)
 
 		AddDelayedCall(ticker)
 		return ticker
@@ -633,21 +628,16 @@ do
 		self._cancelled = true
 	end
 
-	local function After(duration, callback, ...)
-		AddDelayedCall({
-			_iterations = 1,
-			_delay = duration,
-			_callback = callback,
-			_args = LibCompat.SafePack(...)
-		})
+	local function After(duration, callback)
+		AddDelayedCall({_iterations = 1, _delay = duration, _callback = callback})
 	end
 
-	local function NewTimer(duration, callback, ...)
-		return CreateTicker(duration, callback, 1, ...)
+	local function NewTimer(duration, callback)
+		return CreateTicker(duration, callback, 1)
 	end
 
-	local function NewTicker(duration, callback, iterations, ...)
-		return CreateTicker(duration, callback, iterations, ...)
+	local function NewTicker(duration, callback, iterations)
+		return CreateTicker(duration, callback, iterations)
 	end
 
 	local function CancelTimer(ticker)
