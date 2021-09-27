@@ -910,9 +910,8 @@ local function MakeDebuffOptions(bossName, spellId, isCustom)
 			type = "execute",
 			order = 155,
 			name = L["Delete raid debuff"],
-			func = function()
-				DeleteRaidDebuff(bossName, spellId)
-			end
+			confirm = function() return L["Are you sure you want to delete this status?"] end,
+			func = function() DeleteRaidDebuff(bossName, spellId) end
 		}
 	end
 	return options

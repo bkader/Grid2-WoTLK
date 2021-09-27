@@ -39,9 +39,7 @@ function Grid2Options:MakeIndicatorBorderGlowOptions(indicator, options)
 			else
 				indicator.dbx.glowColor = {r = 0.95, g = 0.95, b = 0.32, a = 1}
 			end
-			if not indicator.suspended then
-				indicator:UpdateDB()
-			end
+			indicator:UpdateDB()
 		end,
 		values = COLOR_VALUES
 	}

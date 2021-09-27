@@ -94,7 +94,7 @@ local lastUpdate = 0
 EnableDelayedUpdates = function()
 	CreateFrame("Frame", nil, Grid2LayoutFrame):SetScript("OnUpdate", function(self, elapsed)
 		lastUpdate = lastUpdate + elapsed
-		if lastUpdate > 0.01 then
+		if lastUpdate > 0.005 then
 			for bar in pairs(updates) do
 				Bar_OnFrameUpdate(bar)
 			end
@@ -147,7 +147,7 @@ local function Bar_Layout(self, parent)
 	bar:SetFrameLevel(parent:GetFrameLevel() + self.frameLevel)
 	bar:SetStatusBarTexture(self.texture)
 	local barTexture = bar:GetStatusBarTexture()
-	barTexture:SetDrawLayer("ARTWORK", 0)
+	barTexture:SetDrawLayer("ARTWORK", -7)
 	local color = self.foreColor
 	if color then
 		bar:SetStatusBarColor(color.r, color.g, color.b, self.opacity)

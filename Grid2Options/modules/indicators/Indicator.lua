@@ -268,9 +268,18 @@ do
 			width = "half",
 			name = L["Delete"],
 			desc = L["Delete this element"],
+			confirm = function() return L["Are you sure you want to delete this indicator?"] end,
 			func = DeleteIndicator,
 			arg = indicator,
 			disabled = Disabled
+		}
+		options.deletemsg = {
+			type = "description",
+			name = L["There are status linked to this indicator."],
+			fontSize = "small",
+			order = 265,
+			width = "double",
+			hidden = function() return next(indicator.statuses) == nil end
 		}
 	end
 end

@@ -10,7 +10,6 @@ Grid2Options:RegisterIndicatorOptions("icons", true, function(self, indicator)
 	self:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 	self:MakeIndicatorStatusOptions(indicator, statuses)
 	self:AddIndicatorOptions(indicator, statuses, options)
-	-- self:MakeStatusEnabledOptions(indicator, options)
 	self:MakeIndicatorDeleteOptions(indicator, options)
 end)
 

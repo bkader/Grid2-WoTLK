@@ -79,7 +79,7 @@ local function Portrait_Disable(self, parent)
 	end
 end
 
-local function Portrait_OnSuspend(self)
+local function Portrait_OnDelete(self)
 	Portraits[self] = nil
 	if not next(Portraits) then
 		Grid2:UnregisterEvent("UNIT_PORTRAIT_UPDATE")
@@ -116,7 +116,7 @@ local function CreatePortraitIndicator(indicatorKey, dbx)
 	indicator.Create = Portrait_Create
 	indicator.Layout = Portrait_Layout
 	indicator.Disable = Portrait_Disable
-	indicator.OnSuspend = Portrait_OnSuspend
+	indicator.OnDelete = Portrait_OnDelete
 	indicator.UpdateDB = Portrait_UpdateDB
 	Portrait_UpdateDB(indicator, dbx)
 	Grid2:RegisterIndicator(indicator, {"portrait"})
