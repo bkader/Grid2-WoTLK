@@ -142,8 +142,8 @@ function Role:OnEnable()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
 	self:RegisterMessage("Grid_UnitLeft")
+	Grid2:RegisterInspect(self)
 	self:UpdateAllUnits()
-	Grid2.After(5, function() self:UpdateAllUnits(true) end)
 end
 
 function Role:OnDisable()
@@ -151,6 +151,7 @@ function Role:OnDisable()
 	self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
 	self:UnregisterEvent("RAID_ROSTER_UPDATE")
 	self:UnregisterMessage("Grid_UnitLeft")
+	Grid2:UnregisterInspect(self)
 	wipe(role_cache)
 end
 
@@ -236,7 +237,6 @@ function Assistant:OnEnable()
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
 	self:RegisterMessage("Grid_UnitLeft")
 	self:UpdateAllUnits()
-	Grid2.After(5, function() self:UpdateAllUnits(true) end)
 end
 
 function Assistant:OnDisable()
@@ -310,7 +310,6 @@ function Leader:OnEnable()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateLeader")
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateLeader")
 	self:CalculateLeader()
-	Grid2.After(5, function() self:CalculateLeader() end)
 end
 
 function Leader:OnDisable()
@@ -387,7 +386,6 @@ function MasterLooter:OnEnable()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateMasterLooter")
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateMasterLooter")
 	self:CalculateMasterLooter()
-	Grid2.After(5, function() self:CalculateMasterLooter() end)
 end
 
 function MasterLooter:OnDisable()
@@ -437,7 +435,7 @@ function DungeonRole:OnEnable()
 	self:UpdateDB()
 	self:RegisterEvent("PLAYER_ROLES_ASSIGNED", "UpdateAllUnits")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
-	Grid2.After(5, function() self:UpdateAllUnits(true) end)
+	Grid2:RegisterInspect(self)
 end
 
 function DungeonRole:OnDisable()
@@ -535,8 +533,8 @@ function Spec:OnEnable()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
 	self:RegisterMessage("Grid_UnitLeft")
+	Grid2:RegisterInspect(self)
 	self:UpdateAllUnits()
-	Grid2.After(5, function() self:UpdateAllUnits(true) end)
 end
 
 function Spec:OnDisable()
@@ -544,6 +542,7 @@ function Spec:OnDisable()
 	self:UnregisterEvent("PARTY_MEMBERS_CHANGED")
 	self:UnregisterEvent("RAID_ROSTER_UPDATE")
 	self:UnregisterMessage("Grid_UnitLeft")
+	Grid2:UnregisterInspect(self)
 	wipe(spec_cache)
 end
 

@@ -63,6 +63,8 @@ status.OnEnable = Grid2.Dummy
 status.OnDisable = Grid2.Dummy
 -- all indicators
 status.UpdateAllIndicators = Grid2.statusLibrary.UpdateAllUnits
+-- all indicators
+status.Grid_Enabled = Grid2.statusLibrary.Grid_Enabled
 
 function status:UpdateDB(dbx)
 	if dbx then
@@ -155,5 +157,30 @@ end
 function Grid2:GetStatusByName(name)
 	for key, status in Grid2:IterateStatuses() do
 		if key == name then return status end
+	end
+end
+
+-- function used by statuses that required LibGroupTalents
+do
+	local LibGroupTalents = LibStub("LibGroupTalents-1.0", true)
+	local function InspectReady(self, event)
+		self:UpdateAllUnits(event)
+	end
+
+	-- registers the status for when LGT update is complete
+	function Grid2:RegisterInspect(status)
+		if not LibGroupTalents then
+			return
+		end
+		status.InspectReady = status.InspectReady or InspectReady
+		LibGroupTalents.RegisterCallback(status, "LibGroupTalents_UpdateComplete", "InspectReady")
+	end
+
+	-- unregisters the status from LGT callbacks
+	function Grid2:UnregisterInspect(status)
+		if not LibGroupTalents or not status.InspectReady then
+			return
+		end
+		LibGroupTalents.UnregisterAllCallbacks(status)
 	end
 end
