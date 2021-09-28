@@ -6,30 +6,21 @@ local min = min
 local barPrototype = Grid2.StatusBarPrototype
 local AlignPoints = Grid2.AlignPoints
 
-local function CreateSimpleStatusBar(name, parent)
-	return barPrototype:New(name, parent)
-end
+local defaultColor = {r = 0, g = 0, b = 0, a = 1}
 
 local function CreateStatusBar(self, typ, parent)
-	local bar = parent[self.name]
-	if not (bar and bar:GetObjectType() == typ) then
-		-- Create statusbar (inherit prototype)
-		bar = barPrototype:New(nil, parent)
-		parent[self.name] = bar
-	end
+	local bar = parent[self.name] or barPrototype:New(nil, parent)
+	parent[self.name] = bar
 	return bar
 end
 
 local function Bar_CreateHH(self, parent)
-	local bar = CreateStatusBar(self, "StatusBar", parent) --self:CreateFrame("StatusBar", parent)
+	local bar = CreateStatusBar(self, "StatusBar", parent)
 	bar:SetStatusBarColor(0, 0, 0, 0)
 	bar:SetMinMaxValues(0, 1)
 	bar:SetValue(0)
 	if self.backColor then
-		bar.bgBar = bar.bgBar or CreateSimpleStatusBar(nil, bar) --CreateFrame("StatusBar", nil, bar)
-		bar.bgBar:SetMinMaxValues(0, 1)
-		bar.bgBar:SetValue(1)
-		bar.bgBar:Show()
+		bar.bg:Show()
 	end
 	bar:Show()
 end
@@ -42,11 +33,11 @@ local function Bar_Layout(self, parent)
 	local orient = self.orientation or Grid2Frame.db.profile.orientation
 	local points = AlignPoints[orient]
 	local level = parent:GetFrameLevel() + self.frameLevel
+	Bar:SetFrameLevel(level)
 	Bar:ClearAllPoints()
+	Bar:SetPoint(self.anchor, parent.container, self.anchorRel, self.offsetx, self.offsety)
 	Bar:SetOrientation(orient)
 	Bar:SetReverseFill(self.reverseFill)
-	Bar:SetFrameLevel(level)
-	Bar:SetPoint(self.anchor, parent.container, self.anchorRel, self.offsetx, self.offsety)
 	Bar:SetStatusBarTexture(self.texture)
 	Bar:SetSize(width, height)
 	if self.childIndicator then
@@ -64,20 +55,12 @@ local function Bar_Layout(self, parent)
 		end
 	end
 	if self.backColor then
-		local bgBar = Bar.bgBar
-		local bar = chBar or Bar
 		local color = self.dbx.backColor
-		bgBar:SetStatusBarTexture(self.texture)
-		bgBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
-		bgBar:SetOrientation(orient)
-		bgBar:SetFrameLevel(level)
-		bgBar:ClearAllPoints()
-		bgBar:SetPoint(points[1], Bar.fg, points[2], 0, 0)
-		bgBar:SetPoint(points[3], Bar.fg, points[4], 0, 0)
-		bgBar:SetPoint(points[2], Bar, points[2], 0, 0)
-		bgBar:SetPoint(points[4], Bar, points[4], 0, 0)
-	elseif Bar.bgBar then
-		Bar.bgBar:Hide()
+		Bar.bg:SetVertexColor(color.r, color.g, color.b, color.a)
+		Bar.bg:SetTexture(self.bgTexture or self.texture)
+		Bar.bg:Show()
+	elseif Bar.bg then
+		Bar.bg:Hide()
 	end
 end
 
@@ -142,8 +125,8 @@ end
 local function Bar_Disable(self, parent)
 	local bar = parent[self.name]
 	bar:Hide()
-	if bar.bgBar then
-		bar.bgBar:Hide()
+	if bar.bg then
+		bar.bg:Hide()
 	end
 	self.parentIndicator = nil
 	self.childIndicator = nil
@@ -154,6 +137,7 @@ end
 local function Bar_UpdateDB(self, dbx)
 	dbx = dbx or self.dbx
 	self.texture = Grid2:MediaFetch("statusbar", dbx.texture, "Gradient")
+	self.bgTexture = Grid2:MediaFetch("statusbar", dbx.bgTexture or dbx.texture, "Gradient")
 	local l = dbx.location
 	self.frameLevel = dbx.level or 1
 	self.anchor = l.point
@@ -193,13 +177,18 @@ local function BarColor_OnUpdate(self, parent, unit, status)
 end
 
 local function BarColor_SetBarColor(self, parent, r, g, b, a)
-	parent[self.BarName]:SetStatusBarColor(r, g, b, min(self.opacity, a or 1))
+	local bar = parent[self.BarName]
+	bar:SetForegroundColor(r, g, b, min(self.opacity, a or 1))
+	local color = self.dbx.backColor or defaultColor
+	bar:SetBackgroundColor(color.r, color.g, color.b, min(self.opacity, color.a or 1))
 end
 
 local function BarColor_SetBarColorInverted(self, parent, r, g, b, a)
-	parent[self.BarName]:SetStatusBarColor(0, 0, 0, min(self.opacity, 0.8))
+	local bar = parent[self.BarName]
+	local color = self.dbx.backColor or defaultColor
+	bar:SetForegroundColor(color.r, color.g, color.b, min(self.opacity, 0.8))
 	if not self.dbx.parentBar then
-		parent.container:SetVertexColor(r, g, b, a)
+		bar:SetBackgroundColor(r, g, b, a)
 	end
 end
 

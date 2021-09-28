@@ -94,6 +94,7 @@ function Grid2Options:MakeIndicatorBarAppearanceOptions(indicator, options)
 	end
 	options.orientation = {
 		type = "select",
+		width = "double",
 		order = 15,
 		name = L["Orientation of the Bar"],
 		desc = L["Set status bar orientation."],
@@ -151,7 +152,7 @@ function Grid2Options:MakeIndicatorBarAppearanceOptions(indicator, options)
 		type = "toggle",
 		name = L["Enable Background"],
 		desc = L["Enable Background"],
-		order = 45,
+		order = 44,
 		get = function()
 			return indicator.dbx.backColor ~= nil
 		end,
@@ -166,7 +167,7 @@ function Grid2Options:MakeIndicatorBarAppearanceOptions(indicator, options)
 	}
 	options.backColor = {
 		type = "color",
-		order = 46,
+		order = 45,
 		name = L["Background Color"],
 		desc = L["Background Color"],
 		hasAlpha = true,
@@ -224,9 +225,25 @@ function Grid2Options:MakeIndicatorBarMiscOptions(indicator, options)
 		end,
 		values = AceGUIWidgetLSMlists.statusbar
 	}
+	options.bgTexture = {
+		type = "select",
+		dialogControl = "LSM30_Statusbar",
+		order = 21,
+		name = L["Background Texture"],
+		desc = L["Select the frame background texture."],
+		get = function(info)
+			return indicator.dbx.bgTexture or indicator.dbx.texture or "Gradient"
+		end,
+		set = function(info, v)
+			indicator.dbx.bgTexture = v
+			self:RefreshIndicator(indicator, "Layout")
+		end,
+		values = AceGUIWidgetLSMlists.statusbar
+	}
 	options.barOpacity = {
 		type = "range",
 		order = 43,
+		width = "double",
 		name = L["Opacity"],
 		desc = L["Set the opacity."],
 		min = 0,
@@ -246,7 +263,7 @@ function Grid2Options:MakeIndicatorBarMiscOptions(indicator, options)
 		type = "toggle",
 		name = L["Invert Bar Color"],
 		desc = L["Swap foreground/background colors on bars."],
-		order = 44,
+		order = 46,
 		tristate = false,
 		get = function()
 			return indicator.dbx.invertColor
@@ -255,7 +272,9 @@ function Grid2Options:MakeIndicatorBarMiscOptions(indicator, options)
 			indicator.dbx.invertColor = v or nil
 			indicator.sideKick:UpdateDB()
 			self:RefreshIndicator(indicator, "Create")
-		end
+		end,
+		hidden = function() return indicator.dbx.backColor == nil end,
+		disabled = function() return indicator.dbx.backColor == nil end
 	}
 	self:MakeHeaderOptions(options, "Display")
 	options.duration = {
