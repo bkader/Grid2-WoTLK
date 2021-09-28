@@ -109,10 +109,9 @@ function Grid2:IterateRosterUnits()
 end
 
 do
-	local groupType
-	function Grid2:PLAYER_ENTERING_WORLD()
+	function Grid2:PLAYER_ENTERING_WORLD(...)
 		-- this is needed to trigger an update when switching from one BG directly to another
-		groupType = nil
+		self.groupType = nil
 		self:GroupChanged("PLAYER_ENTERING_WORLD")
 		if self.db.profile.hideBlizzardRaidFrames then
 			Grid2:HideBlizzardRaidFrames()
@@ -130,18 +129,18 @@ do
 		return count > 0 and "party" or "solo"
 	end
 	function Grid2:GroupChanged(event)
-		local _, instType = IsInInstance()
-		if instType == "raid" and IsInRaid() then
-			instType = select(5, GetInstanceInfo()) > 10 and "raid25" or "raid10"
-		elseif instType == "pvp" then
-			instType = GetGroupType(0, 10, 15, 40)
-		elseif instType ~= "arena" then
-			instType = GetGroupType(0, 10, 25, 40)
+		self.instType = select(2, IsInInstance())
+		if self.instType == "raid" and IsInRaid() then
+			self.instType = select(5, GetInstanceInfo()) > 10 and "raid25" or "raid10"
+		elseif self.instType == "pvp" then
+			self.instType = GetGroupType(0, 10, 15, 40)
+		elseif self.instType ~= "arena" then
+			self.instType = GetGroupType(0, 10, 25, 40)
 		end
-		self:Debug("GroupChanged", groupType, "=>", instType)
-		if groupType ~= instType then
-			groupType = instType
-			self:SendMessage("Grid_GroupTypeChanged", groupType)
+		self:Debug("GroupChanged", self.groupType, "=>", self.instType)
+		if self.groupType ~= self.instType then
+			self.groupType = self.instType
+			self:SendMessage("Grid_GroupTypeChanged", self.groupType)
 		end
 		self:UpdateRoster()
 	end

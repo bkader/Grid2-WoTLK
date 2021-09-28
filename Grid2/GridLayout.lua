@@ -212,16 +212,14 @@ function Grid2Layout:OnModuleDisable()
 end
 
 --{{{ Event handlers
-
-local reloadLayoutQueued, updateSizeQueued, restorePositionQueued
 function Grid2Layout:PLAYER_REGEN_ENABLED()
-	if reloadLayoutQueued then
+	if self.reloadLayoutQueued then
 		return self:ReloadLayout()
 	end
-	if updateSizeQueued then
+	if self.updateSizeQueued then
 		return self:UpdateSize()
 	end
-	if restorePositionQueued then
+	if self.restorePositionQueued then
 		return self:RestorePosition()
 	end
 end
@@ -331,13 +329,17 @@ function Grid2Layout:SetClamp()
 	self.frame:SetClampedToScreen(self.db.profile.clamp)
 end
 
-function Grid2Layout:ReloadLayout()
-	if InCombatLockdown() then
-		reloadLayoutQueued = true
+function Grid2Layout:ReloadLayout(force)
+	if InCombatLockdown() and not force then
+		self.reloadLayoutQueued = true
 		return
 	end
-	reloadLayoutQueued = false
+	self.reloadLayoutQueued = nil
 	self:LoadLayout(self.db.profile.layouts[self.partyType or "solo"])
+end
+
+function Grid2Layout:RefreshLayout()
+	return self:ReloadLayout(true)
 end
 
 local function SetAllAttributes(header, p, list, fix)
@@ -378,14 +380,10 @@ end
 
 function Grid2Layout:LoadLayout(layoutName)
 	local layout = self.layoutSettings[layoutName]
-	if not layout then
-		return
-	end
-
+	if not layout then return end
 	self:Debug("LoadLayout", layoutName)
 
 	self.layoutName = layoutName
-
 	self:Scale()
 
 	local p = self.db.profile
@@ -437,10 +435,10 @@ end
 
 function Grid2Layout:UpdateSize()
 	if InCombatLockdown() then
-		updateSizeQueued = true
+		self.updateSizeQueued = true
 		return
 	end
-	updateSizeQueued = false
+	self.updateSizeQueued = nil
 
 	local p = self.db.profile
 	local curWidth, curHeight, maxWidth, maxHeight = 0, 0, 0, 0
@@ -527,10 +525,10 @@ end
 
 function Grid2Layout:RestorePosition()
 	if InCombatLockdown() then
-		restorePositionQueued = true
+		self.restorePositionQueued = true
 		return
 	end
-	restorePositionQueued = false
+	self.restorePositionQueued = nil
 	local f = self.frame
 	local s = f:GetEffectiveScale()
 	local x = self.db.profile.PosX / s
