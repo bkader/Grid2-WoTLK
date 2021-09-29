@@ -62,7 +62,7 @@ end
 --}}}
 
 -- {{ Precalculated backdrop table, shared by all frames
-local frameBackdrop = {bgFile = "Interface\\Addons\\Grid2\\media\\white16x16", tile = true, tileSize = 16, insets = {}}
+local frameBackdrop
 -- }}
 
 --{{{ Grid2Frame script handlers
@@ -247,12 +247,13 @@ end
 function Grid2Frame:UpdateBackdrop()
 	local dbx = self.db.profile
 	local frameBorder = dbx.frameBorder
-	frameBackdrop.edgeFile = Grid2:MediaFetch("border", dbx.frameBorderTexture, "Grid2 Flat")
-	frameBackdrop.edgeSize = frameBorder
-	frameBackdrop.insets.left = frameBorder
-	frameBackdrop.insets.right = frameBorder
-	frameBackdrop.insets.top = frameBorder
-	frameBackdrop.insets.bottom = frameBorder
+	frameBackdrop = Grid2:GetBackdropTable(
+		Grid2:MediaFetch("border", dbx.frameBorderTexture, "Grid2 Flat"), -- edgeFile
+		dbx.frameBorder, -- edgeSize
+		Grid2:MediaFetch("background", dbx.BackgroundTexture, "Gradient"), -- bgFile
+		true, -- tile
+		16 -- tileSize
+	)
 end
 
 function Grid2Frame:LayoutFrames()

@@ -2,6 +2,7 @@ local Grid2 = Grid2
 local Location = Grid2.CreateLocation
 local type, pairs = type, pairs
 local defaultFont = Grid2.defaultFont or "Friz Quadrata TT"
+Grid2.defaultFont = defaultFont
 
 local DB_VERSION = 9
 
