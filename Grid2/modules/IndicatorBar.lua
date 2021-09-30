@@ -3,19 +3,14 @@ local Grid2Frame = Grid2Frame
 local GetTime = GetTime
 local min = min
 
-local barPrototype = Grid2.StatusBarPrototype
+local StatusBarPrototype = Grid2.StatusBarPrototype
 local AlignPoints = Grid2.AlignPoints
 
 local defaultColor = {r = 0, g = 0, b = 0, a = 1}
 
-local function CreateStatusBar(self, typ, parent)
-	local bar = parent[self.name] or barPrototype:New(nil, parent)
-	parent[self.name] = bar
-	return bar
-end
-
 local function Bar_CreateHH(self, parent)
-	local bar = CreateStatusBar(self, "StatusBar", parent)
+	local bar = parent[self.name] or StatusBarPrototype(nil, parent)
+	parent[self.name] = bar
 	bar:SetStatusBarColor(0, 0, 0, 0)
 	bar:SetMinMaxValues(0, 1)
 	bar:SetValue(0)

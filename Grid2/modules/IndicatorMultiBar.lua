@@ -9,10 +9,10 @@ local AlignPoints = Grid2.AlignPoints
 local SetSizeMethods = {HORIZONTAL = "SetWidth", VERTICAL = "SetHeight"}
 local GetSizeMethods = {HORIZONTAL = "GetWidth", VERTICAL = "GetHeight"}
 
-local barPrototype = Grid2.StatusBarPrototype
+local StatusBarPrototype = Grid2.StatusBarPrototype
 
 local function Bar_CreateHH(self, parent)
-	local bar = barPrototype:New(nil, parent)
+	local bar = StatusBarPrototype(nil, parent)
 	bar.myIndicator = self
 	bar.myValues = {}
 	bar:SetStatusBarColor(0, 0, 0, 0)
