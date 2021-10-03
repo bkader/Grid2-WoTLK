@@ -6,6 +6,7 @@ local HealthLow = Grid2.statusPrototype:new("health-low", false)
 local HealthAlpha = Grid2.statusPrototype:new("health-opacity", false)
 local FeignDeath = Grid2.statusPrototype:new("feign-death", false)
 local HealthDeficit = Grid2.statusPrototype:new("health-deficit", false)
+local Heals = Grid2.statusPrototype:new("heals-incoming", false)
 local Death = Grid2.statusPrototype:new("death", true)
 
 local GetTime = GetTime
@@ -353,10 +354,118 @@ local function CreateHealthDeficit(baseKey, dbx)
 end
 
 Grid2.setupFunc["health-deficit"] = CreateHealthDeficit
-Grid2:DbSetStatusDefaultValue(
-	"health-deficit",
-	{type = "health-deficit", color1 = {r = 1, g = 1, b = 1, a = 1}, threshold = 0.05}
-)
+Grid2:DbSetStatusDefaultValue("health-deficit", {type = "health-deficit", color1 = {r = 1, g = 1, b = 1, a = 1}, threshold = 0.05})
+
+-- heals-incoming status
+do
+	local HealComm = LibStub("LibHealComm-4.0", true)
+	if not HealComm then return end
+	Heals.GetColor = Grid2.statusLibrary.GetColor
+
+	local UnitGUID = UnitGUID
+	local HEALCOMM_TIMEFRAME = 3
+
+	local function get_active_heal_amount_with_user(unit)
+		local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
+		return HealComm:GetHealAmount(UnitGUID(unit), HealComm.ALL_HEALS, time)
+	end
+
+	local function get_active_heal_amount_without_user(unit)
+		local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
+		return HealComm:GetOthersHealAmount(UnitGUID(unit), HealComm.ALL_HEALS, time)
+	end
+
+	local get_active_heal_amount = get_active_heal_amount_with_user
+
+	local function get_effective_heal_amount(unit)
+		local guid = UnitGUID(unit)
+		local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
+		local heal = HealComm:GetHealAmount(guid, HealComm.ALL_HEALS, time)
+		return heal and heal * HealComm:GetHealModifier(guid) or 0
+	end
+
+	function Heals:UpdateDB()
+		self.minimum = self.dbx.flags and self.dbx.flags > 1 and self.dbx.flags or 0
+		HEALCOMM_TIMEFRAME = self.dbx.timeFrame or 3
+		get_active_heal_amount =
+			self.dbx.includePlayerHeals and get_active_heal_amount_with_user or get_active_heal_amount_without_user
+	end
+
+	function Heals:OnEnable()
+		HealComm.RegisterCallback(self, "HealComm_HealStarted", "Update")
+		HealComm.RegisterCallback(self, "HealComm_HealUpdated", "Update")
+		HealComm.RegisterCallback(self, "HealComm_HealDelayed", "Update")
+		HealComm.RegisterCallback(self, "HealComm_HealStopped", "Update")
+		HealComm.RegisterCallback(self, "HealComm_ModifierChanged", "UpdateModifier")
+		self:UpdateDB()
+	end
+
+	function Heals:OnDisable()
+		HealComm.UnregisterCallback(self, "HealComm_HealStarted")
+		HealComm.UnregisterCallback(self, "HealComm_HealUpdated")
+		HealComm.UnregisterCallback(self, "HealComm_HealDelayed")
+		HealComm.UnregisterCallback(self, "HealComm_HealStopped")
+		HealComm.UnregisterCallback(self, "HealComm_ModifierChanged")
+	end
+
+	function Heals:Update(event, healerGuid, _, _, _, ...)
+		for i = 1, select("#", ...) do
+			local guid = select(i, ...)
+			local unit = Grid2:GetUnitidByGUID(guid)
+			if unit then
+				self:UpdateIndicators(unit)
+			end
+		end
+	end
+
+	function Heals:UpdateModifier(event, guid)
+		local unit = Grid2:GetUnitidByGUID(guid)
+		if unit then
+			self:UpdateIndicators(unit)
+		end
+	end
+
+	function Heals:IsActive(unit)
+		local heal = get_active_heal_amount(unit)
+		return heal and heal > 0
+	end
+
+	function Heals:GetColor(unit)
+		local color = self.dbx.color1
+		return color.r, color.g, color.b, color.a
+	end
+
+	function Heals:GetText(unit)
+		return fmt("%.1fk", get_effective_heal_amount(unit) / 1000)
+	end
+
+	function Heals:GetPercent(unit)
+		local c, m = UnitHealth(unit), UnitHealthMax(unit)
+		if c == 0 or m == 0 or m == c then
+			return 0
+		end
+
+		local h = get_effective_heal_amount(unit)
+		if not h or h <= (self.minimum or 0) then
+			return 0
+		end
+		return ((h + c) >= m) and ((m - c) / m) or (h / m)
+	end
+
+	local function CreateHeals(baseKey, dbx)
+		Grid2:RegisterStatus(Heals, {"color", "text", "percent"}, baseKey, dbx)
+		return Heals
+	end
+
+	Grid2.setupFunc["heals-incoming"] = CreateHeals
+	Grid2:DbSetStatusDefaultValue("heals-incoming", {
+		type = "heals-incoming",
+		includePlayerHeals = false,
+		timeFrame = 3,
+		flags = 0,
+		color1 = {r = 0, g = 1, b = 0, a = 1}
+	})
+end
 
 -- death status
 local textDeath = L["DEAD"]
@@ -460,116 +569,3 @@ end
 
 Grid2.setupFunc["death"] = CreateDeath
 Grid2:DbSetStatusDefaultValue("death", {type = "death", color1 = {r = 1, g = 1, b = 1, a = 1}})
-
--- heals-incoming status
-local HealComm = LibStub("LibHealComm-4.0", true)
-if not HealComm then
-	return
-end
-
-local Heals = Grid2.statusPrototype:new("heals-incoming", false)
-Heals.GetColor = Grid2.statusLibrary.GetColor
-
-local UnitGUID = UnitGUID
-local HEALCOMM_TIMEFRAME = 3
-
-local function get_active_heal_amount_with_user(unit)
-	local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
-	return HealComm:GetHealAmount(UnitGUID(unit), HealComm.ALL_HEALS, time)
-end
-
-local function get_active_heal_amount_without_user(unit)
-	local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
-	return HealComm:GetOthersHealAmount(UnitGUID(unit), HealComm.ALL_HEALS, time)
-end
-
-local get_active_heal_amount = get_active_heal_amount_with_user
-
-local function get_effective_heal_amount(unit)
-	local guid = UnitGUID(unit)
-	local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
-	local heal = HealComm:GetHealAmount(guid, HealComm.ALL_HEALS, time)
-	return heal and heal * HealComm:GetHealModifier(guid) or 0
-end
-
-function Heals:UpdateDB()
-	self.minimum = self.dbx.flags and self.dbx.flags > 1 and self.dbx.flags or 0
-	HEALCOMM_TIMEFRAME = self.dbx.timeFrame or 3
-	get_active_heal_amount =
-		self.dbx.includePlayerHeals and get_active_heal_amount_with_user or get_active_heal_amount_without_user
-end
-
-function Heals:OnEnable()
-	HealComm.RegisterCallback(self, "HealComm_HealStarted", "Update")
-	HealComm.RegisterCallback(self, "HealComm_HealUpdated", "Update")
-	HealComm.RegisterCallback(self, "HealComm_HealDelayed", "Update")
-	HealComm.RegisterCallback(self, "HealComm_HealStopped", "Update")
-	HealComm.RegisterCallback(self, "HealComm_ModifierChanged", "UpdateModifier")
-	self:UpdateDB()
-end
-
-function Heals:OnDisable()
-	HealComm.UnregisterCallback(self, "HealComm_HealStarted")
-	HealComm.UnregisterCallback(self, "HealComm_HealUpdated")
-	HealComm.UnregisterCallback(self, "HealComm_HealDelayed")
-	HealComm.UnregisterCallback(self, "HealComm_HealStopped")
-	HealComm.UnregisterCallback(self, "HealComm_ModifierChanged")
-end
-
-function Heals:Update(event, healerGuid, _, _, _, ...)
-	for i = 1, select("#", ...) do
-		local guid = select(i, ...)
-		local unit = Grid2:GetUnitidByGUID(guid)
-		if unit then
-			self:UpdateIndicators(unit)
-		end
-	end
-end
-
-function Heals:UpdateModifier(event, guid)
-	local unit = Grid2:GetUnitidByGUID(guid)
-	if unit then
-		self:UpdateIndicators(unit)
-	end
-end
-
-function Heals:IsActive(unit)
-	local heal = get_active_heal_amount(unit)
-	return heal and heal > 0
-end
-
-function Heals:GetColor(unit)
-	local color = self.dbx.color1
-	return color.r, color.g, color.b, color.a
-end
-
-function Heals:GetText(unit)
-	return fmt("%.1fk", get_effective_heal_amount(unit) / 1000)
-end
-
-function Heals:GetPercent(unit)
-	local c, m = UnitHealth(unit), UnitHealthMax(unit)
-	if c == 0 or m == 0 or m == c then
-		return 0
-	end
-
-	local h = get_effective_heal_amount(unit)
-	if not h or h <= (self.minimum or 0) then
-		return 0
-	end
-	return ((h + c) >= m) and ((m - c) / m) or (h / m)
-end
-
-local function CreateHeals(baseKey, dbx)
-	Grid2:RegisterStatus(Heals, {"color", "text", "percent"}, baseKey, dbx)
-	return Heals
-end
-
-Grid2.setupFunc["heals-incoming"] = CreateHeals
-Grid2:DbSetStatusDefaultValue("heals-incoming", {
-	type = "heals-incoming",
-	includePlayerHeals = false,
-	timeFrame = 3,
-	flags = 0,
-	color1 = {r = 0, g = 1, b = 0, a = 1}
-})
