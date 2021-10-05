@@ -2,7 +2,7 @@
 -- SpecializedAbsorbs
 ------------------------------------------------------------------------
 
-local MAJOR, MINOR = "SpecializedAbsorbs-1.0", 1
+local MAJOR, MINOR = "SpecializedAbsorbs-1.0", 2
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 local Core
@@ -14,6 +14,9 @@ local tinsert, tremove, tsort = table.insert, table.remove, table.sort
 local UnitBuff, UnitHealthMax, UnitAttackPower = UnitBuff, UnitHealthMax, UnitAttackPower
 local UnitExists, UnitGUID, UnitClass, UnitLevel = UnitExists, UnitGUID, UnitClass, UnitLevel
 local UnitFactionGroup, UnitInBattleground, GetTalentInfo = UnitFactionGroup, UnitInBattleground, GetTalentInfo
+
+local CheckFlags = lib.CheckFlags or true
+lib.CheckFlags = CheckFlags
 
 ---------------------
 -- Install/Upgrade --
@@ -180,7 +183,13 @@ do
 	function SortEffects(a, b)
 		-- use timestamp in case of the same id
 		if a[1] == b[1] then
-			return (a[8] < b[8])
+			if a[8] == nil then
+				return true
+			elseif b[8] == nil then
+				return false
+			else
+				return (a[8] < b[8])
+			end
 		end
 
 		-- Twin Val'kyr
@@ -919,7 +928,7 @@ local function CheckFlags(srcFlags, dstFlags)
 end
 
 function Events.COMBAT_LOG_EVENT_UNFILTERED(timestamp, etype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, ...)
-	if not CheckFlags(srcFlags, dstFlags) then return end
+	if lib.CheckFlags and not CheckFlags(srcFlags, dstFlags) then return end
 
 	lastCombatLogEvent = timestamp
 	if etype == "SWING_DAMAGE" then
