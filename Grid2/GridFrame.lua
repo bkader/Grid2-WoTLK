@@ -250,7 +250,7 @@ function Grid2Frame:UpdateBackdrop()
 	frameBackdrop = Grid2:GetBackdropTable(
 		Grid2:MediaFetch("border", dbx.frameBorderTexture, "Grid2 Flat"), -- edgeFile
 		dbx.frameBorder, -- edgeSize
-		Grid2:MediaFetch("background", dbx.BackgroundTexture, "Gradient"), -- bgFile
+		[[Interface\Buttons\WHITE8X8]], -- bgFile
 		true, -- tile
 		16 -- tileSize
 	)

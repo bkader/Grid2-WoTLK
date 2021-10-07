@@ -22,6 +22,7 @@ local IsInRaid = Grid2.IsInRaid
 local UnitIterator = Grid2.UnitIterator
 local GetNumGroupMembers = Grid2.GetNumGroupMembers
 local UnitIsGroupLeader = Grid2.UnitIsGroupLeader
+local UnitIsGroupAssistant = Grid2.UnitIsGroupAssistant
 local UnitGroupRolesAssigned = Grid2.UnitGroupRolesAssigned
 local GetInspectSpecialization = Grid2.GetInspectSpecialization
 local groupCount = 0
@@ -210,18 +211,11 @@ function Assistant:UpdateActiveUnits()
 end
 
 function Assistant:UpdateAllUnits(event)
-	if IsInRaid() then
-		groupCount = GetNumGroupMembers()
-		local units = Grid2.raid_units
-		for i = 1, groupCount do
-			local name, rank = GetRaidRosterInfo(i)
-			if not name then break end -- whoops!
-			local assis = rank == 1 or nil
-			if assis ~= assis_cache[units[i]] then
-				assis_cache[units[i]] = assis
-				if event then
-					self:UpdateIndicators(units[i])
-				end
+	for unit, owner in UnitIterator() do
+		if owner == nil and UnitIsGroupAssistant(unit) then
+			assis_cache[unit] = true
+			if event then
+				self:UpdateIndicators(unit)
 			end
 		end
 	end
@@ -295,13 +289,14 @@ function Leader:UpdateLeader(event)
 end
 
 function Leader:CalculateLeader()
-	for unit in Grid2:IterateRosterUnits() do
-		if UnitIsGroupLeader(unit) then
+	raidLeader = nil
+	for unit, owner in UnitIterator() do
+		if owner == nil and UnitIsGroupLeader(unit) then
 			raidLeader = unit
-			return
+			break
 		end
 	end
-	raidLeader = nil
+	Leader:UpdateActiveUnits()
 end
 
 function Leader:OnEnable()
@@ -310,6 +305,7 @@ function Leader:OnEnable()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateLeader")
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateLeader")
 	self:CalculateLeader()
+	Grid2.After(2, Leader.CalculateLeader)
 end
 
 function Leader:OnDisable()
