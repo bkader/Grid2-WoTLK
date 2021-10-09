@@ -442,7 +442,7 @@ function Core.Disable()
 	Core.Frame:UnregisterAllEvents()
 
 	Core:UnregisterAllComm()
-	Core.CancelAllTimers()
+	Core:CancelAllTimers()
 
 	lib.Enabled = false
 
