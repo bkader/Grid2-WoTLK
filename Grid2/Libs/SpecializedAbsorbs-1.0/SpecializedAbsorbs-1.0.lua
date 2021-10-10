@@ -14,6 +14,7 @@ local tinsert, tremove, tsort = table.insert, table.remove, table.sort
 local UnitBuff, UnitHealthMax, UnitAttackPower = UnitBuff, UnitHealthMax, UnitAttackPower
 local UnitExists, UnitGUID, UnitClass, UnitLevel = UnitExists, UnitGUID, UnitClass, UnitLevel
 local UnitFactionGroup, UnitInBattleground, GetTalentInfo = UnitFactionGroup, UnitInBattleground, GetTalentInfo
+local GetNumRaidMembers, GetNumPartyMembers = GetNumRaidMembers, GetNumPartyMembers
 
 local CheckFlags = lib.CheckFlags or true
 lib.CheckFlags = CheckFlags
@@ -53,6 +54,9 @@ local playerid, playerclass
 -- sent to, nil if silent
 -- Can also be used to get the last known party state
 local curChatChannel = nil
+
+-- Hold the group type and number of members
+local groupCount = 0
 
 -- Always hold the timestamp from the last COMBAT_LOG_EVENT_UNFILTERED fired
 local lastCombatLogEvent = 0.0
@@ -295,13 +299,19 @@ local function GetUnitId(guid, name)
 	end
 
 	-- group
-	local prefix, min_member, max_member = Core:GetGroupTypeAndCount()
+	local prefix
+	if curChatChannel == "BATTLEGROUND" or curChatChannel == "RAID" then
+		prefix = "raid"
+	elseif curChatChannel == "PARTY" then
+		prefix = "party"
+	end
+
 	if prefix then
-		for i = min_member, max_member do
+		for i = 1, groupCount do
 			local unit = (i == 0) and "player" or prefix .. i
 			if UnitExists(unit) then
 				if UnitGUID(unit) == guid then
-					return guid
+					return unit
 				end
 				if UnitExists(unit .. "pet") and UnitGUID(unit .. "pet") == guid then
 					return unit .. "pet"
@@ -989,12 +999,16 @@ function Events.GROUPING_CHANGED()
 	-- Note that the order here is VERY important
 	if UnitInBattleground("player") then
 		curChatChannel = "BATTLEGROUND"
+		groupCount = GetNumRaidMembers()
 	elseif GetNumRaidMembers() > 0 then
 		curChatChannel = "RAID"
+		groupCount = GetNumRaidMembers()
 	elseif GetNumPartyMembers() > 0 then
 		curChatChannel = "PARTY"
+		groupCount = GetNumPartyMembers()
 	else
 		curChatChannel = nil
+		groupCount = 0
 	end
 
 	Core:ScheduleTimer(Events.STATS_CHANGED, 5)
