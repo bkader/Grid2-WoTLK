@@ -16,8 +16,7 @@ local UnitExists, UnitGUID, UnitClass, UnitLevel = UnitExists, UnitGUID, UnitCla
 local UnitFactionGroup, UnitInBattleground, GetTalentInfo = UnitFactionGroup, UnitInBattleground, GetTalentInfo
 local GetNumRaidMembers, GetNumPartyMembers = GetNumRaidMembers, GetNumPartyMembers
 
-local CheckFlags = lib.CheckFlags or true
-lib.CheckFlags = CheckFlags
+lib.CheckFlags = lib.CheckFlags or true
 
 ---------------------
 -- Install/Upgrade --
@@ -532,9 +531,9 @@ function Core.ApplySingularEffect(timestamp, srcGUID, srcName, dstGUID, dstName,
 		-- We add a 5s grace period for latency and all kind of stuff
 		-- This duration timeout should only be needed if the unit moved out of combat log
 		-- reporting range anyway
-		effectEntry[6] = Core:ScheduleTimer(Events.OnSingularTimeout, effectInfo[2] + 5, {destGUID, spellId})
+		effectEntry[6] = Core:ScheduleTimer(Events.OnSingularTimeout, effectInfo[2] + 5, {dstGUID, spellid})
 	else
-		effectEntry[6] = Core:ScheduleRepeatingTimer(Events.OnSingularActivityCheck, 8, {destGUID, spellId})
+		effectEntry[6] = Core:ScheduleRepeatingTimer(Events.OnSingularActivityCheck, 8, {dstGUID, spellid})
 	end
 end
 
@@ -1104,7 +1103,7 @@ function Events.OnSingularActivityCheck(args)
 
 		-- We cannot track whether it's still on, remove it
 		if not name then
-			Core:CancelTimer(activeEffectsBySpell[guid][spellId][6])
+			Core:CancelTimer(activeEffectsBySpell[guid][spellid][6])
 			RemoveActiveEffect(guid, spellid)
 		end
 
@@ -1120,12 +1119,12 @@ function Events.OnSingularActivityCheck(args)
 		end
 
 		if not stillActive then
-			Core:CancelTimer(activeEffectsBySpell[guid][spellId][6])
+			Core:CancelTimer(activeEffectsBySpell[guid][spellid][6])
 			RemoveActiveEffect(guid, spellid)
 		end
 	else
 		-- Make sure to remove the timer
-		Core:CancelTimer(activeEffectsBySpell[guid][spellId][6])
+		Core:CancelTimer(activeEffectsBySpell[guid][spellid][6])
 	end
 end
 
@@ -1468,7 +1467,7 @@ local function deathknight_WoN_Hit2(effectEntry, absorbedRemaining, overkill, sp
 	return maxAbsorb, true
 end
 
-local function deathknight_WoN_Hit1(effectEntry, absorbedRemaining, overkill, spellschool)
+local function deathknight_WoN_Hit3(effectEntry, absorbedRemaining, overkill, spellschool)
 	local maxAbsorb = floor((absorbedRemaining + overkill) * 0.15)
 	if effectEntry[3] < maxAbsorb then
 		return effectEntry[3], false

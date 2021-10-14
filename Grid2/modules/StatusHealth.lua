@@ -387,8 +387,7 @@ do
 	function Heals:UpdateDB()
 		self.minimum = self.dbx.flags and self.dbx.flags > 1 and self.dbx.flags or 0
 		HEALCOMM_TIMEFRAME = self.dbx.timeFrame or 3
-		get_active_heal_amount =
-			self.dbx.includePlayerHeals and get_active_heal_amount_with_user or get_active_heal_amount_without_user
+		get_active_heal_amount = self.dbx.includePlayerHeals and get_active_heal_amount_with_user or get_active_heal_amount_without_user
 	end
 
 	function Heals:OnEnable()
