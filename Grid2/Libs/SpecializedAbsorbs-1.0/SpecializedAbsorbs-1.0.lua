@@ -1409,7 +1409,7 @@ local deathknight_MS_Ranks = {[0] = 0, [1] = 0.08, [2] = 0.16, [3] = 0.25}
 -- Public Scaling: { [MagicSuppression] }
 local deathknight_defaultScaling = {0}
 
-function deathknight_AntiMagicShell_Create(srcGUID, srcName, dstGUID, dstName, spellid, destEffects)
+local function deathknight_AntiMagicShell_Create(srcGUID, srcName, dstGUID, dstName, spellid, destEffects)
 	local maxHealth = UnitDispatch(UnitHealthMax, dstGUID, dstName)
 	if maxHealth == 0 then
 		return 0, 0.0
@@ -2141,8 +2141,6 @@ Core.Effects = {
 	[57350] = {1.0, 6, function() return 1500, 1.0 end, generic_Hit}, -- Darkmoon Card: Illusion
 	[17252] = {1.0, 1800, function() return 500, 1.0 end, generic_Hit}, -- Mark of the Dragon Lord
 	[29506] = {1.0, 20, function() return 900, 1.0 end, generic_Hit}, -- The Burrower's Shell
-	[23506] = {1.0, 20, function() return 1000, 0.5 end, generic_Hit}, -- Arena Grand Master (mean value of 1000)
-	[39228] = {5.0, 20, function() return 1150, 1.0 end, items_ArgussianCompass_Hit}, -- Argussian Compass
 	[31771] = {1.0, 20, function() return 440, 1.0 end, generic_Hit}, -- Runed Fungalcap
 	[9800] = {1.0, 60, function() return 175, 1.0 end, generic_Hit}, -- Truesilver Champion
 	[13234] = {1.0, 600, function() return 500, 1.0 end, generic_Hit}, -- Gnomish Harm Prevention Belt
@@ -2180,7 +2178,6 @@ Core.Effects = {
 	[25747] = {1.0, 15, function() return 344, 1.0 end, Physical_Hit}, -- Defiler's Talisman/Talisman of Arathor
 	[25746] = {1.0, 15, function() return 394, 1.0 end, Physical_Hit}, -- Defiler's Talisman/Talisman of Arathor
 	[23991] = {1.0, 15, function() return 550, 1.0 end, Physical_Hit}, -- Defiler's Talisman/Talisman of Arathor
-	[31000] = {1.0, 300, function() return 1800, 1.0 end, Shadow_Hit}, -- Pendant of Shadow's End Usage
 	[30997] = {1.0, 300, function() return 1800, 1.0 end, Fire_Hit}, -- Pendant of Frozen Flame Usage
 	[31002] = {1.0, 300, function() return 1800, 1.0 end, Arcane_Hit}, -- Pendant of the Null Rune
 	[30999] = {1.0, 300, function() return 1800, 1.0 end, Nature_Hit}, -- Pendant of Withering
@@ -2188,9 +2185,7 @@ Core.Effects = {
 	[31000] = {1.0, 300, function() return 1800, 1.0 end, Shadow_Hit}, -- Pendant of Shadow's End
 	[23506] = {1.0, 20, function() return 1000, 1.0 end, generic_Hit}, -- Arena Grand Master
 	[12561] = {1.0, 60, function() return 400, 1.0 end, Fire_Hit}, -- Goblin Construction Helmet
-	[31771] = {1.0, 20, function() return 220, 1.0 end, generic_Hit}, -- Runed Fungalcap
 	[21956] = {1.0, 15, function() return 250, 1.0 end, Physical_Hit}, -- Mark of Resolution
-	[29506] = {1.0, 20, function() return 450, 1.0 end, generic_Hit}, -- The Burrower's Shell
 	[4057] = {1.0, 60, function() return 250, 1.0 end, Fire_Hit}, -- Flame Deflector
 	[4077] = {1.0, 60, function() return 300, 1.0 end, generic_Hit}, -- Ice Deflector
 	[39228] = {1.0, 20, function() return 609, 1.0 end, generic_Hit}, -- Argussian Compass (may not be an actual absorb)
@@ -2201,7 +2196,6 @@ Core.Effects = {
 	[26467] = {1.0, 30, function() return 1000, 1.0 end, generic_Hit}, -- Scarab Brooch
 	[26470] = {1.0, 8, function() return 1000, 1.0 end, generic_Hit}, -- Scarab Brooch
 	[27539] = {1.0, 6, function() return 1000, 1.0 end, generic_Hit}, -- Thick Obsidian Breatplate
-	[28810] = {1.0, 30, function() return 1000, 1.0 end, generic_Hit}, -- Faith Set Proc Armor of Faith
 	[54808] = {1.0, 12, function() return 1000, 1.0 end, generic_Hit}, -- Noise Machine Sonic Shield
 	[55019] = {1.0, 12, function() return 1000, 1.0 end, generic_Hit}, -- Sonic Shield
 	[70845] = {1.0, 10, items_Stoicism_Create, generic_Hit}, -- Stoicism (Warrior Raid Set 10 4pc bonus)
