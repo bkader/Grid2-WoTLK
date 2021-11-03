@@ -1,4 +1,4 @@
-local Grid2 = LibStub("AceAddon-3.0"):NewAddon("Grid2", "AceEvent-3.0", "AceTimer-3.0", "AceConsole-3.0", "LibCompat-1.0")
+local Grid2 = LibStub("AceAddon-3.0"):NewAddon("Grid2", "AceEvent-3.0", "AceConsole-3.0", "LibCompat-1.0")
 _G.Grid2 = Grid2
 
 Grid2.versionstring = "Grid2 v" .. GetAddOnMetadata("Grid2", "Version")

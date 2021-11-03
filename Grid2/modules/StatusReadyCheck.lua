@@ -8,11 +8,11 @@ local readyStatuses = {}
 
 function ReadyCheck:READY_CHECK(event, originator)
 	if timerClearStatus then
-		Grid2:CancelTimer(timerClearStatus, true)
+		Grid2.CancelTimer(timerClearStatus, true)
 		timerClearStatus = nil
 	end
 	if timerClearProcess then
-		Grid2:CancelTimer(timerClearProcess, true)
+		Grid2.CancelTimer(timerClearProcess, true)
 		timerClearProcess = nil
 	end
 	readyChecking = true
@@ -23,7 +23,7 @@ function ReadyCheck:READY_CHECK(event, originator)
 			self:UpdateIndicators(unit)
 		end
 	end
-	timerClearProcess = Grid2:ScheduleTimer(self.READY_CHECK_FINISHED, 30, self)
+	timerClearProcess = Grid2.NewTimer(30, function() self:READY_CHECK_FINISHED() end)
 end
 
 function ReadyCheck:READY_CHECK_CONFIRM(event, unit)
@@ -39,7 +39,7 @@ function ReadyCheck:READY_CHECK_FINISHED()
 		end
 	end
 	timerClearProcess = nil
-	timerClearStatus = Grid2:ScheduleTimer(self.ClearStatus, ReadyCheck.dbx.threshold or 0, self)
+	timerClearStatus = Grid2.NewTimer(ReadyCheck.dbx.threshold or 0, function() self:ClearStatus() end)
 end
 
 function ReadyCheck:RAID_ROSTER_UPDATE()

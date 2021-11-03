@@ -23,12 +23,12 @@ function Resurrection:Timer()
 		end
 	end
 	if not next(res_cache) then
-		Grid2:CancelTimer(timer)
+		Grid2.CancelTimer(timer, true)
 		timer = nil
 	end
 end
 
-function Resurrection:CheckResTimers()
+function Resurrection.CheckResTimers(self)
 	local t, n = GetTime(), 0
 	for unit, val in pairs(res_cache) do
 		if val == 0 then
@@ -42,12 +42,12 @@ function Resurrection:CheckResTimers()
 	end
 	if n == 0 then
 		if timer then
-			Grid2:CancelTimer(timer)
+			Grid2.CancelTimer(timer, true)
 			timer = nil
 		end
 	else
 		if not timer then
-			timer = Grid2:ScheduleRepeatingTimer(Resurrection.CheckResTimers, 0.25, self)
+			timer = Grid2.NewTicker(0.25, function() Resurrection.CheckResTimers(self) end)
 		end
 	end
 end

@@ -50,11 +50,11 @@ end
 function Direction:SetTimer(enable)
 	if enable then
 		if not timer then
-			timer = Grid2:ScheduleRepeatingTimer(UpdateDirections, self.dbx.updateRate or 0.2)
+			timer = Grid2.NewTicker(self.dbx.updateRate or 0.2, UpdateDirections)
 		end
 	else
 		if timer then
-			Grid2:CancelTimer(timer)
+			Grid2.CancelTimer(timer, true)
 			timer = nil
 		end
 	end
