@@ -32,7 +32,7 @@ function Grid2Options:MakeIndicatorAuraIconsBorderOptions(indicator, options, op
 		end,
 		set = function(_, v)
 			indicator.dbx.borderOpacity = v
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end
 	}
 	options.useStatusColor = {
@@ -46,7 +46,7 @@ function Grid2Options:MakeIndicatorAuraIconsBorderOptions(indicator, options, op
 		end,
 		set = function(_, v)
 			indicator.dbx.useStatusColor = v or nil
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end
 	}
 end
@@ -62,7 +62,7 @@ function Grid2Options:MakeIndicatorAuraIconsSizeOptions(indicator, options, opti
 		end,
 		set = function(_, v)
 			indicator.dbx.orientation = v
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end,
 		values = {VERTICAL = L["VERTICAL"], HORIZONTAL = L["HORIZONTAL"]}
 	}
@@ -79,7 +79,7 @@ function Grid2Options:MakeIndicatorAuraIconsSizeOptions(indicator, options, opti
 		end,
 		set = function(_, v)
 			indicator.dbx.iconSpacing = v
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end
 	}
 	options.maxIcons = {
@@ -95,7 +95,7 @@ function Grid2Options:MakeIndicatorAuraIconsSizeOptions(indicator, options, opti
 		end,
 		set = function(_, v)
 			indicator.dbx.maxIcons = v
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end
 	}
 	options.maxIconsPerRow = {
@@ -111,7 +111,7 @@ function Grid2Options:MakeIndicatorAuraIconsSizeOptions(indicator, options, opti
 		end,
 		set = function(_, v)
 			indicator.dbx.maxIconsPerRow = v
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end
 	}
 	options.iconsize = {
@@ -127,7 +127,7 @@ function Grid2Options:MakeIndicatorAuraIconsSizeOptions(indicator, options, opti
 		end,
 		set = function(_, v)
 			indicator.dbx.iconSize = v > 0 and v or nil
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end
 	}
 end
@@ -153,7 +153,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 		end,
 		set = function(_, v)
 			indicator.dbx.fontOffsetX = v
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end,
 		hidden = function()
 			return indicator.dbx.disableStack
@@ -172,7 +172,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 		end,
 		set = function(_, v)
 			indicator.dbx.fontOffsetY = v
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end,
 		hidden = function()
 			return indicator.dbx.disableStack
@@ -202,7 +202,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 			else
 				dbx.disableStack = true
 			end
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end
 	}
 	options.font = {
@@ -216,7 +216,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 		end,
 		set = function(info, v)
 			indicator.dbx.font = Grid2Options.MEDIA_VALUE_DEFAULT ~= v and v or nil
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end,
 		values = self.GetStatusBarValues,
 		hidden = function()
@@ -234,7 +234,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 		end,
 		set = function(_, v)
 			indicator.dbx.fontFlags = v ~= "NONE" and v or ""
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end,
 		values = Grid2Options.fontFlagsValues,
 		hidden = function()
@@ -254,7 +254,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 		end,
 		set = function(_, v)
 			indicator.dbx.fontSize = v
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end,
 		hidden = function()
 			return indicator.dbx.disableStack
@@ -281,7 +281,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 				indicator.dbx.colorStack = {r = r, g = g, b = b, a = a}
 			end
 			local indicatorKey = indicator.name
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end,
 		hasAlpha = true,
 		hidden = function()
@@ -300,7 +300,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 		end,
 		set = function(_, v)
 			indicator.dbx.disableCooldown = v or nil
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end
 	}
 	options.reverseCooldown = {
@@ -314,7 +314,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 		end,
 		set = function(_, v)
 			indicator.dbx.reverseCooldown = v or nil
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end,
 		hidden = function()
 			return indicator.dbx.disableCooldown
@@ -331,7 +331,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 		end,
 		set = function(_, v)
 			indicator.dbx.disableOmniCC = v or nil
-			self:RefreshIndicator(indicator, "Layout")
+			self:RefreshIndicator(indicator, "Create")
 		end,
 		hidden = function()
 			return indicator.dbx.disableCooldown

@@ -149,9 +149,7 @@ local function Icon_Layout(self, parent)
 		end
 		-- cooldown animation
 		if self.showCooldown then
-			frame.cooldown =
-				frame.cooldown or
-				CreateFrame("Cooldown", frameName and frameName .. i or nil, frame, "CooldownFrameTemplate")
+			frame.cooldown = frame.cooldown or CreateFrame("Cooldown", frameName and frameName .. i or nil, frame, "CooldownFrameTemplate")
 			frame.cooldown:SetAllPoints()
 			frame.cooldown.noCooldownCount = self.dbx.disableOmniCC
 			frame.cooldown:SetDrawEdge(self.dbx.disableOmniCC ~= nil)
@@ -165,7 +163,7 @@ local function Icon_Layout(self, parent)
 		frame.icon:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -borderSize, borderSize)
 		frame.icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
 		--
-		-- frame:Hide() -- TODO: Why this?
+		frame:Hide() -- TODO: Why this?
 		x = x + 1
 		if x >= self.maxIconsPerRow then
 			x = 0
