@@ -2,11 +2,12 @@
 -- SpecializedAbsorbs
 ------------------------------------------------------------------------
 
-local MAJOR, MINOR = "SpecializedAbsorbs-1.0", 2
+local MAJOR, MINOR = "SpecializedAbsorbs-1.0", 3
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 local Core
 
+local error = error
 local pairs, select = pairs, select
 local min, max, floor = math.min, math.max, math.floor
 local setmetatable, getmetatable = setmetatable, getmetatable
@@ -17,6 +18,7 @@ local UnitFactionGroup, UnitInBattleground, GetTalentInfo = UnitFactionGroup, Un
 local GetNumRaidMembers, GetNumPartyMembers = GetNumRaidMembers, GetNumPartyMembers
 
 lib.CheckFlags = lib.CheckFlags or true
+lib.NoErrors = lib.NoErrors or true
 
 ---------------------
 -- Install/Upgrade --
@@ -128,6 +130,10 @@ local Scaling
 local privateScaling
 local playerScaling
 
+-- Table of all unitGUIDs that have a Heal Absorb spell effect, with shield amount as value
+-- Health threshold until it gets fully absorbed
+local GUIDtoAbsorbHealSpells
+
 -- Class-specific callbacks
 local OnEnableClass = {}
 local OnScalingDecode = setmetatable({}, {__index = function(table, class) return table.DEFAULT end})
@@ -142,6 +148,14 @@ local RemoveActiveEffect
 -- Constants
 local LOW_VALUE_TOLERANCE = 50
 local ZONE_MODIFIER = 1
+
+-- addon comm prefixes
+local COMM_UNITSTATS = "SpecializedAbsorbs_UnitStats"
+local COMM_SCALING = "SpecializedAbsorbs_Scaling"
+
+-- for players using AbsorbsMonitor-1.0
+local COMM_UNITSTATS_ALT = "Absorbs_UnitStats"
+local COMM_SCALING_ALT = "Absorbs_Scaling"
 
 ----------------------
 -- Helper functions --
@@ -343,6 +357,11 @@ end
 -- Core functions --
 --------------------
 
+function Core.Error(...)
+	if lib.NoErrors then return end
+	error(...)
+end
+
 function Core.Enable()
 	playerclass = select(2, UnitClass("player"))
 	playerid = UnitGUID("player")
@@ -372,6 +391,9 @@ function Core.Enable()
 
 	playerScaling = Scaling[playerid]
 	privateScaling = Scaling[-1]
+
+	Core.GUIDtoAbsorbHealSpells = {}
+	GUIDtoAbsorbHealSpells = Core.GUIDtoAbsorbHealSpells
 
 	Core.RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	Events.ZONE_CHANGED_NEW_AREA()
@@ -419,8 +441,11 @@ function Core.Enable()
 
 	Core:ScheduleRepeatingTimer(Events.OnPeriodicBroadcast, 300)
 
-	Core:RegisterComm("SpecializedAbsorbs_UnitStats", Events.OnUnitStatsReceived)
-	Core:RegisterComm("SpecializedAbsorbs_Scaling", Events.OnScalingReceived)
+	Core:RegisterComm(COMM_UNITSTATS, Events.OnUnitStatsReceived)
+	Core:RegisterComm(COMM_UNITSTATS_ALT, Events.OnUnitStatsReceived)
+
+	Core:RegisterComm(COMM_SCALING, Events.OnScalingReceived)
+	Core:RegisterComm(COMM_SCALING_ALT, Events.OnScalingReceived)
 
 	if not lib.Passive then
 		Core:SetActive()
@@ -446,6 +471,8 @@ function Core.Disable()
 
 	wipe(Core.UnitStatsTable)
 	wipe(Core.Scaling)
+
+	wipe(Core.GUIDtoAbsorbHealSpells)
 
 	wipe(Core.Events)
 	Core.Frame:UnregisterAllEvents()
@@ -555,7 +582,7 @@ function Core.ApplyAreaEffect(timestamp, triggerGUID, triggerName, dstGUID, dstN
 		activeEffectsBySpell[dstGUID] = destEffects
 		activeEffectsByPriority[dstGUID] = {}
 	elseif destEffects[spellid] then
-		error("Called ApplyAreaEffect on refreshed aura")
+		Core.Error("Called ApplyAreaEffect on refreshed aura")
 		return
 	end
 
@@ -583,7 +610,7 @@ end
 
 function Core.CreateAreaTrigger(timestamp, srcGUID, srcName, triggerGUID, triggerName, spellid, spellschool)
 	if activeAreaEffects[triggerGUID] then
-		error("Trying to create new area trigger on existing one, triggerGUID: " .. triggerGUID .. ", existing spellid: " .. activeAreaEffects[triggerGUID][1])
+		Core.Error("Trying to create new area trigger on existing one, triggerGUID: " .. triggerGUID .. ", existing spellid: " .. activeAreaEffects[triggerGUID][1])
 		return
 	end
 
@@ -851,7 +878,9 @@ function Core.SendUnitStats()
 	if curChatChannel then
 		local curAP, curSP = UnitStatsTable[playerid][2], UnitStatsTable[playerid][3]
 		if (curAP ~= lastAP) or (curSP ~= lastSP) then
-			Core:SendCommMessage("SpecializedAbsorbs_UnitStats", Core:Serialize(playerid, playerclass, curAP, curSP), curChatChannel)
+			Core:SendCommMessage(COMM_UNITSTATS, Core:Serialize(playerid, playerclass, curAP, curSP), curChatChannel)
+			Core:SendCommMessage(COMM_UNITSTATS_ALT, Core:Serialize(playerid, playerclass, curAP, curSP), curChatChannel)
+
 			lastAP, lastSP = curAP, curSP
 			CommStatsCooldown = true
 			Core:ScheduleTimer(ClearCommStatsCooldown, 15)
@@ -861,7 +890,9 @@ end
 
 function Core.SendScaling()
 	if curChatChannel then
-		Core:SendCommMessage("SpecializedAbsorbs_Scaling", Core:Serialize(playerid, playerclass, Events.OnScalingEncode()), curChatChannel)
+		Core:SendCommMessage(COMM_SCALING, Core:Serialize(playerid, playerclass, Events.OnScalingEncode()), curChatChannel)
+		Core:SendCommMessage(COMM_SCALING_ALT, Core:Serialize(playerid, playerclass, Events.OnScalingEncode()), curChatChannel)
+
 		CommScalingCooldown = true
 		Core:ScheduleTimer(ClearCommStatsCooldown, 30)
 	end
@@ -936,6 +967,32 @@ local function CheckFlags(srcFlags, dstFlags)
 	return (srcFlags and bit.band(srcFlags, BITMASK_GROUP) ~= 0) or (dstFlags and bit.band(dstFlags, BITMASK_GROUP) ~= 0)
 end
 
+------------------
+-- Heal Absorbs --
+------------------
+
+local absorbHealSpells = {
+	[66237] = 30000,	-- Incinerate Flesh (10 Normal)
+	[67049] = 60000,	-- Incinerate Flesh (25 Normal)
+	[67050] = 40000,	-- Incinerate Flesh (10 Heroic)
+	[67051] = 85000,	-- Incinerate Flesh (25 Heroic)
+	[66236] = 30000,	-- Incinerate Flesh
+	[70659] = 9000,		-- Necrotic Strike (10 Normal)
+	[71951] = 15000,	-- Necrotic Strike
+	[72490] = 14000,	-- Necrotic Strike (25 Normal)
+	[72491] = 14000,	-- Necrotic Strike (10 Heroic)
+	[72492] = 20000,	-- Necrotic Strike (25 Heroic)
+}
+
+local environmentSchools = {
+	FALLING = SCHOOL_MASK_PHYSICAL,
+	DROWNING = SCHOOL_MASK_PHYSICAL,
+	FATIGUE = SCHOOL_MASK_PHYSICAL,
+	FIRE = SCHOOL_MASK_FIRE,
+	LAVA = SCHOOL_MASK_FIRE,
+	SLIME = SCHOOL_MASK_NATURE
+}
+
 function Events.COMBAT_LOG_EVENT_UNFILTERED(timestamp, etype, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, ...)
 	if lib.CheckFlags and not CheckFlags(srcFlags, dstFlags) then return end
 
@@ -948,6 +1005,10 @@ function Events.COMBAT_LOG_EVENT_UNFILTERED(timestamp, etype, srcGUID, srcName, 
 		local _, _, spellschool, amount, _, _, _, _, absorbed = ...
 		if not absorbed then return end
 		HitUnit(dstGUID, absorbed, amount, spellschool)
+	elseif etype == "ENVIRONMENTAL_DAMAGE" then
+		local envtype, amount, _, _, _, _, absorbed = ...
+		if not absorbed then return end
+		HitUnit(dstGUID, absorbed, amount, environmentSchools[envtype] or SCHOOL_MASK_PHYSICAL)
 	elseif etype == "SWING_MISSED" then
 		local misstype, amount = ...
 		if misstype ~= "ABSORB" then return end
@@ -957,9 +1018,12 @@ function Events.COMBAT_LOG_EVENT_UNFILTERED(timestamp, etype, srcGUID, srcName, 
 		if misstype ~= "ABSORB" then return end
 		HitUnit(dstGUID, amount, 0, spellschool)
 	elseif etype == "SPELL_HEAL" or etype == "SPELL_PERIODIC_HEAL" then
-		local spellid, _, _, amount, overheal, _, critical = ...
+		local spellid, _, _, amount, overheal, absorbed, critical = ...
 		if CombatTriggersOnHeal[srcGUID] then
 			CombatTriggersOnHeal[srcGUID](srcGUID, srcName, dstGUID, dstName, spellid, amount, overheal)
+		end
+		if absorbed and Core.GUIDtoAbsorbHealSpells[dstGUID] then
+			Core.GUIDtoAbsorbHealSpells[dstGUID] = Core.GUIDtoAbsorbHealSpells[dstGUID] - absorbed
 		end
 		if critical and CombatTriggersOnHealCrit[srcGUID] then
 			CombatTriggersOnHealCrit[srcGUID](srcGUID, srcName, dstGUID, dstName, spellid, amount, overheal)
@@ -976,6 +1040,9 @@ function Events.COMBAT_LOG_EVENT_UNFILTERED(timestamp, etype, srcGUID, srcName, 
 		if CombatTriggersOnAuraApplied[spellid] then
 			CombatTriggersOnAuraApplied[spellid](srcGUID, srcName, dstGUID, dstName, spellid)
 		end
+		if absorbHealSpells[spellid] then
+			Core.GUIDtoAbsorbHealSpells[dstGUID] = absorbHealSpells[spellid]
+		end
 	elseif etype == "SPELL_AURA_REMOVED" then
 		local spellid, _, spellschool = ...
 		if Effects[spellid] then
@@ -985,6 +1052,9 @@ function Events.COMBAT_LOG_EVENT_UNFILTERED(timestamp, etype, srcGUID, srcName, 
 		end
 		if CombatTriggersOnAuraRemoved[spellid] then
 			CombatTriggersOnAuraRemoved[spellid](srcGUID, srcName, dstGUID, dstName, spellid, spellschool)
+		end
+		if absorbHealSpells[spellid] then
+			Core.GUIDtoAbsorbHealSpells[dstGUID] = nil
 		end
 	elseif etype == "SPELL_SUMMON" then
 		local spellid, _, spellschool = ...
@@ -1011,6 +1081,7 @@ function Events.GROUPING_CHANGED()
 	end
 
 	Core:ScheduleTimer(Events.STATS_CHANGED, 5)
+	Events.STATS_CHANGED()
 end
 
 function Events.ZONE_CHANGED_NEW_AREA()
@@ -1037,6 +1108,7 @@ function Events.STATS_CHANGED()
 	UnitStatsTable[playerid][3] = GetSpellBonusHealing()
 	if curChatChannel then
 		Core:ScheduleUniqueTimer("comm_stats", Core.SendUnitStats, CommStatsCooldown and 15 or 5)
+		Core:ScheduleUniqueTimer("comm_scaling", Core.SendScaling, CommScalingCooldown and 30 or 5)
 	end
 end
 
@@ -1143,7 +1215,7 @@ function Events.OnAreaTimeout(areaEntry)
 	end
 
 	-- We're only here if we didn't reduce the refcount to zero
-	error("Positive refcount " .. areaEntry[9] .. " remained for area effect " .. areaEntry[1] .. " by trigger " .. areaEntry[8])
+	Core.Error("Positive refcount " .. areaEntry[9] .. " remained for area effect " .. areaEntry[1] .. " by trigger " .. areaEntry[8])
 end
 
 -- Map client events to our callbacks
@@ -1284,6 +1356,13 @@ end
 function lib.ScheduleScalingBroadcast()
 	if curChatChannel then
 		Core:ScheduleUniqueTimer("comm_scaling", Core.SendScaling, CommScalingCooldown and 30 or 5)
+	end
+end
+
+function lib.UnitTotalHealAbsorbs(guid)
+	if GUIDtoAbsorbHealSpells then
+		local guidHealAbsorbs = guid and GUIDtoAbsorbHealSpells[guid]
+		return guidHealAbsorbs
 	end
 end
 
@@ -1603,7 +1682,7 @@ local paladin_defaultScaling = {1.0}
 -- The base value is always 500
 local function paladin_SacredShield_Create(srcGUID, srcName, dstGUID, dstName, spellid, destEffects)
 	local _, sp, quality1, sourceScaling, quality2 = UnitStatsAndScaling(srcGUID, 0.1, paladin_defaultScaling, 0.2)
-	return floor((500 + (sp * 0.75)) * sourceScaling[1] * ZONE_MODIFIER), min(quality1, quality2)
+	return floor((500 + (sp * 0.75)) * (sourceScaling[1] or paladin_defaultScaling[1]) * ZONE_MODIFIER), min(quality1, quality2)
 end
 
 local function paladin_OnTalentUpdate()

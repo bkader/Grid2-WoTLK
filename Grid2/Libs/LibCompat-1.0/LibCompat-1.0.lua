@@ -4,7 +4,7 @@
 -- @author: Kader B (https://github.com/bkader/LibCompat-1.0)
 --
 
-local MAJOR, MINOR = "LibCompat-1.0", 25
+local MAJOR, MINOR = "LibCompat-1.0", 26
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -251,12 +251,7 @@ do
 	-- delete table and return to pool
 	local function delTable(t)
 		if type(t) == "table" then
-			for k, v in pairs(t) do
-				if type(v) == "table" then
-					delTable(v)
-				end
-				t[k] = nil
-			end
+			wipe(t)
 			t[true] = true
 			t[true] = nil
 			tablePool[t] = true
@@ -349,13 +344,16 @@ do
 	do
 		local rmem, pmem, step, count
 
-		local function SelfIterator()
+		local function SelfIterator(excPets)
 			while step do
 				local unit, owner
 				if step == 1 then
 					unit, owner, step = "player", nil, 2
 				elseif step == 2 then
-					unit, owner, step = "playerpet", "player", nil
+					if not excPets then
+						unit, owner = "playerpet", "player"
+					end
+					step = nil
 				end
 				if unit and UnitExists(unit) then
 					return unit, owner
@@ -363,16 +361,18 @@ do
 			end
 		end
 
-		local function PartyIterator()
+		local function PartyIterator(excPets)
 			while step do
 				local unit, owner
 				if step <= 2 then
-					unit, owner = SelfIterator()
+					unit, owner = SelfIterator(excPets)
 					step = step or 3
 				elseif step == 3 then
 					unit, owner, step = format("party%d", count), nil, 4
 				elseif step == 4 then
-					unit, owner = format("partypet%d", count), format("party%d", count)
+					if not excPets then
+						unit, owner = format("partypet%d", count), format("party%d", count)
+					end
 					count = count + 1
 					step = count <= pmem and 3 or nil
 				end
@@ -382,13 +382,15 @@ do
 			end
 		end
 
-		local function RaidIterator()
+		local function RaidIterator(excPets)
 			while step do
 				local unit, owner
 				if step == 1 then
 					unit, owner, step = format("raid%d", count), nil, 2
 				elseif step == 2 then
-					unit, owner = format("raidpet%d", count), format("raid%d", count)
+					if not excPets then
+						unit, owner = format("raidpet%d", count), format("raid%d", count)
+					end
 					count = count + 1
 					step = count <= rmem and 1 or nil
 				end
@@ -398,23 +400,23 @@ do
 			end
 		end
 
-		function UnitIterator()
+		function UnitIterator(excPets)
 			rmem, step = GetNumRaidMembers(), 1
 			if rmem == 0 then
 				pmem = GetNumPartyMembers()
 				if pmem == 0 then
-					return SelfIterator, false
+					return SelfIterator, excPets
 				end
 				count = 1
-				return PartyIterator, false
+				return PartyIterator, excPets
 			end
 			count = 1
-			return RaidIterator, true
+			return RaidIterator, excPets
 		end
 	end
 
-	local function IsGroupDead()
-		for unit in UnitIterator() do
+	local function IsGroupDead(incPets)
+		for unit in UnitIterator(not incPets) do
 			if not UnitIsDeadOrGhost(unit) then
 				return false
 			end
@@ -422,8 +424,8 @@ do
 		return true
 	end
 
-	local function IsGroupInCombat()
-		for unit in UnitIterator() do
+	local function IsGroupInCombat(incPets)
+		for unit in UnitIterator(not incPets) do
 			if UnitAffectingCombat(unit) then
 				return true
 			end
@@ -750,7 +752,8 @@ end
 -- C_Timer mimic
 
 do
-	local Timer = {}
+	local Timer = lib.Timer or {}
+	lib.Timer = Timer
 
 	local TickerPrototype = {}
 	local TickerMetatable = {
@@ -762,10 +765,10 @@ do
 
 	local new, del
 	do
-		Timer.__timers = Timer.__timers or {}
-		Timer.__afters = Timer.__afters or {}
-		local listT = Timer.__timers
-		local listA = Timer.__afters
+		Timer.recycledTimers = Timer.recycledTimers or {}
+		Timer.recycledDelays = Timer.recycledDelays or {}
+		local listT = Timer.recycledTimers
+		local listA = Timer.recycledDelays
 
 		function new(temp)
 			if temp then
@@ -779,9 +782,9 @@ do
 			return t
 		end
 
-		function del(t)
+		function del(t, temp)
 			if t then
-				local temp = t._temp
+				wipe(t)
 				t[true] = true
 				t[true] = nil
 				if temp then
@@ -801,7 +804,7 @@ do
 			local ticker = WaitTable[i]
 
 			if ticker._cancelled then
-				del(tremove(WaitTable, i))
+				del(tremove(WaitTable, i), ticker._temp)
 				total = total - 1
 			elseif ticker._delay > elapsed then
 				ticker._delay = ticker._delay - elapsed
@@ -809,15 +812,15 @@ do
 			else
 				ticker._callback(ticker)
 
-				if ticker._remainingIterations == -1 then
+				if ticker._iterations == -1 then
 					ticker._delay = ticker._duration
 					i = i + 1
-				elseif ticker._remainingIterations > 1 then
-					ticker._remainingIterations = ticker._remainingIterations - 1
+				elseif ticker._iterations > 1 then
+					ticker._iterations = ticker._iterations - 1
 					ticker._delay = ticker._duration
 					i = i + 1
-				elseif ticker._remainingIterations == 1 then
-					del(tremove(WaitTable, i))
+				elseif ticker._iterations == 1 then
+					del(tremove(WaitTable, i), ticker._temp)
 					total = total - 1
 				end
 			end
@@ -856,11 +859,11 @@ do
 
 		local ticker = new(true)
 
-		ticker._remainingIterations = 1
+		ticker._iterations = 1
 		ticker._delay = max(0.01, duration)
 		ticker._callback = callback
-		ticker._cancelled = nil
 		ticker._temp = true
+		ticker._cancelled = nil -- just in case
 
 		AddDelayedCall(ticker)
 	end
@@ -868,11 +871,12 @@ do
 	local function CreateTicker(duration, callback, iterations, ...)
 		local ticker = new()
 
-		ticker._remainingIterations = iterations or -1
+		ticker._iterations = iterations or -1
 		ticker._delay = max(0.01, duration)
 		ticker._duration = ticker._delay
 		ticker._callback = callback
-		ticker._cancelled = nil
+		ticker._cancelled = nil -- just in case
+		ticker._temp = nil -- just in case
 
 		AddDelayedCall(ticker)
 		return ticker
@@ -888,9 +892,11 @@ do
 		return CreateTicker(duration, callback, 1, ...)
 	end
 
-	function Timer.CancelTimer(ticker)
+	function Timer.CancelTimer(ticker, silent)
 		if ticker and ticker.Cancel then
 			ticker:Cancel()
+		elseif not silent then
+			error(MAJOR .. ": CancelTimer(timer[, silent]): '"..tostring(ticker).."' - no such timer registered")
 		end
 		return nil
 	end
@@ -956,16 +962,16 @@ do
 		return tconcat(t)
 	end
 
+	-- we a fake frame/fontstring to escape the string
+	local escapeFrame = CreateFrame("Frame")
+	escapeFrame.fs = escapeFrame:CreateFontString(nil, "ARTWORK", "ChatFontNormal")
+	escapeFrame:Hide()
+
 	local function EscapeStr(str)
-		local res = ""
-		for i = 1, strlen(str) do
-			local n = str:sub(i, i)
-			res = res .. n
-			if n == "|" then
-				res = res .. "\124"
-			end
-		end
-		return (res ~= "") and res or str
+		escapeFrame.fs:SetText(str)
+		str = escapeFrame.fs:GetText()
+		escapeFrame.fs:SetText("")
+		return str
 	end
 
 	lib.HexEncode = HexEncode
@@ -1013,13 +1019,6 @@ do
 		return specid, specname, points
 	end
 
-	-- checks if the feral druid is a cat or tank spec
-	local function GetDruidSpec(unit)
-		-- 57881 : Natural Reaction -- used by druid tanks
-		local points = LGT:UnitHasTalent(unit, GetSpellInfo(57881), LGT:GetActiveTalentGroup(unit))
-		return (points and points > 0) and 3 or 2
-	end
-
 	local function GetInspectSpecialization(unit, class)
 		local spec  -- start with nil
 
@@ -1038,7 +1037,8 @@ do
 								if i == 3 then
 									index = 4
 								elseif i == 2 then
-									index = GetDruidSpec(unit)
+									local points = LGT:UnitHasTalent(unit, GetSpellInfo(57881))
+									index = (points and points > 0) and 3 or 2
 								end
 							else
 								index = i
@@ -1088,7 +1088,7 @@ do
 			return "DAMAGER"
 		end
 
-		return LGTRoleTable[LGT:GetUnitRole(unit or "player")] or "NONE"
+		return LGTRoleTable[LGT:GetUnitRole(unit)] or "NONE"
 	end
 
 	local function GetGUIDRole(guid)
@@ -1737,7 +1737,6 @@ local mixins = {
 	"NewTicker",
 	"NewTimer",
 	"CancelTimer",
-	-- spell util
 	-- color conversion
 	"HexToRGB",
 	"RGBToHex",
