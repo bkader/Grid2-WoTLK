@@ -4,7 +4,7 @@
 -- @author: Kader B (https://github.com/bkader/LibCompat-1.0)
 --
 
-local MAJOR, MINOR = "LibCompat-1.0", 26
+local MAJOR, MINOR = "LibCompat-1.0", 28
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -237,28 +237,6 @@ do
 		return setmetatable(wipe(t or {}), weaktable)
 	end
 
-	-- Shamelessly copied from Omen - thanks!
-	local tablePool = lib.tablePool or setmetatable({}, {__mode = "kv"})
-	lib.tablePool = tablePool
-
-	-- get a new table
-	local function newTable()
-		local t = next(tablePool) or {}
-		tablePool[t] = nil
-		return t
-	end
-
-	-- delete table and return to pool
-	local function delTable(t)
-		if type(t) == "table" then
-			wipe(t)
-			t[true] = true
-			t[true] = nil
-			tablePool[t] = true
-		end
-		return nil
-	end
-
 	lib.SafePack = SafePack
 	lib.SafeUnpack = SafeUnpack
 	lib.tLength = tLength
@@ -267,8 +245,115 @@ do
 	lib.tIndexOf = tIndexOf
 	lib.tAppendAll = tAppendAll
 	lib.WeakTable = WeakTable
-	lib.newTable = newTable
-	lib.delTable = delTable
+end
+
+-------------------------------------------------------------------------------
+
+do
+	local Table = {}
+	local max_pool_size = 200
+	local pools = {}
+
+	-- attempts to get a table from the table pool of the
+	-- specified tag name. if the pool doesn't exist or is empty
+	-- it creates a lua table.
+	function Table.get(tag)
+		local pool = pools[tag]
+		if not pool then
+			pool = {}
+			pools[tag] = pool
+			pool.c = 0
+			pool[0] = 0
+		else
+			local len = pool[0]
+			if len > 0 then
+				local obj = pool[len]
+				pool[len] = nil
+				pool[0] = len - 1
+				return obj
+			end
+		end
+		return {}
+	end
+
+	-- releases the already used lua table into the table pool
+	-- named "tag" or creates it right away.
+	function Table.free(tag, obj, noclear)
+		if not obj then return end
+
+		local pool = pools[tag]
+		if not pool then
+			pool = {}
+			pools[tag] = pool
+			pool.c = 0
+			pool[0] = 0
+		end
+
+		if not noclear then
+			setmetatable(obj, nil)
+			for k, _ in pairs(obj) do
+				obj[k] = nil
+			end
+		end
+
+		do
+			local cnt = pool.c + 1
+			if cnt >= 20000 then
+				pool = {}
+				pools[tag] = pool
+				pool.c = 0
+				pool[0] = 0
+				return
+			end
+			pool.c = cnt
+		end
+
+		local len = pool[0] + 1
+		if len > max_pool_size then
+			return
+		end
+
+		pool[len] = obj
+		pool[0] = len
+	end
+
+	lib.Table = Table
+end
+
+-------------------------------------------------------------------------------
+
+do
+	-- Table Pool for recycling tables
+	-- creates a new table system that can be used to reuse tables
+	-- it returns both "new" and "del" functions.
+	function lib.TablePool()
+		local pool = {}
+		setmetatable(pool, {__mode = "k"})
+
+		-- attempts to retrieve a table from the cache
+		-- creates if if it doesn't exist.
+		local function new()
+			local t = next(pool) or {}
+			pool[t] = nil
+			return t
+		end
+
+		-- it will wipe the provided table then cache it
+		-- to be reusable later.
+		local function del(t)
+			if type(t) == "table" then
+				for k, _ in pairs(t) do
+					t[k] = nil
+				end
+				t[true] = true
+				t[true] = nil
+				pool[t] = true
+			end
+			return nil
+		end
+
+		return new, del
+	end
 end
 
 -------------------------------------------------------------------------------
@@ -765,20 +850,19 @@ do
 
 	local new, del
 	do
-		Timer.recycledTimers = Timer.recycledTimers or {}
-		Timer.recycledDelays = Timer.recycledDelays or {}
-		local listT = Timer.recycledTimers
-		local listA = Timer.recycledDelays
+		Timer.afterPool = Timer.afterPool or setmetatable({}, {__mode = "k"})
+		Timer.timerPool = Timer.timerPool or setmetatable({}, {__mode = "k"})
+		local afterPool = Timer.afterPool
+		local timerPool = Timer.timerPool
 
 		function new(temp)
 			if temp then
-				local t = next(listA) or {}
-				listA[t] = nil
+				local t = next(afterPool) or {}
+				afterPool[t] = nil
 				return t
 			end
-
-			local t = next(listT) or setmetatable({}, TickerMetatable)
-			listT[t] = nil
+			local t = next(timerPool) or setmetatable({}, TickerMetatable)
+			timerPool[t] = nil
 			return t
 		end
 
@@ -788,9 +872,9 @@ do
 				t[true] = true
 				t[true] = nil
 				if temp then
-					listA[t] = true
+					afterPool[t] = true
 				else
-					listT[t] = true
+					timerPool[t] = true
 				end
 			end
 		end
@@ -854,7 +938,7 @@ do
 		end
 	end
 
-	function Timer.After(duration, callback, ...)
+	function Timer.After(duration, callback)
 		ValidateArguments(duration, callback, "After")
 
 		local ticker = new(true)
@@ -868,7 +952,7 @@ do
 		AddDelayedCall(ticker)
 	end
 
-	local function CreateTicker(duration, callback, iterations, ...)
+	local function CreateTicker(duration, callback, iterations)
 		local ticker = new()
 
 		ticker._iterations = iterations or -1
@@ -882,14 +966,14 @@ do
 		return ticker
 	end
 
-	function Timer.NewTicker(duration, callback, iterations, ...)
+	function Timer.NewTicker(duration, callback, iterations)
 		ValidateArguments(duration, callback, "NewTicker")
-		return CreateTicker(duration, callback, iterations, ...)
+		return CreateTicker(duration, callback, iterations)
 	end
 
-	function Timer.NewTimer(duration, callback, ...)
+	function Timer.NewTimer(duration, callback)
 		ValidateArguments(duration, callback, "NewTimer")
-		return CreateTicker(duration, callback, 1, ...)
+		return CreateTicker(duration, callback, 1)
 	end
 
 	function Timer.CancelTimer(ticker, silent)
@@ -1684,8 +1768,8 @@ local mixins = {
 	"tIndexOf",
 	"tAppendAll",
 	"WeakTable",
-	"newTable",
-	"delTable",
+	"Table",
+	"TablePool",
 	-- lua memoize
 	"memoize",
 	-- math util
