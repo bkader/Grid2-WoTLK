@@ -255,11 +255,37 @@ Grid2.setupFunc["health-low"] = CreateHealthLow
 Grid2:DbSetStatusDefaultValue("health-low", {type = "health-low", threshold = 0.4, color1 = {r = 1, g = 0, b = 0, a = 1}})
 
 -- health-opacity status
-HealthAlpha.OnEnable = Health_Enable
-HealthAlpha.OnDisable = Health_Disable
 HealthAlpha.GetColor = Grid2.statusLibrary.GetColor
 
+function HealthAlpha:OnEnable()
+	Health_Enable(self)
+	Grid2.RegisterMessage(self, "Grid_UnitInRange")
+	Grid2.RegisterMessage(self, "Grid_UnitLeft")
+end
+
+function HealthAlpha:OnDisable()
+	Health_Disable(self)
+	Grid2.UnregisterMessage(self, "Grid_UnitInRange")
+	Grid2.UnregisterMessage(self, "Grid_UnitLeft")
+end
+
+local range_cache = {}
+function HealthAlpha:Grid_UnitInRange(_, unit, value)
+	if unit and value ~= range_cache[unit] then
+		range_cache[unit] = value
+		HealthAlpha:UpdateIndicators(unit)
+	end
+end
+
+function HealthAlpha:Grid_UnitLeft(_, unit)
+	range_cache[unit] = nil
+end
+
 function HealthAlpha:IsActive(unit)
+	if range_cache[unit] then
+		return true
+	end
+
 	local c, m = UnitHealth(unit), UnitHealthMax(unit)
 	return (c == 0 and m == 0) and false or (math.ceil(HealthCurrent:GetPercent(unit)) == 1)
 end
@@ -270,8 +296,11 @@ function HealthAlpha:UpdateDB()
 end
 
 function HealthAlpha:GetPercent(unit)
-	local c, m = UnitHealth(unit), UnitHealthMax(unit)
-	return ((c == 0 and m == 0) or ((c / m) <= self.threshold)) and 1 or (self.opacity or 0.25)
+	if range_cache[unit] then
+		local c, m = UnitHealth(unit), UnitHealthMax(unit)
+		return ((c == 0 and m == 0) or ((c / m) <= self.threshold)) and 1 or (self.opacity or 0.25)
+	end
+	return self.opacity or 0.25
 end
 
 local function CreateHealthAlpha(baseKey, dbx)

@@ -34,11 +34,14 @@ local rezSpell = ({DRUID = 20484, PRIEST = 2006, PALADIN = 7328, SHAMAN = 2008, 
 if rezSpell then
 	rezSpell = GetSpellInfo(rezSpell)
 	UnitIsInRange = function(unit)
+		local res = nil
 		if UnitIsDeadOrGhost(unit) then
-			return UnitIsUnit(unit, "player") or IsSpellInRange(rezSpell, unit) == 1
+			res = UnitIsUnit(unit, "player") or IsSpellInRange(rezSpell, unit) == 1
 		else
-			return UnitRangeCheck(unit)
+			res = UnitRangeCheck(unit)
 		end
+		Grid2:SendMessage("Grid_UnitInRange", unit, res)
+		return res
 	end
 end
 
