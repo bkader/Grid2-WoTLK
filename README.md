@@ -1,4 +1,4 @@
-# Grid2 r731 (_WoTLK_)
+# Grid2 r732 (_WoTLK_)
 
 Grid2 is a party/raid unit frame addon.
 
@@ -15,7 +15,7 @@ To open the configuration UI type "/grid2" or left-click the minimap Icon.
 
 * Grid2
 * Grid2 Options
-* Grid2 LDB
+* ~~Grid2 LDB~~ (_removed as of r732_)
 * Grid2 AOE Heals
 
 **Raid Debuffs** and **Raid Debuffs Options** are included in **Grid2** and **Grid2 Options** respectively.
@@ -48,4 +48,4 @@ To open the configuration UI type "/grid2" or left-click the minimap Icon.
 
 ## Show Love & Support
 
-Though it's not required and I have never asked for it but people keep asking for it, if you want to show love and support, your PayPal donations are most welcome to **bkader[at]email.com**.
+Though it's not required and I have never asked for it but people keep asking for it, if you want to show love and support, your PayPal/Paysera donations are most welcome to **bkader[at]mail.com**.

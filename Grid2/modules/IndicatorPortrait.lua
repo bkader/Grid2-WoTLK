@@ -1,6 +1,6 @@
 local Grid2 = Grid2
 local next, pairs = next, pairs
-local GetInspectSpecialization = Grid2.GetInspectSpecialization
+local GetUnitSpec = Grid2.GetUnitSpec
 
 local SpecIcons = Grid2.SpecIcons
 local Portraits = {}
@@ -17,7 +17,7 @@ end
 
 local function Portrait_OnUpdateSpec(self, parent, unit)
 	local Portrait = parent[self.name]
-	local spec = GetInspectSpecialization(unit)
+	local spec = GetUnitSpec(unit)
 	if spec and SpecIcons[spec] then
 		Portrait.portraitTexture:SetTexture(SpecIcons[spec])
 		Portrait.portraitTexture:SetTexCoord(0, 1, 0, 1)

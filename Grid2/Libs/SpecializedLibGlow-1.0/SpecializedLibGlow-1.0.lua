@@ -4,9 +4,6 @@ if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
 
-local LibCompat = LibStub("LibCompat-1.0", true)
-if not LibStub then error(MAJOR_VERSION .. " requires LibCompat-1.0.") end
-
 local pairs, ipairs = pairs, ipairs
 local ceil, floor, min, mod = math.ceil, math.floor, math.min, mod
 local tinsert, tremove = table.insert, table.remove
@@ -26,8 +23,163 @@ lib.startList = {}
 lib.stopList = {}
 
 local GlowParent = UIParent
-local CreateFramePool = LibCompat.CreateFramePool
-local CreateTexturePool = LibCompat.CreateTexturePool
+
+-------------------------------------------------------------------------------
+-- Compatibility Pool
+
+local function Mixin(obj, ...)
+	for i = 1, select("#", ...) do
+		local mixin = select(i, ...)
+		for k, v in pairs(mixin) do
+			obj[k] = v
+		end
+	end
+	return obj
+end
+
+local function CreateFromMixins(...)
+	return Mixin({}, ...)
+end
+
+local ObjectPoolMixin = {}
+
+function ObjectPoolMixin:OnLoad(creationFunc, resetterFunc)
+	self.creationFunc, self.resetterFunc = creationFunc, resetterFunc
+	self.activeObjects, self.inactiveObjects = {}, {}
+	self.numActiveObjects = 0
+end
+
+function ObjectPoolMixin:Acquire()
+	local numInactiveObjects = #self.inactiveObjects
+	if numInactiveObjects > 0 then
+		local obj = self.inactiveObjects[numInactiveObjects]
+		self.activeObjects[obj] = true
+		self.numActiveObjects = self.numActiveObjects + 1
+		self.inactiveObjects[numInactiveObjects] = nil
+		return obj, false
+	end
+
+	local newObj = self.creationFunc(self)
+	if self.resetterFunc and not self.disallowResetIfNew then
+		self.resetterFunc(self, newObj)
+	end
+	self.activeObjects[newObj] = true
+	self.numActiveObjects = self.numActiveObjects + 1
+	return newObj, true
+end
+
+function ObjectPoolMixin:Release(obj)
+	if self:IsActive(obj) then
+		self.inactiveObjects[#self.inactiveObjects + 1] = obj
+		self.activeObjects[obj] = nil
+		self.numActiveObjects = self.numActiveObjects - 1
+		if self.resetterFunc then
+			self.resetterFunc(self, obj)
+		end
+		return true
+	end
+	return false
+end
+
+function ObjectPoolMixin:ReleaseAll()
+	for obj in pairs(self.activeObjects) do
+		self:Release(obj)
+	end
+end
+
+function ObjectPoolMixin:SetResetDisallowedIfNew(disallowed)
+	self.disallowResetIfNew = disallowed
+end
+
+function ObjectPoolMixin:EnumerateActive()
+	return pairs(self.activeObjects)
+end
+
+function ObjectPoolMixin:GetNextActive(current)
+	return (next(self.activeObjects, current))
+end
+
+function ObjectPoolMixin:GetNextInactive(current)
+	return (next(self.inactiveObjects, current))
+end
+
+function ObjectPoolMixin:IsActive(object)
+	return (self.activeObjects[object] ~= nil)
+end
+
+function ObjectPoolMixin:GetNumActive()
+	return self.numActiveObjects
+end
+
+function ObjectPoolMixin:EnumerateInactive()
+	return ipairs(self.inactiveObjects)
+end
+
+local FramePoolMixin = CreateFromMixins(ObjectPoolMixin)
+
+local function FramePoolFactory(framePool)
+	return CreateFrame(framePool.frameType, nil, framePool.parent, framePool.frameTemplate)
+end
+
+local CreateForbiddenFrame = _G.CreateForbiddenFrame or function() end
+local function ForbiddenFramePoolFactory(framePool)
+	return CreateForbiddenFrame(framePool.frameType, nil, framePool.parent, framePool.frameTemplate)
+end
+
+function FramePoolMixin:OnLoad(frameType, parent, frameTemplate, resetterFunc, forbidden)
+	if forbidden then
+		ObjectPoolMixin.OnLoad(self, ForbiddenFramePoolFactory, resetterFunc)
+	else
+		ObjectPoolMixin.OnLoad(self, FramePoolFactory, resetterFunc)
+	end
+	self.frameType = frameType
+	self.parent = parent
+	self.frameTemplate = frameTemplate
+end
+
+function FramePoolMixin:GetTemplate()
+	return self.frameTemplate
+end
+
+local function FramePool_Hide(_, frame)
+	frame:Hide()
+end
+
+local function FramePool_HideAndClearAnchors(_, frame)
+	frame:Hide()
+	frame:ClearAllPoints()
+end
+
+local function CreateFramePool(frameType, parent, frameTemplate, resetterFunc, forbidden)
+	local framePool = CreateFromMixins(FramePoolMixin)
+	framePool:OnLoad(frameType, parent, frameTemplate, resetterFunc or FramePool_HideAndClearAnchors, forbidden)
+	return framePool
+end
+
+local TexturePoolMixin = CreateFromMixins(ObjectPoolMixin)
+
+local function TexturePoolFactory(texturePool)
+	return texturePool.parent:CreateTexture(
+		nil,
+		texturePool.layer,
+		texturePool.textureTemplate,
+		texturePool.subLayer
+	)
+end
+
+function TexturePoolMixin:OnLoad(parent, layer, subLayer, textureTemplate, resetterFunc)
+	ObjectPoolMixin.OnLoad(self, TexturePoolFactory, resetterFunc)
+	self.parent = parent
+	self.layer = layer
+	self.subLayer = subLayer
+	self.textureTemplate = textureTemplate
+end
+
+local function CreateTexturePool(parent, layer, subLayer, textureTemplate, resetterFunc)
+	local texturePool = CreateFromMixins(TexturePoolMixin)
+	texturePool:OnLoad(parent, layer, subLayer, textureTemplate, resetterFunc or FramePool_HideAndClearAnchors)
+	return texturePool
+end
 
 local TexPoolResetter = function(pool, tex)
 	tex:Hide()

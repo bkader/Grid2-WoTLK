@@ -23,7 +23,7 @@ function Resurrection:Timer()
 		end
 	end
 	if not next(res_cache) then
-		Grid2.CancelTimer(timer, true)
+		Grid2:CancelTimer(timer, true)
 		timer = nil
 	end
 end
@@ -42,12 +42,12 @@ function Resurrection.CheckResTimers(self)
 	end
 	if n == 0 then
 		if timer then
-			Grid2.CancelTimer(timer, true)
+			Grid2:CancelTimer(timer, true)
 			timer = nil
 		end
 	else
 		if not timer then
-			timer = Grid2.NewTicker(0.25, function() Resurrection.CheckResTimers(self) end)
+			timer = Grid2:ScheduleTimer(Resurrection.CheckResTimers, 0.25, Resurrection)
 		end
 	end
 end
@@ -86,7 +86,7 @@ end
 function Resurrection:ResComm_ResEnd(event, resser, target)
 	if not target then return end
 	local unit = Grid2:GetUnitByFullName(target)
-	if res_cache[unit] ~= 0 then
+	if unit and (res_cache[unit] or 0) ~= 0 then
 		res_cache[unit] = nil
 		self:UpdateIndicators(unit)
 	end
@@ -114,7 +114,6 @@ function Resurrection:ResComm_ResExpired(event, name)
 end
 
 function Resurrection:OnDisable()
-	self:UnregisterEvent("INCOMING_RESURRECT_CHANGED")
 	wipe(res_cache)
 end
 

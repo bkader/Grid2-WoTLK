@@ -1,19 +1,12 @@
-local Grid2 = LibStub("AceAddon-3.0"):NewAddon("Grid2", "AceEvent-3.0", "AceConsole-3.0", "LibCompat-1.0")
+local Grid2 = LibStub("AceAddon-3.0"):NewAddon("Grid2", "AceEvent-3.0", "AceTimer-3.0", "AceConsole-3.0")
 _G.Grid2 = Grid2
 
 Grid2.versionstring = "Grid2 v" .. GetAddOnMetadata("Grid2", "Version")
 Grid2.L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
+local L = Grid2.L
 
-Grid2.debugFrame = Grid2DebugFrame or ChatFrame1
-function Grid2:Debug(s, ...)
-	if self.debugging then
-		if s:find("%", nil, true) then
-			Grid2:Print(self.debugFrame, "DEBUG", self.name, s:format(...))
-		else
-			Grid2:Print(self.debugFrame, "DEBUG", self.name, s, ...)
-		end
-	end
-end
+local LDB = LibStub("LibDataBroker-1.1")
+local LDI = LibStub("LibDBIcon-1.0", true)
 
 Grid2.defaults = {
 	profile = {
@@ -25,6 +18,17 @@ Grid2.defaults = {
 		icon = {hide = false, radius = 80, minimapPos = 165}
 	}
 }
+
+Grid2.debugFrame = Grid2DebugFrame or ChatFrame1
+function Grid2:Debug(s, ...)
+	if self.debugging then
+		if s:find("%", nil, true) then
+			Grid2:Print(self.debugFrame, "DEBUG", self.name, s:format(...))
+		else
+			Grid2:Print(self.debugFrame, "DEBUG", self.name, s, ...)
+		end
+	end
+end
 
 -- type setup functions for non-unique objects: "buff" statuses / "icon" indicators / etc.
 Grid2.setupFunc = {}
@@ -131,6 +135,14 @@ function Grid2:OnEnable()
 
 	self:LoadConfig()
 
+	if self.db.profile.icon == nil then
+		self.db.profile.icon = {hide = false, radius = 80, minimapPos = 165}
+	end
+	if LDI and not LDI:IsRegistered("Grid2") then
+		LDI:Register("Grid2", self.dataobj, self.db.profile.icon)
+	end
+	self:RefreshMMButton()
+
 	self:SendMessage("Grid_Enabled")
 end
 
@@ -198,5 +210,100 @@ function Grid2:ProfileChanged()
 	self:EnableModules()
 	if Grid2Options then
 		Grid2Options:MakeOptions()
+	end
+end
+
+-------------------------------------------------------------------------------
+-- Grid2 LDB
+
+do
+	local MenuLayoutsShow
+	Grid2.dataobj = LDB:NewDataObject("Grid2", {
+		type = "launcher",
+		label = GetAddOnInfo("Grid2", "Title"),
+		icon = [[Interface\AddOns\Grid2\media\icon]],
+		OnClick = function(self, button)
+			if button == "LeftButton" then
+				Grid2:OnChatCommand("")
+			elseif button == "RightButton" then
+				MenuLayoutsShow()
+			end
+		end,
+		OnTooltipShow = function(tooltip)
+			tooltip:AddLine("Grid2")
+			tooltip:AddLine(L["|cffeda55fLeft-Click|r to open configuration"], 0.2, 1, 0.2)
+			tooltip:AddLine(L["|cffeda55fRight-Click|r to open layouts menu"], 0.2, 1, 0.2)
+		end
+	})
+
+	do
+		local pairs = pairs
+		local wipe, sort = wipe, sort
+		local CreateFrame, EasyMenu = CreateFrame, EasyMenu
+		local InCombatLockdown = InCombatLockdown
+
+		local menuFrame, menuTable
+		local partyType, layoutName
+
+		local function SetLayout(self)
+			if not InCombatLockdown() then
+				layoutName = self.value
+				Grid2Layout.db.profile.layouts[partyType] = self.value
+				Grid2Layout:ReloadLayout()
+			end
+		end
+		local function CreateMenuTable()
+			if not layoutName then
+				layoutName = Grid2Layout.db.profile.layouts[partyType or "solo"]
+			end
+			if partyType ~= Grid2Layout.partyType then
+				L = L or LibStub("AceLocale-3.0"):GetLocale("Grid2")
+				partyType = Grid2Layout.partyType
+				local index = 2
+				if not menuTable then
+					menuTable = {{text = L["Select Layout"], notCheckable = true, isTitle = true}}
+				end
+				for name, layout in pairs(Grid2Layout.layoutSettings) do
+					if layout.meta[partyType] and name ~= "None" then
+						local option = menuTable[index]
+						if not option then
+							option = {func = SetLayout, checked = function() return name == layoutName end}
+							menuTable[index] = option
+						end
+						option.text = L[name]
+						option.value = name
+						index = index + 1
+					end
+				end
+				while index <= #menuTable do
+					wipe(menuTable[index])
+				end
+				sort(menuTable, function(a, b)
+					if a.isTitle then
+						return true
+					elseif b.isTitle then
+						return false
+					else
+						return a.text < b.text
+					end
+				end)
+			end
+		end
+		MenuLayoutsShow = function()
+			menuFrame = menuFrame or CreateFrame("Frame", "Grid2FreeLayoutMenu", UIParent, "UIDropDownMenuTemplate")
+			CreateMenuTable()
+			EasyMenu(menuTable, menuFrame, "cursor", 0, 0, "MENU", 1)
+		end
+	end
+
+	function Grid2:RefreshMMButton()
+		if LDI then
+			LDI:Refresh("Grid2", self.db.profile.icon)
+			if self.db.profile.icon.hide then
+				LDI:Hide("Grid2")
+			else
+				LDI:Show("Grid2")
+			end
+		end
 	end
 end

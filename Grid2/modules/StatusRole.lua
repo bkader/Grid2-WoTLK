@@ -24,7 +24,7 @@ local GetNumGroupMembers = Grid2.GetNumGroupMembers
 local UnitIsGroupLeader = Grid2.UnitIsGroupLeader
 local UnitIsGroupAssistant = Grid2.UnitIsGroupAssistant
 local UnitGroupRolesAssigned = Grid2.UnitGroupRolesAssigned
-local GetInspectSpecialization = Grid2.GetInspectSpecialization
+local GetUnitSpec = Grid2.GetUnitSpec
 local groupCount = 0
 
 local function GetTexCoordsForRoleSmallCircle(role)
@@ -305,7 +305,7 @@ function Leader:OnEnable()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateLeader")
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateLeader")
 	self:CalculateLeader()
-	Grid2.After(2, Leader.CalculateLeader)
+	Grid2:ScheduleTimer(Leader.CalculateLeader, 2)
 end
 
 function Leader:OnDisable()
@@ -509,7 +509,7 @@ end
 function Spec:UpdateAllUnits(event)
 	for unit, owner in UnitIterator() do
 		if owner == nil then
-			local spec = GetInspectSpecialization(unit)
+			local spec = GetUnitSpec(unit)
 			if spec ~= spec_cache[unit] then
 				spec_cache[unit] = spec
 				if event then

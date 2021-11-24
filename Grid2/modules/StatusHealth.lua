@@ -7,7 +7,7 @@ local HealthAlpha = Grid2.statusPrototype:new("health-opacity", false)
 local FeignDeath = Grid2.statusPrototype:new("feign-death", false)
 local HealthDeficit = Grid2.statusPrototype:new("health-deficit", false)
 local Heals = Grid2.statusPrototype:new("heals-incoming", false)
-local Death = Grid2.statusPrototype:new("death", true)
+local Death = Grid2.statusPrototype:new("death")
 
 local GetTime = GetTime
 local UnitHealth = UnitHealth

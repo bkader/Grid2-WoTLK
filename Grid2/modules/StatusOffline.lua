@@ -20,7 +20,7 @@ local function TimerEvent()
 		end
 	end
 	if not next(offline) then
-		Grid2.CancelTimer(timer)
+		Grid2:CancelTimer(timer, true)
 		timer = nil
 	end
 end
@@ -48,7 +48,7 @@ function Offline:SetConnected(unit, connected)
 	else
 		offline[unit] = GetTime()
 		if not timer then
-			timer = Grid2.NewTicker(2, TimerEvent)
+			timer = Grid2:ScheduleRepeatingTimer(TimerEvent, 2)
 		end
 	end
 end
