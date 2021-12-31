@@ -23,7 +23,6 @@ local UnitIterator = Grid2.UnitIterator
 local GetNumGroupMembers = Grid2.GetNumGroupMembers
 local UnitIsGroupLeader = Grid2.UnitIsGroupLeader
 local UnitIsGroupAssistant = Grid2.UnitIsGroupAssistant
-local UnitGroupRolesAssigned = Grid2.UnitGroupRolesAssigned
 local GetUnitSpec = Grid2.GetUnitSpec
 local groupCount = 0
 
@@ -419,8 +418,12 @@ Grid2:DbSetStatusDefaultValue("master-looter", {type = "master-looter", color1 =
 -- dungeon-role status
 
 local isValidRole = {TANK = true, HEALER = true, DAMAGER = true}
-local roleTexture = "Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES"
-local TexCoordfunc = GetTexCoordsForRoleSmallCircle
+
+local Orig_UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local function UnitGroupRolesAssigned(unit)
+	local isTank, isHealer, isDamager = Orig_UnitGroupRolesAssigned(unit)
+	return isTank and "TANK" or isHealer and "HEALER" or isDamager and "DAMAGER" or "NONE"
+end
 
 DungeonRole.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
 DungeonRole.UpdateActiveUnits = Grid2.statusLibrary.UpdateAllUnits
@@ -431,7 +434,6 @@ function DungeonRole:OnEnable()
 	self:UpdateDB()
 	self:RegisterEvent("PLAYER_ROLES_ASSIGNED", "UpdateAllUnits")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
-	Grid2:RegisterInspect(self)
 end
 
 function DungeonRole:OnDisable()
@@ -441,13 +443,13 @@ function DungeonRole:OnDisable()
 end
 
 function DungeonRole:IsActive(unit)
-	local role = UnitGroupRolesAssigned(unit)
+	local role = self.UnitRoleFunc(unit)
 	return role and isValidRole[role]
 end
 
 function DungeonRole:GetColor(unit)
 	local c
-	local role = UnitGroupRolesAssigned(unit)
+	local role = self.UnitRoleFunc(unit)
 	if role == "DAMAGER" then
 		c = self.dbx.color1
 	elseif role == "HEALER" then
@@ -461,21 +463,29 @@ function DungeonRole:GetColor(unit)
 end
 
 function DungeonRole:GetIcon(unit)
-	return roleTexture
+	return self.roleTexture
 end
 
 function DungeonRole:GetTexCoord(unit)
-	return TexCoordfunc(UnitGroupRolesAssigned(unit))
+	return self.TexCoordFunc(self.UnitRoleFunc(unit))
 end
 
 function DungeonRole:GetText(unit)
-	return L[UnitGroupRolesAssigned(unit) or ""]
+	return L[self.UnitRoleFunc(unit) or ""]
 end
 
 function DungeonRole:UpdateDB()
 	isValidRole["DAMAGER"] = (not self.dbx.hideDamagers) or nil
-	roleTexture = self.dbx.useAlternateIcons and "Interface\\LFGFrame\\LFGROLE" or "Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES"
-	TexCoordfunc = self.dbx.useAlternateIcons and GetTexCoordsForRoleSmall or GetTexCoordsForRoleSmallCircle
+	self.roleTexture = self.dbx.useAlternateIcons and "Interface\\LFGFrame\\LFGROLE" or "Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES"
+	self.TexCoordFunc = self.dbx.useAlternateIcons and GetTexCoordsForRoleSmall or GetTexCoordsForRoleSmallCircle
+
+	if self.dbx.useEverywhere then
+		self.UnitRoleFunc = Grid2.GetUnitRole
+		Grid2:RegisterInspect(self)
+	else
+		self.UnitRoleFunc = UnitGroupRolesAssigned
+		Grid2:UnregisterInspect(self)
+	end
 end
 
 local function CreateDungeonRole(baseKey, dbx)

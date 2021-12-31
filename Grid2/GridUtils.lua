@@ -264,7 +264,7 @@ local LGT = LibStub("LibGroupTalents-1.0")
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local LGTRoleTable = {melee = "DAMAGER", caster = "DAMAGER", healer = "HEALER", tank = "TANK"}
 
-function Grid2.UnitGroupRolesAssigned(unit, class)
+function Grid2.GetUnitRole(unit, class)
 	unit = unit or "player" -- always fallback to player
 
 	-- For LFG using "UnitGroupRolesAssigned" is enough.

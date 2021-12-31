@@ -5,11 +5,13 @@
 ## Notes-esES: Modulo de configuracion del Grid2
 
 ## Author: Kader (|cff808080bkader#6361|r)
-## Version: r731
+## Version: r733
 ## Dependencies: Grid2
 ## LoadOnDemand: 1
 ## DefaultState: disabled
 
+## X-Date: 2021-12-31 @ 08:56 PM |cff808080UTC|r
+## X-Credits: Michael, Pastamancer & Maia, Jerry, Toadkiller
 ## X-Category: UnitFrame
 ## X-Email: |cff20ff20bkader@mail.com|r
 ## X-Website: https://github.com/bkader/Grid2-WoTLK

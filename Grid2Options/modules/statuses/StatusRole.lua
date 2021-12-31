@@ -57,6 +57,21 @@ local function MakeStatusDungeonRoleOptions(self, status, options, optionParams)
 			status:UpdateAllUnits()
 		end
 	}
+	options.useEverywhere = {
+		type = "toggle",
+		name = L["Show everywhere"],
+		desc = L["Show even when not in a dungeon"],
+		width = "full",
+		order = 70,
+		get = function()
+			return status.dbx.useEverywhere
+		end,
+		set = function(_, v)
+			status.dbx.useEverywhere = v or nil
+			status:UpdateDB()
+			status:UpdateAllUnits()
+		end
+	}
 end
 
 local function MakeStatusSpecOptions(self, status, options, optionParams)

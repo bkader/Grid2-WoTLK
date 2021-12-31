@@ -785,6 +785,9 @@ L["Type shield spell IDs separated by commas."] = "Entrez les ID des boucliers s
 -- role related statuses
 L["Hide in combat"] = "Cacher en combat"
 L["Hide Damagers"] = "Cacher les damagers"
+L["Use alternate icons"] = "Utiliser des icônes alternatives"
+L["Show everywhere"] = "Afficher partout"
+L["Show even when not in a dungeon"] = "Montrer même quand vous n'êtes pas dans un donjon."
 
 -- status descriptions
 L["highlights your target"] = "Met en valeur votre cible"

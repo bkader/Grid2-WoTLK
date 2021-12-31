@@ -701,6 +701,9 @@ L["Custom Shields"] = "사용자 보호막"
 -- role related statuses
 L["Hide in combat"] = "전투시 숨김"
 L["Hide Damagers"] = "피해시 숨김"
+L["Use alternate icons"] = "대체 아이콘 사용"
+L["Show everywhere"] = "모든 곳에서 표시"
+L["Show even when not in a dungeon"] = "던전이 아닐 때도 표시"
 
 -- status descriptions
 -- L["highlights your target"] = ""

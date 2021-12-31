@@ -702,6 +702,9 @@ L["Supported debuffs"] = "支援的減益效果"
 -- role related statuses
 L["Hide in combat"] = "戰鬥中隱藏"
 L["Hide Damagers"] = "隱藏傷害輸出角色"
+L["Use alternate icons"] = "Use for raids"
+L["Show everywhere"] = "无处不显示"
+L["Show even when not in a dungeon"] = "即使不在地牢中也能顯示"
 
 -- status descriptions
 L["highlights your target"] = "高亮你的目標"

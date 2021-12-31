@@ -706,6 +706,9 @@ L["Low absorb threshold"] = "Umbral bajo"
 -- role related statuses
 L["Hide in combat"] = "Ocultar en combate"
 L["Hide Damagers"] = "Ocultar rol de Daño"
+L["Use alternate icons"] = "Usa íconos alternativos"
+L["Show everywhere"] = "Mostrar en todas partes"
+L["Show even when not in a dungeon"] = "Mostrar incluso cuando no esté en una mazmorra."
 
 -- status descriptions
 L["highlights your target"] = "resalta tu objetivo"
