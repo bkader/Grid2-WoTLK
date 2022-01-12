@@ -6,6 +6,9 @@ local ReadyCheck = Grid2.statusPrototype:new("ready-check")
 local readyChecking, timerClearStatus, timerClearProcess
 local readyStatuses = {}
 
+local UnitIsGroupLeader = Grid2.UnitIsGroupLeader
+local UnitIsGroupAssistant = Grid2.UnitIsGroupAssistant
+
 function ReadyCheck:READY_CHECK(event, originator)
 	if timerClearStatus then
 		Grid2:CancelTimer(timerClearStatus, true)
@@ -90,7 +93,7 @@ function ReadyCheck:OnDisable()
 end
 
 function ReadyCheck:IsActive(unit)
-	return readyChecking
+	return (UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")) and readyChecking
 end
 
 function ReadyCheck:GetReadyCheckStatus(unit)
