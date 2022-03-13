@@ -118,6 +118,7 @@ function Grid2:OnInitialize()
 	media:Register("background", "Blizzard ChatFrame Background", "Interface\\ChatFrame\\ChatFrameBackground")
 
 	self:InitializeOptions()
+	self:InitializeUnitPopup()
 
 	self.OnInitialize = nil
 end

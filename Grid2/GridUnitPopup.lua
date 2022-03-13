@@ -1,155 +1,166 @@
 local Grid2 = Grid2
 
 local Grid2PopupButtons = {}
-Grid2PopupButtons["CANCEL"] = {text = CANCEL, dist = 0, space = 1}
-Grid2PopupButtons["TRADE"] = {text = TRADE, dist = 2}
-Grid2PopupButtons["INSPECT"] = {text = INSPECT, dist = 1}
-Grid2PopupButtons["ACHIEVEMENTS"] = {text = COMPARE_ACHIEVEMENTS, dist = 1}
-Grid2PopupButtons["TARGET"] = {text = TARGET, dist = 0}
-Grid2PopupButtons["IGNORE"] = {text = IGNORE, dist = 0}
-Grid2PopupButtons["REPORT_SPAM"] = {text = REPORT_SPAM, dist = 0}
-Grid2PopupButtons["POP_OUT_CHAT"] = {text = MOVE_TO_WHISPER_WINDOW, dist = 0}
-Grid2PopupButtons["DUEL"] = {text = DUEL, dist = 3, space = 1}
-Grid2PopupButtons["WHISPER"] = {text = WHISPER, dist = 0}
-Grid2PopupButtons["INVITE"] = {text = PARTY_INVITE, dist = 0}
-Grid2PopupButtons["UNINVITE"] = {text = PARTY_UNINVITE, dist = 0}
-Grid2PopupButtons["REMOVE_FRIEND"] = {text = REMOVE_FRIEND, dist = 0}
-Grid2PopupButtons["SET_NOTE"] = {text = SET_NOTE, dist = 0}
-Grid2PopupButtons["BN_REMOVE_FRIEND"] = {text = REMOVE_FRIEND, dist = 0}
-Grid2PopupButtons["BN_SET_NOTE"] = {text = SET_NOTE, dist = 0}
-Grid2PopupButtons["BN_VIEW_FRIENDS"] = {text = VIEW_FRIENDS_OF_FRIENDS, dist = 0}
-Grid2PopupButtons["BN_INVITE"] = {text = PARTY_INVITE, dist = 0}
-Grid2PopupButtons["BN_TARGET"] = {text = TARGET, dist = 0}
-Grid2PopupButtons["BLOCK_COMMUNICATION"] = {text = BLOCK_COMMUNICATION, dist = 0}
-Grid2PopupButtons["CREATE_CONVERSATION_WITH"] = {text = CREATE_CONVERSATION_WITH, dist = 0}
-Grid2PopupButtons["VOTE_TO_KICK"] = {text = VOTE_TO_KICK, dist = 0}
-Grid2PopupButtons["PROMOTE"] = {text = PARTY_PROMOTE, dist = 0}
-Grid2PopupButtons["PROMOTE_GUIDE"] = {text = PARTY_PROMOTE_GUIDE, dist = 0}
-Grid2PopupButtons["GUILD_PROMOTE"] = {text = GUILD_PROMOTE, dist = 0}
-Grid2PopupButtons["GUILD_LEAVE"] = {text = GUILD_LEAVE, dist = 0}
-Grid2PopupButtons["TEAM_PROMOTE"] = {text = TEAM_PROMOTE, dist = 0}
-Grid2PopupButtons["TEAM_KICK"] = {text = TEAM_KICK, dist = 0}
-Grid2PopupButtons["TEAM_LEAVE"] = {text = TEAM_LEAVE, dist = 0}
-Grid2PopupButtons["LEAVE"] = {text = PARTY_LEAVE, dist = 0}
-Grid2PopupButtons["FOLLOW"] = {text = FOLLOW, dist = 4}
-Grid2PopupButtons["PET_DISMISS"] = {text = PET_DISMISS, dist = 0}
-Grid2PopupButtons["PET_ABANDON"] = {text = PET_ABANDON, dist = 0}
-Grid2PopupButtons["PET_PAPERDOLL"] = {text = PET_PAPERDOLL, dist = 0}
-Grid2PopupButtons["PET_RENAME"] = {text = PET_RENAME, dist = 0}
-Grid2PopupButtons["LOOT_METHOD"] = {text = LOOT_METHOD, dist = 0, nested = 1}
-Grid2PopupButtons["FREE_FOR_ALL"] = {text = LOOT_FREE_FOR_ALL, dist = 0}
-Grid2PopupButtons["ROUND_ROBIN"] = {text = LOOT_ROUND_ROBIN, dist = 0}
-Grid2PopupButtons["MASTER_LOOTER"] = {text = LOOT_MASTER_LOOTER, dist = 0}
-Grid2PopupButtons["GROUP_LOOT"] = {text = LOOT_GROUP_LOOT, dist = 0}
-Grid2PopupButtons["NEED_BEFORE_GREED"] = {text = LOOT_NEED_BEFORE_GREED, dist = 0}
-Grid2PopupButtons["RESET_INSTANCES"] = {text = RESET_INSTANCES, dist = 0}
-Grid2PopupButtons["DUNGEON_DIFFICULTY"] = {text = DUNGEON_DIFFICULTY, dist = 0, nested = 1}
-Grid2PopupButtons["DUNGEON_DIFFICULTY1"] = {text = DUNGEON_DIFFICULTY1, dist = 0}
-Grid2PopupButtons["DUNGEON_DIFFICULTY2"] = {text = DUNGEON_DIFFICULTY2, dist = 0}
-Grid2PopupButtons["RAID_DIFFICULTY"] = {text = RAID_DIFFICULTY, dist = 0, nested = 1}
-Grid2PopupButtons["RAID_DIFFICULTY1"] = {text = RAID_DIFFICULTY1, dist = 0}
-Grid2PopupButtons["RAID_DIFFICULTY2"] = {text = RAID_DIFFICULTY2, dist = 0}
-Grid2PopupButtons["RAID_DIFFICULTY3"] = {text = RAID_DIFFICULTY3, dist = 0}
-Grid2PopupButtons["RAID_DIFFICULTY4"] = {text = RAID_DIFFICULTY4, dist = 0}
-Grid2PopupButtons["PVP_FLAG"] = {text = PVP_FLAG, dist = 0, nested = 1}
-Grid2PopupButtons["PVP_ENABLE"] = {text = ENABLE, dist = 0, checkable = 1}
-Grid2PopupButtons["PVP_DISABLE"] = {text = DISABLE, dist = 0, checkable = 1}
-Grid2PopupButtons["LOOT_THRESHOLD"] = {text = LOOT_THRESHOLD, dist = 0, nested = 1}
-Grid2PopupButtons["LOOT_PROMOTE"] = {text = LOOT_PROMOTE, dist = 0}
-Grid2PopupButtons["ITEM_QUALITY2_DESC"] = {text = ITEM_QUALITY2_DESC, dist = 0, color = ITEM_QUALITY_COLORS[2]}
-Grid2PopupButtons["ITEM_QUALITY3_DESC"] = {text = ITEM_QUALITY3_DESC, dist = 0, color = ITEM_QUALITY_COLORS[3]}
-Grid2PopupButtons["ITEM_QUALITY4_DESC"] = {text = ITEM_QUALITY4_DESC, dist = 0, color = ITEM_QUALITY_COLORS[4]}
-Grid2PopupButtons["OPT_OUT_LOOT_TITLE"] = {text = OPT_OUT_LOOT_TITLE, dist = 0, nested = 1, tooltipText = NEWBIE_TOOLTIP_UNIT_OPT_OUT_LOOT}
-Grid2PopupButtons["OPT_OUT_LOOT_ENABLE"] = {text = YES, dist = 0, checkable = 1}
-Grid2PopupButtons["OPT_OUT_LOOT_DISABLE"] = {text = NO, dist = 0, checkable = 1}
-Grid2PopupButtons["BN_REPORT"] = {text = BNET_REPORT, dist = 0, nested = 1}
-Grid2PopupButtons["BN_REPORT_SPAM"] = {text = BNET_REPORT_SPAM, dist = 0}
-Grid2PopupButtons["BN_REPORT_ABUSE"] = {text = BNET_REPORT_ABUSE, dist = 0}
-Grid2PopupButtons["BN_REPORT_THREAT"] = {text = BNET_REPORT_THREAT, dist = 0}
-Grid2PopupButtons["BN_REPORT_NAME"] = {text = BNET_REPORT_NAME, dist = 0}
-Grid2PopupButtons["RAID_LEADER"] = {text = SET_RAID_LEADER, dist = 0}
-Grid2PopupButtons["RAID_PROMOTE"] = {text = SET_RAID_ASSISTANT, dist = 0}
-Grid2PopupButtons["RAID_MAINTANK"] = {text = SET_MAIN_TANK, dist = 0}
-Grid2PopupButtons["RAID_MAINASSIST"] = {text = SET_MAIN_ASSIST, dist = 0}
-Grid2PopupButtons["RAID_DEMOTE"] = {text = DEMOTE, dist = 0}
-Grid2PopupButtons["RAID_REMOVE"] = {text = REMOVE, dist = 0}
-Grid2PopupButtons["PVP_REPORT_AFK"] = {text = PVP_REPORT_AFK, dist = 0}
-Grid2PopupButtons["RAF_SUMMON"] = {text = RAF_SUMMON, dist = 0}
-Grid2PopupButtons["RAF_GRANT_LEVEL"] = {text = RAF_GRANT_LEVEL, dist = 0}
-Grid2PopupButtons["VEHICLE_LEAVE"] = {text = VEHICLE_LEAVE, dist = 0}
-
--- Voice Chat Related
-Grid2PopupButtons["MUTE"] = {text = MUTE, dist = 0}
-Grid2PopupButtons["UNMUTE"] = {text = UNMUTE, dist = 0}
-
--- Raid Target Icons
-Grid2PopupButtons["RAID_TARGET_ICON"] = {text = RAID_TARGET_ICON, dist = 0, nested = 1}
-Grid2PopupButtons["RAID_TARGET_1"] = {text = RAID_TARGET_1, dist = 0, checkable = 1, color = {r = 1.0, g = 0.92, b = 0}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0, tCoordRight = 0.25, tCoordTop = 0, tCoordBottom = 0.25}
-Grid2PopupButtons["RAID_TARGET_2"] = {text = RAID_TARGET_2, dist = 0, checkable = 1, color = {r = 0.98, g = 0.57, b = 0}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.25, tCoordRight = 0.5, tCoordTop = 0, tCoordBottom = 0.25}
-Grid2PopupButtons["RAID_TARGET_3"] = {text = RAID_TARGET_3, dist = 0, checkable = 1, color = {r = 0.83, g = 0.22, b = 0.9}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.5, tCoordRight = 0.75, tCoordTop = 0, tCoordBottom = 0.25}
-Grid2PopupButtons["RAID_TARGET_4"] = {text = RAID_TARGET_4, dist = 0, checkable = 1, color = {r = 0.04, g = 0.95, b = 0}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.75, tCoordRight = 1, tCoordTop = 0, tCoordBottom = 0.25}
-Grid2PopupButtons["RAID_TARGET_5"] = {text = RAID_TARGET_5, dist = 0, checkable = 1, color = {r = 0.7, g = 0.82, b = 0.875}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0, tCoordRight = 0.25, tCoordTop = 0.25, tCoordBottom = 0.5}
-Grid2PopupButtons["RAID_TARGET_6"] = {text = RAID_TARGET_6, dist = 0, checkable = 1, color = {r = 0, g = 0.71, b = 1}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.25, tCoordRight = 0.5, tCoordTop = 0.25, tCoordBottom = 0.5}
-Grid2PopupButtons["RAID_TARGET_7"] = {text = RAID_TARGET_7, dist = 0, checkable = 1, color = {r = 1.0, g = 0.24, b = 0.168}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.5, tCoordRight = 0.75, tCoordTop = 0.25, tCoordBottom = 0.5}
-Grid2PopupButtons["RAID_TARGET_8"] = {text = RAID_TARGET_8, dist = 0, checkable = 1, color = {r = 0.98, g = 0.98, b = 0.98}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.75, tCoordRight = 1, tCoordTop = 0.25, tCoordBottom = 0.5}
-Grid2PopupButtons["RAID_TARGET_NONE"] = {text = RAID_TARGET_NONE, dist = 0, checkable = 1}
-
--- Chat Channel Player Commands
-Grid2PopupButtons["CHAT_PROMOTE"] = {text = MAKE_MODERATOR, dist = 0}
-Grid2PopupButtons["CHAT_DEMOTE"] = {text = REMOVE_MODERATOR, dist = 0}
-Grid2PopupButtons["CHAT_OWNER"] = {text = CHAT_OWNER, dist = 0}
-Grid2PopupButtons["CHAT_SILENCE"] = {text = CHAT_SILENCE, dist = 0}
-Grid2PopupButtons["CHAT_UNSILENCE"] = {text = CHAT_UNSILENCE, dist = 0}
-Grid2PopupButtons["PARTY_SILENCE"] = {text = PARTY_SILENCE, dist = 0}
-Grid2PopupButtons["PARTY_UNSILENCE"] = {text = PARTY_UNSILENCE, dist = 0}
-Grid2PopupButtons["RAID_SILENCE"] = {text = RAID_SILENCE, dist = 0}
-Grid2PopupButtons["RAID_UNSILENCE"] = {text = RAID_UNSILENCE, dist = 0}
-Grid2PopupButtons["BATTLEGROUND_SILENCE"] = {text = BATTLEGROUND_SILENCE, dist = 0}
-Grid2PopupButtons["BATTLEGROUND_UNSILENCE"] = {text = BATTLEGROUND_UNSILENCE, dist = 0}
-Grid2PopupButtons["CHAT_KICK"] = {text = CHAT_KICK, dist = 0}
-Grid2PopupButtons["CHAT_BAN"] = {text = CHAT_BAN, dist = 0}
-
--- First level menus
 local Grid2PopupMenus = {}
-Grid2PopupMenus["SELF"] = {"PVP_FLAG", "LOOT_METHOD", "LOOT_THRESHOLD", "OPT_OUT_LOOT_TITLE", "LOOT_PROMOTE", "DUNGEON_DIFFICULTY", "RAID_DIFFICULTY", "RESET_INSTANCES", "RAID_TARGET_ICON", "LEAVE", "CANCEL"}
-Grid2PopupMenus["PET"] = {"PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "PET_DISMISS", "CANCEL"}
-Grid2PopupMenus["PARTY"] = {"MUTE", "UNMUTE", "PARTY_SILENCE", "PARTY_UNSILENCE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "PROMOTE", "PROMOTE_GUIDE", "LOOT_PROMOTE", "VOTE_TO_KICK", "UNINVITE", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL"}
-Grid2PopupMenus["PLAYER"] = {"WHISPER", "INSPECT", "INVITE", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL"}
-Grid2PopupMenus["RAID_PLAYER"] = {"MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "RAID_LEADER", "RAID_PROMOTE", "RAID_DEMOTE", "LOOT_PROMOTE", "RAID_REMOVE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL"}
-Grid2PopupMenus["RAID"] = {"MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "RAID_LEADER", "RAID_PROMOTE", "RAID_MAINTANK", "RAID_MAINASSIST", "LOOT_PROMOTE", "RAID_DEMOTE", "RAID_REMOVE", "PVP_REPORT_AFK", "CANCEL"}
-Grid2PopupMenus["FRIEND"] = {"WHISPER", "POP_OUT_CHAT", "INVITE", "TARGET", "SET_NOTE", "IGNORE", "REPORT_SPAM", "GUILD_PROMOTE", "GUILD_LEAVE", "PVP_REPORT_AFK", "REMOVE_FRIEND", "CANCEL"}
-Grid2PopupMenus["FRIEND_OFFLINE"] = {"SET_NOTE", "IGNORE", "REMOVE_FRIEND", "CANCEL"}
-Grid2PopupMenus["BN_FRIEND"] = {"WHISPER", "POP_OUT_CHAT", "CREATE_CONVERSATION_WITH", "BN_INVITE", "BN_TARGET", "BN_SET_NOTE", "BN_VIEW_FRIENDS", "BLOCK_COMMUNICATION", "BN_REPORT", "BN_REMOVE_FRIEND", "CANCEL"}
-Grid2PopupMenus["BN_FRIEND_OFFLINE"] = {"BN_SET_NOTE", "BN_VIEW_FRIENDS", "BN_REPORT", "BN_REMOVE_FRIEND", "CANCEL"}
-Grid2PopupMenus["TEAM"] = {"WHISPER", "INVITE", "TARGET", "TEAM_PROMOTE", "TEAM_KICK", "TEAM_LEAVE", "CANCEL"}
-Grid2PopupMenus["RAID_TARGET_ICON"] = {"RAID_TARGET_1", "RAID_TARGET_2", "RAID_TARGET_3", "RAID_TARGET_4", "RAID_TARGET_5", "RAID_TARGET_6", "RAID_TARGET_7", "RAID_TARGET_8", "RAID_TARGET_NONE"}
-Grid2PopupMenus["CHAT_ROSTER"] = {"WHISPER", "TARGET", "MUTE", "UNMUTE", "CHAT_SILENCE", "CHAT_UNSILENCE", "CHAT_PROMOTE", "CHAT_DEMOTE", "CHAT_OWNER", "CANCEL"}
-Grid2PopupMenus["VEHICLE"] = {"RAID_TARGET_ICON", "VEHICLE_LEAVE", "CANCEL"}
-Grid2PopupMenus["TARGET"] = {"RAID_TARGET_ICON", "CANCEL"}
-Grid2PopupMenus["ARENAENEMY"] = {"CANCEL"}
-Grid2PopupMenus["FOCUS"] = {"RAID_TARGET_ICON", "CANCEL"}
-Grid2PopupMenus["BOSS"] = {"RAID_TARGET_ICON", "CANCEL"}
-
--- Second level menus
-Grid2PopupMenus["PVP_FLAG"] = {"PVP_ENABLE", "PVP_DISABLE"}
-Grid2PopupMenus["LOOT_METHOD"] = {"FREE_FOR_ALL", "ROUND_ROBIN", "MASTER_LOOTER", "GROUP_LOOT", "NEED_BEFORE_GREED", "CANCEL"}
-Grid2PopupMenus["LOOT_THRESHOLD"] = {"ITEM_QUALITY2_DESC", "ITEM_QUALITY3_DESC", "ITEM_QUALITY4_DESC", "CANCEL"}
-Grid2PopupMenus["OPT_OUT_LOOT_TITLE"] = {"OPT_OUT_LOOT_ENABLE", "OPT_OUT_LOOT_DISABLE"}
-Grid2PopupMenus["DUNGEON_DIFFICULTY"] = {"DUNGEON_DIFFICULTY1", "DUNGEON_DIFFICULTY2"}
-Grid2PopupMenus["RAID_DIFFICULTY"] = {"RAID_DIFFICULTY1", "RAID_DIFFICULTY2", "RAID_DIFFICULTY3", "RAID_DIFFICULTY4"}
-Grid2PopupMenus["BN_REPORT"] = {"BN_REPORT_SPAM", "BN_REPORT_ABUSE", "BN_REPORT_NAME"}
-
 local Grid2PopupShown = {}
-Grid2PopupShown[1] = {}
-Grid2PopupShown[2] = {}
-Grid2PopupShown[3] = {}
-
 local Grid2LootMethod = {}
-Grid2LootMethod["freeforall"] = {text = LOOT_FREE_FOR_ALL, tooltipText = NEWBIE_TOOLTIP_UNIT_FREE_FOR_ALL}
-Grid2LootMethod["roundrobin"] = {text = LOOT_ROUND_ROBIN, tooltipText = NEWBIE_TOOLTIP_UNIT_ROUND_ROBIN}
-Grid2LootMethod["master"] = {text = LOOT_MASTER_LOOTER, tooltipText = NEWBIE_TOOLTIP_UNIT_MASTER_LOOTER}
-Grid2LootMethod["group"] = {text = LOOT_GROUP_LOOT, tooltipText = NEWBIE_TOOLTIP_UNIT_GROUP_LOOT}
-Grid2LootMethod["needbeforegreed"] = {text = LOOT_NEED_BEFORE_GREED, tooltipText = NEWBIE_TOOLTIP_UNIT_NEED_BEFORE_GREED}
+
+Grid2.PopupButtons = Grid2PopupButtons
+Grid2.PopupMenus = Grid2PopupMenus
+Grid2.PopupShown = Grid2PopupShown
+Grid2.LootMethod = Grid2LootMethod
+
+function Grid2:InitializeUnitPopup()
+	-- popup buttons
+	Grid2PopupButtons["CANCEL"] = {text = CANCEL, dist = 0, space = 1}
+	Grid2PopupButtons["TRADE"] = {text = TRADE, dist = 2}
+	Grid2PopupButtons["INSPECT"] = {text = INSPECT, dist = 1}
+	Grid2PopupButtons["ACHIEVEMENTS"] = {text = COMPARE_ACHIEVEMENTS, dist = 1}
+	Grid2PopupButtons["TARGET"] = {text = TARGET, dist = 0}
+	Grid2PopupButtons["IGNORE"] = {text = IGNORE, dist = 0}
+	Grid2PopupButtons["REPORT_SPAM"] = {text = REPORT_SPAM, dist = 0}
+	Grid2PopupButtons["POP_OUT_CHAT"] = {text = MOVE_TO_WHISPER_WINDOW, dist = 0}
+	Grid2PopupButtons["DUEL"] = {text = DUEL, dist = 3, space = 1}
+	Grid2PopupButtons["WHISPER"] = {text = WHISPER, dist = 0}
+	Grid2PopupButtons["INVITE"] = {text = PARTY_INVITE, dist = 0}
+	Grid2PopupButtons["UNINVITE"] = {text = PARTY_UNINVITE, dist = 0}
+	Grid2PopupButtons["REMOVE_FRIEND"] = {text = REMOVE_FRIEND, dist = 0}
+	Grid2PopupButtons["SET_NOTE"] = {text = SET_NOTE, dist = 0}
+	Grid2PopupButtons["BN_REMOVE_FRIEND"] = {text = REMOVE_FRIEND, dist = 0}
+	Grid2PopupButtons["BN_SET_NOTE"] = {text = SET_NOTE, dist = 0}
+	Grid2PopupButtons["BN_VIEW_FRIENDS"] = {text = VIEW_FRIENDS_OF_FRIENDS, dist = 0}
+	Grid2PopupButtons["BN_INVITE"] = {text = PARTY_INVITE, dist = 0}
+	Grid2PopupButtons["BN_TARGET"] = {text = TARGET, dist = 0}
+	Grid2PopupButtons["BLOCK_COMMUNICATION"] = {text = BLOCK_COMMUNICATION, dist = 0}
+	Grid2PopupButtons["CREATE_CONVERSATION_WITH"] = {text = CREATE_CONVERSATION_WITH, dist = 0}
+	Grid2PopupButtons["VOTE_TO_KICK"] = {text = VOTE_TO_KICK, dist = 0}
+	Grid2PopupButtons["PROMOTE"] = {text = PARTY_PROMOTE, dist = 0}
+	Grid2PopupButtons["PROMOTE_GUIDE"] = {text = PARTY_PROMOTE_GUIDE, dist = 0}
+	Grid2PopupButtons["GUILD_PROMOTE"] = {text = GUILD_PROMOTE, dist = 0}
+	Grid2PopupButtons["GUILD_LEAVE"] = {text = GUILD_LEAVE, dist = 0}
+	Grid2PopupButtons["TEAM_PROMOTE"] = {text = TEAM_PROMOTE, dist = 0}
+	Grid2PopupButtons["TEAM_KICK"] = {text = TEAM_KICK, dist = 0}
+	Grid2PopupButtons["TEAM_LEAVE"] = {text = TEAM_LEAVE, dist = 0}
+	Grid2PopupButtons["LEAVE"] = {text = PARTY_LEAVE, dist = 0}
+	Grid2PopupButtons["FOLLOW"] = {text = FOLLOW, dist = 4}
+	Grid2PopupButtons["PET_DISMISS"] = {text = PET_DISMISS, dist = 0}
+	Grid2PopupButtons["PET_ABANDON"] = {text = PET_ABANDON, dist = 0}
+	Grid2PopupButtons["PET_PAPERDOLL"] = {text = PET_PAPERDOLL, dist = 0}
+	Grid2PopupButtons["PET_RENAME"] = {text = PET_RENAME, dist = 0}
+	Grid2PopupButtons["LOOT_METHOD"] = {text = LOOT_METHOD, dist = 0, nested = 1}
+	Grid2PopupButtons["FREE_FOR_ALL"] = {text = LOOT_FREE_FOR_ALL, dist = 0}
+	Grid2PopupButtons["ROUND_ROBIN"] = {text = LOOT_ROUND_ROBIN, dist = 0}
+	Grid2PopupButtons["MASTER_LOOTER"] = {text = LOOT_MASTER_LOOTER, dist = 0}
+	Grid2PopupButtons["GROUP_LOOT"] = {text = LOOT_GROUP_LOOT, dist = 0}
+	Grid2PopupButtons["NEED_BEFORE_GREED"] = {text = LOOT_NEED_BEFORE_GREED, dist = 0}
+	Grid2PopupButtons["RESET_INSTANCES"] = {text = RESET_INSTANCES, dist = 0}
+	Grid2PopupButtons["DUNGEON_DIFFICULTY"] = {text = DUNGEON_DIFFICULTY, dist = 0, nested = 1}
+	Grid2PopupButtons["DUNGEON_DIFFICULTY1"] = {text = DUNGEON_DIFFICULTY1, dist = 0}
+	Grid2PopupButtons["DUNGEON_DIFFICULTY2"] = {text = DUNGEON_DIFFICULTY2, dist = 0}
+	Grid2PopupButtons["RAID_DIFFICULTY"] = {text = RAID_DIFFICULTY, dist = 0, nested = 1}
+	Grid2PopupButtons["RAID_DIFFICULTY1"] = {text = RAID_DIFFICULTY1, dist = 0}
+	Grid2PopupButtons["RAID_DIFFICULTY2"] = {text = RAID_DIFFICULTY2, dist = 0}
+	Grid2PopupButtons["RAID_DIFFICULTY3"] = {text = RAID_DIFFICULTY3, dist = 0}
+	Grid2PopupButtons["RAID_DIFFICULTY4"] = {text = RAID_DIFFICULTY4, dist = 0}
+	Grid2PopupButtons["PVP_FLAG"] = {text = PVP_FLAG, dist = 0, nested = 1}
+	Grid2PopupButtons["PVP_ENABLE"] = {text = ENABLE, dist = 0, checkable = 1}
+	Grid2PopupButtons["PVP_DISABLE"] = {text = DISABLE, dist = 0, checkable = 1}
+	Grid2PopupButtons["LOOT_THRESHOLD"] = {text = LOOT_THRESHOLD, dist = 0, nested = 1}
+	Grid2PopupButtons["LOOT_PROMOTE"] = {text = LOOT_PROMOTE, dist = 0}
+	Grid2PopupButtons["ITEM_QUALITY2_DESC"] = {text = ITEM_QUALITY2_DESC, dist = 0, color = ITEM_QUALITY_COLORS[2]}
+	Grid2PopupButtons["ITEM_QUALITY3_DESC"] = {text = ITEM_QUALITY3_DESC, dist = 0, color = ITEM_QUALITY_COLORS[3]}
+	Grid2PopupButtons["ITEM_QUALITY4_DESC"] = {text = ITEM_QUALITY4_DESC, dist = 0, color = ITEM_QUALITY_COLORS[4]}
+	Grid2PopupButtons["OPT_OUT_LOOT_TITLE"] = {text = OPT_OUT_LOOT_TITLE, dist = 0, nested = 1, tooltipText = NEWBIE_TOOLTIP_UNIT_OPT_OUT_LOOT}
+	Grid2PopupButtons["OPT_OUT_LOOT_ENABLE"] = {text = YES, dist = 0, checkable = 1}
+	Grid2PopupButtons["OPT_OUT_LOOT_DISABLE"] = {text = NO, dist = 0, checkable = 1}
+	Grid2PopupButtons["BN_REPORT"] = {text = BNET_REPORT, dist = 0, nested = 1}
+	Grid2PopupButtons["BN_REPORT_SPAM"] = {text = BNET_REPORT_SPAM, dist = 0}
+	Grid2PopupButtons["BN_REPORT_ABUSE"] = {text = BNET_REPORT_ABUSE, dist = 0}
+	Grid2PopupButtons["BN_REPORT_THREAT"] = {text = BNET_REPORT_THREAT, dist = 0}
+	Grid2PopupButtons["BN_REPORT_NAME"] = {text = BNET_REPORT_NAME, dist = 0}
+	Grid2PopupButtons["RAID_LEADER"] = {text = SET_RAID_LEADER, dist = 0}
+	Grid2PopupButtons["RAID_PROMOTE"] = {text = SET_RAID_ASSISTANT, dist = 0}
+	Grid2PopupButtons["RAID_MAINTANK"] = {text = SET_MAIN_TANK, dist = 0}
+	Grid2PopupButtons["RAID_MAINASSIST"] = {text = SET_MAIN_ASSIST, dist = 0}
+	Grid2PopupButtons["RAID_DEMOTE"] = {text = DEMOTE, dist = 0}
+	Grid2PopupButtons["RAID_REMOVE"] = {text = REMOVE, dist = 0}
+	Grid2PopupButtons["PVP_REPORT_AFK"] = {text = PVP_REPORT_AFK, dist = 0}
+	Grid2PopupButtons["RAF_SUMMON"] = {text = RAF_SUMMON, dist = 0}
+	Grid2PopupButtons["RAF_GRANT_LEVEL"] = {text = RAF_GRANT_LEVEL, dist = 0}
+	Grid2PopupButtons["VEHICLE_LEAVE"] = {text = VEHICLE_LEAVE, dist = 0}
+
+	-- Voice Chat Related
+	Grid2PopupButtons["MUTE"] = {text = MUTE, dist = 0}
+	Grid2PopupButtons["UNMUTE"] = {text = UNMUTE, dist = 0}
+
+	-- Raid Target Icons
+	Grid2PopupButtons["RAID_TARGET_ICON"] = {text = RAID_TARGET_ICON, dist = 0, nested = 1}
+	Grid2PopupButtons["RAID_TARGET_1"] = {text = RAID_TARGET_1, dist = 0, checkable = 1, color = {r = 1.0, g = 0.92, b = 0}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0, tCoordRight = 0.25, tCoordTop = 0, tCoordBottom = 0.25}
+	Grid2PopupButtons["RAID_TARGET_2"] = {text = RAID_TARGET_2, dist = 0, checkable = 1, color = {r = 0.98, g = 0.57, b = 0}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.25, tCoordRight = 0.5, tCoordTop = 0, tCoordBottom = 0.25}
+	Grid2PopupButtons["RAID_TARGET_3"] = {text = RAID_TARGET_3, dist = 0, checkable = 1, color = {r = 0.83, g = 0.22, b = 0.9}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.5, tCoordRight = 0.75, tCoordTop = 0, tCoordBottom = 0.25}
+	Grid2PopupButtons["RAID_TARGET_4"] = {text = RAID_TARGET_4, dist = 0, checkable = 1, color = {r = 0.04, g = 0.95, b = 0}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.75, tCoordRight = 1, tCoordTop = 0, tCoordBottom = 0.25}
+	Grid2PopupButtons["RAID_TARGET_5"] = {text = RAID_TARGET_5, dist = 0, checkable = 1, color = {r = 0.7, g = 0.82, b = 0.875}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0, tCoordRight = 0.25, tCoordTop = 0.25, tCoordBottom = 0.5}
+	Grid2PopupButtons["RAID_TARGET_6"] = {text = RAID_TARGET_6, dist = 0, checkable = 1, color = {r = 0, g = 0.71, b = 1}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.25, tCoordRight = 0.5, tCoordTop = 0.25, tCoordBottom = 0.5}
+	Grid2PopupButtons["RAID_TARGET_7"] = {text = RAID_TARGET_7, dist = 0, checkable = 1, color = {r = 1.0, g = 0.24, b = 0.168}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.5, tCoordRight = 0.75, tCoordTop = 0.25, tCoordBottom = 0.5}
+	Grid2PopupButtons["RAID_TARGET_8"] = {text = RAID_TARGET_8, dist = 0, checkable = 1, color = {r = 0.98, g = 0.98, b = 0.98}, icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcons", tCoordLeft = 0.75, tCoordRight = 1, tCoordTop = 0.25, tCoordBottom = 0.5}
+	Grid2PopupButtons["RAID_TARGET_NONE"] = {text = RAID_TARGET_NONE, dist = 0, checkable = 1}
+
+	-- Chat Channel Player Commands
+	Grid2PopupButtons["CHAT_PROMOTE"] = {text = MAKE_MODERATOR, dist = 0}
+	Grid2PopupButtons["CHAT_DEMOTE"] = {text = REMOVE_MODERATOR, dist = 0}
+	Grid2PopupButtons["CHAT_OWNER"] = {text = CHAT_OWNER, dist = 0}
+	Grid2PopupButtons["CHAT_SILENCE"] = {text = CHAT_SILENCE, dist = 0}
+	Grid2PopupButtons["CHAT_UNSILENCE"] = {text = CHAT_UNSILENCE, dist = 0}
+	Grid2PopupButtons["PARTY_SILENCE"] = {text = PARTY_SILENCE, dist = 0}
+	Grid2PopupButtons["PARTY_UNSILENCE"] = {text = PARTY_UNSILENCE, dist = 0}
+	Grid2PopupButtons["RAID_SILENCE"] = {text = RAID_SILENCE, dist = 0}
+	Grid2PopupButtons["RAID_UNSILENCE"] = {text = RAID_UNSILENCE, dist = 0}
+	Grid2PopupButtons["BATTLEGROUND_SILENCE"] = {text = BATTLEGROUND_SILENCE, dist = 0}
+	Grid2PopupButtons["BATTLEGROUND_UNSILENCE"] = {text = BATTLEGROUND_UNSILENCE, dist = 0}
+	Grid2PopupButtons["CHAT_KICK"] = {text = CHAT_KICK, dist = 0}
+	Grid2PopupButtons["CHAT_BAN"] = {text = CHAT_BAN, dist = 0}
+
+	-- popup menus
+	Grid2PopupMenus["SELF"] = {"PVP_FLAG", "LOOT_METHOD", "LOOT_THRESHOLD", "OPT_OUT_LOOT_TITLE", "LOOT_PROMOTE", "DUNGEON_DIFFICULTY", "RAID_DIFFICULTY", "RESET_INSTANCES", "RAID_TARGET_ICON", "LEAVE", "CANCEL"}
+	Grid2PopupMenus["PET"] = {"PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "PET_DISMISS", "CANCEL"}
+	Grid2PopupMenus["PARTY"] = {"MUTE", "UNMUTE", "PARTY_SILENCE", "PARTY_UNSILENCE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "PROMOTE", "PROMOTE_GUIDE", "LOOT_PROMOTE", "VOTE_TO_KICK", "UNINVITE", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL"}
+	Grid2PopupMenus["PLAYER"] = {"WHISPER", "INSPECT", "INVITE", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL"}
+	Grid2PopupMenus["RAID_PLAYER"] = {"MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "RAID_LEADER", "RAID_PROMOTE", "RAID_DEMOTE", "LOOT_PROMOTE", "RAID_REMOVE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL"}
+	Grid2PopupMenus["RAID"] = {"MUTE", "UNMUTE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "RAID_LEADER", "RAID_PROMOTE", "RAID_MAINTANK", "RAID_MAINASSIST", "LOOT_PROMOTE", "RAID_DEMOTE", "RAID_REMOVE", "PVP_REPORT_AFK", "CANCEL"}
+	Grid2PopupMenus["FRIEND"] = {"WHISPER", "POP_OUT_CHAT", "INVITE", "TARGET", "SET_NOTE", "IGNORE", "REPORT_SPAM", "GUILD_PROMOTE", "GUILD_LEAVE", "PVP_REPORT_AFK", "REMOVE_FRIEND", "CANCEL"}
+	Grid2PopupMenus["FRIEND_OFFLINE"] = {"SET_NOTE", "IGNORE", "REMOVE_FRIEND", "CANCEL"}
+	Grid2PopupMenus["BN_FRIEND"] = {"WHISPER", "POP_OUT_CHAT", "CREATE_CONVERSATION_WITH", "BN_INVITE", "BN_TARGET", "BN_SET_NOTE", "BN_VIEW_FRIENDS", "BLOCK_COMMUNICATION", "BN_REPORT", "BN_REMOVE_FRIEND", "CANCEL"}
+	Grid2PopupMenus["BN_FRIEND_OFFLINE"] = {"BN_SET_NOTE", "BN_VIEW_FRIENDS", "BN_REPORT", "BN_REMOVE_FRIEND", "CANCEL"}
+	Grid2PopupMenus["TEAM"] = {"WHISPER", "INVITE", "TARGET", "TEAM_PROMOTE", "TEAM_KICK", "TEAM_LEAVE", "CANCEL"}
+	Grid2PopupMenus["RAID_TARGET_ICON"] = {"RAID_TARGET_1", "RAID_TARGET_2", "RAID_TARGET_3", "RAID_TARGET_4", "RAID_TARGET_5", "RAID_TARGET_6", "RAID_TARGET_7", "RAID_TARGET_8", "RAID_TARGET_NONE"}
+	Grid2PopupMenus["CHAT_ROSTER"] = {"WHISPER", "TARGET", "MUTE", "UNMUTE", "CHAT_SILENCE", "CHAT_UNSILENCE", "CHAT_PROMOTE", "CHAT_DEMOTE", "CHAT_OWNER", "CANCEL"}
+	Grid2PopupMenus["VEHICLE"] = {"RAID_TARGET_ICON", "VEHICLE_LEAVE", "CANCEL"}
+	Grid2PopupMenus["TARGET"] = {"RAID_TARGET_ICON", "CANCEL"}
+	Grid2PopupMenus["ARENAENEMY"] = {"CANCEL"}
+	Grid2PopupMenus["FOCUS"] = {"RAID_TARGET_ICON", "CANCEL"}
+	Grid2PopupMenus["BOSS"] = {"RAID_TARGET_ICON", "CANCEL"}
+
+	-- Second level menus
+	Grid2PopupMenus["PVP_FLAG"] = {"PVP_ENABLE", "PVP_DISABLE"}
+	Grid2PopupMenus["LOOT_METHOD"] = {"FREE_FOR_ALL", "ROUND_ROBIN", "MASTER_LOOTER", "GROUP_LOOT", "NEED_BEFORE_GREED", "CANCEL"}
+	Grid2PopupMenus["LOOT_THRESHOLD"] = {"ITEM_QUALITY2_DESC", "ITEM_QUALITY3_DESC", "ITEM_QUALITY4_DESC", "CANCEL"}
+	Grid2PopupMenus["OPT_OUT_LOOT_TITLE"] = {"OPT_OUT_LOOT_ENABLE", "OPT_OUT_LOOT_DISABLE"}
+	Grid2PopupMenus["DUNGEON_DIFFICULTY"] = {"DUNGEON_DIFFICULTY1", "DUNGEON_DIFFICULTY2"}
+	Grid2PopupMenus["RAID_DIFFICULTY"] = {"RAID_DIFFICULTY1", "RAID_DIFFICULTY2", "RAID_DIFFICULTY3", "RAID_DIFFICULTY4"}
+	Grid2PopupMenus["BN_REPORT"] = {"BN_REPORT_SPAM", "BN_REPORT_ABUSE", "BN_REPORT_NAME"}
+
+	-- shown popups
+	Grid2PopupShown[1] = {}
+	Grid2PopupShown[2] = {}
+	Grid2PopupShown[3] = {}
+
+	-- loot method.
+	Grid2LootMethod["freeforall"] = {text = LOOT_FREE_FOR_ALL, tooltipText = NEWBIE_TOOLTIP_UNIT_FREE_FOR_ALL}
+	Grid2LootMethod["roundrobin"] = {text = LOOT_ROUND_ROBIN, tooltipText = NEWBIE_TOOLTIP_UNIT_ROUND_ROBIN}
+	Grid2LootMethod["master"] = {text = LOOT_MASTER_LOOTER, tooltipText = NEWBIE_TOOLTIP_UNIT_MASTER_LOOTER}
+	Grid2LootMethod["group"] = {text = LOOT_GROUP_LOOT, tooltipText = NEWBIE_TOOLTIP_UNIT_GROUP_LOOT}
+	Grid2LootMethod["needbeforegreed"] = {text = LOOT_NEED_BEFORE_GREED, tooltipText = NEWBIE_TOOLTIP_UNIT_NEED_BEFORE_GREED}
+end
 
 function Grid2:UnitPopup_ShowMenu(dropdownMenu, which, unit, name, userData)
 	local server = nil
@@ -973,7 +984,7 @@ function Grid2:UnitPopup_OnUpdate(elapsed, frame)
 	local count, tempCount
 	local inInstance = IsInInstance()
 	for level, dropdownFrame in pairs(OPEN_DROPDOWNMENUS) do
-		if (dropdownFrame) then
+		if (dropdownFrame and Grid2PopupMenus[dropdownFrame.which]) then
 			count = 0
 			for index, value in ipairs(Grid2PopupMenus[dropdownFrame.which]) do
 				if (Grid2PopupShown[UIDROPDOWNMENU_MENU_LEVEL][index] == 1) then
