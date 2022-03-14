@@ -97,7 +97,7 @@ local function UpdateRoster()
 		end
 		tsort(roster, function(a, b) return a.group < b.group end)
 		for r = 1, #roster do
-			roster[i].curMask = 2 ^ (r - 1)
+			roster[r].curMask = 2 ^ (r - 1)
 		end
 	else
 		for i = 1, 5 do
