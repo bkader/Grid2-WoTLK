@@ -392,31 +392,37 @@ do
 	Heals.GetColor = Grid2.statusLibrary.GetColor
 
 	local UnitGUID = UnitGUID
-	local HEALCOMM_TIMEFRAME = 3
+	local HEALCOMM_FLAGS = HealComm.ALL_HEALS
+	local HEALCOMM_MINIMUM = 0
+	local HEALCOMM_TIMEFRAME = nil
 
 	local function get_active_heal_amount_with_user(unit)
-		local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
-		return HealComm:GetHealAmount(UnitGUID(unit), HealComm.ALL_HEALS, time)
+		local timeFrame = (HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME) or nil
+		return HealComm:GetHealAmount(UnitGUID(unit), HEALCOMM_FLAGS, timeFrame)
 	end
 
 	local function get_active_heal_amount_without_user(unit)
-		local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
-		return HealComm:GetOthersHealAmount(UnitGUID(unit), HealComm.ALL_HEALS, time)
+		local timeFrame = (HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME) or nil
+		return HealComm:GetOthersHealAmount(UnitGUID(unit), HEALCOMM_FLAGS, timeFrame)
 	end
 
 	local get_active_heal_amount = get_active_heal_amount_with_user
 
 	local function get_effective_heal_amount(unit)
-		local guid = UnitGUID(unit)
-		local time = HEALCOMM_TIMEFRAME and GetTime() + HEALCOMM_TIMEFRAME
-		local heal = HealComm:GetHealAmount(guid, HealComm.ALL_HEALS, time)
-		return heal and heal * HealComm:GetHealModifier(guid) or 0
+		local heal = get_active_heal_amount(unit)
+		return heal and heal * HealComm:GetHealModifier(UnitGUID(unit)) or 0
 	end
 
 	function Heals:UpdateDB()
-		self.minimum = self.dbx.flags and self.dbx.flags > 1 and self.dbx.flags or 0
-		HEALCOMM_TIMEFRAME = self.dbx.timeFrame or 3
+		HEALCOMM_MINIMUM = (self.dbx.minimum or 0) > 1 and self.dbx.minimum or 0
+		HEALCOMM_TIMEFRAME = (self.dbx.timeFrame > 0) and self.dbx.timeFrame or nil
 		get_active_heal_amount = self.dbx.includePlayerHeals and get_active_heal_amount_with_user or get_active_heal_amount_without_user
+		HEALCOMM_FLAGS = bit.bor(
+			self.dbx.flags.direct and HealComm.DIRECT_HEALS or 0,
+			self.dbx.flags.channel and HealComm.CHANNEL_HEALS or 0,
+			self.dbx.flags.hot and HealComm.HOT_HEALS or 0,
+			self.dbx.flags.hot and HealComm.BOMB_HEALS or 0
+		)
 	end
 
 	function Heals:OnEnable()
@@ -474,7 +480,7 @@ do
 		end
 
 		local h = get_effective_heal_amount(unit)
-		if not h or h <= (self.minimum or 0) then
+		if not h or h <= (HEALCOMM_MINIMUM or 0) then
 			return 0
 		end
 		return ((h + c) >= m) and ((m - c) / m) or (h / m)
@@ -490,7 +496,8 @@ do
 		type = "heals-incoming",
 		includePlayerHeals = false,
 		timeFrame = 3,
-		flags = 0,
+		flags = {direct = true, channel = true, hot = true},
+		minimum = 0,
 		color1 = {r = 0, g = 1, b = 0, a = 1}
 	})
 end

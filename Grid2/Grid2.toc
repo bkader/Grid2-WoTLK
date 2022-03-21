@@ -7,13 +7,13 @@
 ## Notes-zhTW: 精簡的團隊框架功能
 
 ## Author: Kader (|cff808080bkader#6361|r)
-## Version: r733
+## Version: r734
 ## OptionalDeps: Ace3, Clique
 ## LoadOnDemand: 0
 ## DefaultState: enabled
 ## SavedVariables: Grid2DB
 
-## X-Date: 2022-03-14 @ 07:18 PM |cff808080UTC|r
+## X-Date: 2022-03-21 @ 09:24 PM |cff808080UTC|r
 ## X-Credits: Michael, Pastamancer & Maia, Jerry, Toadkiller
 ## X-Category: UnitFrame
 ## X-Email: |cff20ff20bkader@mail.com|r

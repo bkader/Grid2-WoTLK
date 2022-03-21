@@ -5,7 +5,7 @@
 ## Notes-esES: Modulo de configuracion del Grid2
 
 ## Author: Kader (|cff808080bkader#6361|r)
-## Version: r733
+## Version: r734
 ## Dependencies: Grid2
 ## LoadOnDemand: 1
 ## DefaultState: disabled

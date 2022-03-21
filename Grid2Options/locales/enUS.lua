@@ -724,6 +724,14 @@ L["Include player heals"] = true
 L["Display status for the player's heals."] = true
 L["Minimum value"] = true
 L["Incoming heals below the specified value will not be shown."] = true
+L["Heal filter"] = true
+L["Show incoming heals for the selected heal types."] = true
+L["Direct heals"] = true
+L["Include direct heals."] = true
+L["Channeled heals"] = true
+L["Include channeled heals."] = true
+L["HoT heals"] = true
+L["Include heal over time effects."] = true
 
 --target status
 L["Your Target"] = true

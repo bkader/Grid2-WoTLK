@@ -40,19 +40,81 @@ Grid2Options:RegisterStatusOptions(
 				status:UpdateDB()
 			end
 		}
-		options.healTypes = {
-			type = "input",
+		options.healFlags = {
+			type = "group",
+			name = L["Heal filter"],
+			desc = L["Show incoming heals for the selected heal types."],
+			inline = true,
 			order = 120,
-			width = "full",
+			args = {
+				direct = {
+					type = "toggle",
+					name = L["Direct heals"],
+					desc = L["Include direct heals."],
+					order = 10,
+					get  = function()
+						return status.dbx.flags.direct
+					end,
+					set  = function(v)
+						status.dbx.flags.direct = not status.dbx.flags.direct
+						status:UpdateDB()
+					end
+				},
+				channel = {
+					type = "toggle",
+					name = L["Channeled heals"],
+					desc = L["Include channeled heals."],
+					order = 20,
+					get  = function()
+						return status.dbx.flags.channel
+					end,
+					set  = function()
+						status.dbx.flags.channel = not status.dbx.flags.channel
+						status:UpdateDB()
+					end
+				},
+				hot = {
+					type = "toggle",
+					name = L["HoT heals"],
+					desc = L["Include heal over time effects."],
+					order = 30,
+					get  = function()
+						return status.dbx.flags.hot
+					end,
+					set  = function()
+						status.dbx.flags.hot = not status.dbx.flags.hot
+						status:UpdateDB()
+					end
+				},
+			}
+		}
+		options.minHeals = {
+			type = "input",
+			order = 130,
 			name = L["Minimum value"],
 			desc = L["Incoming heals below the specified value will not be shown."],
 			get = function()
-				return tostring(status.dbx.flags or 0)
+				return tostring(status.dbx.minimum or 0)
 			end,
 			set = function(_, v)
-				status.dbx.flags = tonumber(v) or nil
+				status.dbx.minimum = tonumber(v) or nil
 				status:UpdateDB()
 			end
+		}
+		options.timeFrame = {
+			type = "range",
+			order = 140,
+			name = L["HealComm Time Frame"],
+			get = function()
+				return status.dbx.timeFrame or 0
+			end,
+			set = function(_, v)
+				status.dbx.timeFrame = v
+				status:UpdateDB()
+			end,
+			min = 0,
+			max = 5,
+			step = 1
 		}
 	end,
 	{titleIcon = "Interface\\Icons\\Spell_Holy_DivineProvidence"}

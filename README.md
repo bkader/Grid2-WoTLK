@@ -1,4 +1,4 @@
-# Grid2 r733 (_WoTLK_)
+# Grid2 r734 (_WoTLK_)
 
 Grid2 is a party/raid unit frame addon.
 
