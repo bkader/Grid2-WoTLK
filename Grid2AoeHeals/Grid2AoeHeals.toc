@@ -3,7 +3,7 @@
 ## Notes: Display best targets for AOE Heals
 ## Notes-esES: Muestra los mejores objetivos para las curas de area
 ## Author: Kader (|cff808080bkader#6361|r)
-## Version: r734
+## Version: r735
 ## Dependencies: Grid2
 ## DefaultState: disabled
 ## X-Credits: Michael

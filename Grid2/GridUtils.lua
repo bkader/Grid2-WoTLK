@@ -229,6 +229,9 @@ function Grid2.UnitIsGroupLeader(unit)
 			unit = Grid2.GetUnitIdFromGUID(UnitGUID(unit))
 			index = unit and unit:match("%d+")
 		end
+		if Grid2.IsInRaid() then
+			return (index and select(2, GetRaidRosterInfo(index)) == 2)
+		end
 		return (index and GetPartyLeaderIndex() == tonumber(index))
 	end
 end

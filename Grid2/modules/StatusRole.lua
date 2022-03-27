@@ -216,6 +216,11 @@ function Assistant:UpdateAllUnits(event)
 			if event then
 				self:UpdateIndicators(unit)
 			end
+		elseif assis_cache[unit] then
+			assis_cache[unit] = nil
+			if event then
+				self:UpdateIndicators(unit)
+			end
 		end
 	end
 end
