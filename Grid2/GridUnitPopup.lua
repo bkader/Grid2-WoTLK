@@ -789,7 +789,7 @@ function Grid2:UnitPopup_HideButtons()
 			if (inRaid == 1 and isLeader == 0 and isAssistant == 0) then
 				Grid2PopupShown[UIDROPDOWNMENU_MENU_LEVEL][index] = 0
 			end
-			if (not (dropdownMenu.which == "SELF")) then
+			if (dropdownMenu.which ~= "SELF") then
 				if (UnitExists("target") and not UnitPlayerOrPetInParty("target") and not UnitPlayerOrPetInRaid("target")) then
 					if (UnitIsPlayer("target") and (not UnitCanCooperate("player", "target") and not UnitIsUnit("target", "player"))) then
 						Grid2PopupShown[UIDROPDOWNMENU_MENU_LEVEL][index] = 0

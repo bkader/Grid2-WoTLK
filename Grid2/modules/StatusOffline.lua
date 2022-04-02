@@ -5,31 +5,27 @@ local Offline = Grid2.statusPrototype:new("offline")
 Offline.GetColor = Grid2.statusLibrary.GetColor
 
 local GetTime, UnitIsConnected = GetTime, UnitIsConnected
-local timer
+local UnitIterator = Grid2.UnitIterator
 local offline = {}
 
--- Using a timer because UNIT_CONNECTION is not always fired when a unit reconnects :(
--- UnitIsConnected() returns wrong result for the first 20-25 seconds
--- after the player disconnects so the code ignores the result in this case.
-local function TimerEvent()
-	local ct = GetTime()
-	for unit, dt in next, offline do
-		if UnitIsConnected(unit) and (ct - dt) >= 25 then
-			offline[unit] = nil
+local frequency = 2
+local timer = nil
+local function Scan()
+	for unit, owner in UnitIterator() do
+		if owner == nil then
+			Offline:SetConnected(unit, UnitIsConnected(unit))
 			Offline:UpdateIndicators(unit)
 		end
 	end
-	if not next(offline) then
+	if timer then
 		Grid2:CancelTimer(timer, true)
 		timer = nil
 	end
 end
 
-function Offline:UNIT_CONNECTION(_, unit, hasConnected)
-	if Grid2:IsUnitNoPetInRaid(unit) then
-		self:SetConnected(unit, hasConnected)
-		self:UpdateIndicators(unit)
-	end
+function Offline:UpdateAllUnits(event)
+	if timer then return end
+	Grid2:ScheduleTimer(Scan, frequency)
 end
 
 function Offline:Grid_UnitUpdated(_, unit)
@@ -46,30 +42,28 @@ function Offline:SetConnected(unit, connected)
 	if connected then
 		offline[unit] = nil
 	else
-		offline[unit] = GetTime()
-		if not timer then
-			timer = Grid2:ScheduleRepeatingTimer(TimerEvent, 2)
-		end
+		offline[unit] = true
 	end
 end
 
 function Offline:OnEnable()
-	self:RegisterEvent("UNIT_CONNECTION")
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
+	self:RegisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
 	self:RegisterMessage("Grid_UnitUpdated")
 	self:RegisterMessage("Grid_UnitLeft")
+	self:UpdateAllUnits()
 end
 
 function Offline:OnDisable()
-	self:UnregisterEvent("UNIT_CONNECTION")
+	self:UnregisterEvent("PARTY_MEMBERS_CHANGED", "UpdateAllUnits")
+	self:UnregisterEvent("RAID_ROSTER_UPDATE", "UpdateAllUnits")
 	self:UnregisterMessage("Grid_UnitUpdated")
 	self:UnregisterMessage("Grid_UnitLeft")
 	wipe(offline)
 end
 
 function Offline:IsActive(unit)
-	if offline[unit] then
-		return true
-	end
+	return offline[unit]
 end
 
 local text = L["Offline"]
