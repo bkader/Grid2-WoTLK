@@ -135,15 +135,17 @@ do
 		bsrc[g] = UnitChannelInfo
 	end
 	e.SPELL_CAST_INTERRUPTED = function(g)
-		bsrc[g] = nil
-		local unit = bgid[g]
-		if unit then
-			bexp[unit] = 0
+		if g then
+			bsrc[g] = nil
+			local unit = bgid[g]
+			if unit then
+				bexp[unit] = 0
+			end
 		end
 	end
 	e.SPELL_MISSED = e.SPELL_CAST_INTERRUPTED
 	e.UNIT_DIED = e.SPELL_CAST_INTERRUPTED
-	function Banzai.CombatLogEvent(_, event, _, sourceGUID)
+	function Banzai.CombatLogEvent(_, event, sourceGUID)
 		local action = e[event]
 		if action then
 			local unit = Grid2:GetUnitidByGUID(sourceGUID)
