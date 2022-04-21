@@ -2,6 +2,65 @@
 local Grid2Options = Grid2Options
 local L = Grid2Options.L
 
+-- Grid2Options:MakeStatusEnabledOptions()
+do
+	local ClassesValues = {[""] = L["All Classes"]}
+	for class, translation in pairs(LOCALIZED_CLASS_NAMES_MALE) do
+		ClassesValues[class] = translation
+	end
+
+	local function StatusSetPlayerClass(status, playerClass)
+		local suspended = status:IsSuspended()
+		status.dbx.playerClass = playerClass ~= "" and playerClass or nil
+		if suspended ~= status:IsSuspended() then
+			local name = status.name
+			for key, map in pairs(Grid2.db.profile.statusMap) do
+				local indicator = Grid2.indicators[key]
+				if indicator then
+					local priority = map[name]
+					if priority then
+						if suspended then
+							indicator:RegisterStatus(status, priority)
+						else
+							indicator:UnregisterStatus(status)
+						end
+						Grid2Frame:WithAllFrames(indicator, "Update")
+						Grid2Options:RefreshIndicatorOptions(indicator)
+					end
+				end
+			end
+			local group = Grid2Options:GetStatusGroup(status)
+			if suspended then
+				group.order = group.order - 500
+				group.name = strsub(group.name, 11, -3)
+			else
+				group.order = group.order + 500
+				group.name = string.format("|cFF808080%s|r", group.name)
+			end
+			status:Refresh()
+		end
+	end
+	function Grid2Options:MakeStatusEnabledOptions(status, options, optionParams, headerKey)
+		options.playerClass = {
+			type = "select",
+			width = "full",
+			name = L["Enabled for"],
+			desc = L["Enable the status only if your character belong to the specified class."],
+			order = 1.5,
+			get = function()
+				return status.dbx.playerClass or ""
+			end,
+			set = function(_, v)
+				StatusSetPlayerClass(status, v)
+			end,
+			values = ClassesValues
+		}
+		if headerKey ~= false then
+			self:MakeHeaderOptions(options, headerKey or "General")
+		end
+	end
+end
+
 do
 	local function DeleteStatus(info)
 		local status = info.arg.status
@@ -20,7 +79,7 @@ do
 			desc = L["Delete this element"],
 			func = DeleteStatus,
 			confirm = function() return L["Are you sure you want to delete this status?"] end,
-			disabled = function() return next(status.indicators) ~= nil end,
+			disabled = function() return next(status.indicators) ~= nil or status:IsSuspended() end,
 			arg = {status = status}
 		}
 		options.deletemsg = {
@@ -29,7 +88,7 @@ do
 			fontSize = "small",
 			order = 256,
 			width = "double",
-			hidden = function() return next(status.indicators) == nil end
+			hidden = function() return next(status.indicators) == nil and not status:IsSuspended() end
 		}
 	end
 end

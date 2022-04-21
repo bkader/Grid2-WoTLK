@@ -404,6 +404,8 @@ L["Create a new status."] = "建立新的狀態"
 L["Create Buff"] = "建立增益"
 L["Create Debuff"] = "建立減益"
 L["Create Color"] = "建立顏色"
+L["Enabled for"] = "啟用"
+-- L["Enable the status only if your character belong to the specified class."] = ""
 
 L["Threshold"] = "臨界值"
 L["Thresholds"] = "臨界值設定"

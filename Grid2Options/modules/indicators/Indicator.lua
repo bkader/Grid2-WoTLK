@@ -237,7 +237,8 @@ do
 			end,
 			confirm = function(info, key)
 				return Grid2.indicators[key].dbx.type == "multibar" and L["This indicator cannot be changed from here: go to indicators section to assign/unassign statuses to this indicator."]
-			end
+			end,
+			disabled = function() return status:IsSuspended() end
 		}
 		return options
 	end

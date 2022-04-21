@@ -494,6 +494,8 @@ L["Create a new status."] = true
 L["Create Buff"] = true
 L["Create Debuff"] = true
 L["Create Color"] = true
+L["Enabled for"] = true
+L["Enable the status only if your character belong to the specified class."] = true
 
 L["Threshold"] = true
 L["Thresholds"] = true

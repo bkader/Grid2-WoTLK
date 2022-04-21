@@ -131,6 +131,12 @@ end
 --}}
 
 --{{ Methods shared by different status types
+local function status_Refresh(self)
+	for unit in Grid2:IterateRosterUnits() do
+		AuraFrame_OnEvent(nil, nil, unit)
+	end
+end
+
 local function status_Reset(self, unit)
 	self.states[unit] = nil
 	self.counts[unit] = nil
@@ -221,7 +227,7 @@ local function status_UpdateState(self, unit, iconTexture, count, duration, expi
 		self.tracker[unit] = 1
 		self.seen = 1
 	else
-		self.seen = -1
+		self.seen = self.states[unit] and 1 or -1
 	end
 end
 
@@ -418,6 +424,7 @@ local function CreateAuraCommon(baseKey, dbx, types)
 	status.durations = {}
 
 	status.UpdateDB = status_UpdateDB
+	status.Refresh = status_Refresh
 	status.Reset = status_Reset
 	status.GetCountMax = status_GetCountMax
 	status.GetDuration = status_GetDuration
@@ -450,19 +457,9 @@ end
 
 --{{ Aura Refresh
 -- Passing StatusList instead of nil, because i dont know if nil is valid for RegisterMessage
-Grid2.RegisterMessage(
-	StatusList,
-	"Grid_UnitUpdated",
-	function(_, unit)
-		AuraFrame_OnEvent(nil, nil, unit)
-	end
-)
--- Called by Grid2Options when an aura status is enabled
-function Grid2:RefreshAuras()
-	for unit in Grid2:IterateRosterUnits() do
-		AuraFrame_OnEvent(nil, nil, unit)
-	end
-end
+Grid2.RegisterMessage(StatusList, "Grid_UnitUpdated", function(_, unit)
+	AuraFrame_OnEvent(nil, nil, unit)
+end)
 -- }}
 
 --{{ Aura events management
@@ -472,17 +469,12 @@ do
 	local myUnits = {player = true, pet = true, vehicle = true}
 	function AuraFrame_OnEvent(_, _, unit)
 		local frames = Grid2:GetUnitFrames(unit)
-		if not next(frames) then
-			return
-		end
+		if not next(frames) then return end
+
 		-- scan Debuffs and debuff Types
 		local i = 1
-		while true do
-			local name, _, iconTexture, count, debuffType, duration, expirationTime, caster, _, _, spellId =
-				UnitDebuff(unit, i)
-			if not name then
-				break
-			end
+		local name, _, iconTexture, count, debuffType, duration, expirationTime, caster, _, _, spellId = UnitDebuff(unit, i)
+		while name do
 			local status = DebuffHandlers[name] or DebuffHandlers[spellId]
 			if status then
 				status:UpdateState(unit, iconTexture, count, duration, expirationTime, myUnits[caster])
@@ -494,14 +486,13 @@ do
 				end
 			end
 			i = i + 1
+			name, _, iconTexture, count, debuffType, duration, expirationTime, caster, _, _, spellId = UnitDebuff(unit, i)
 		end
+
 		-- scan Buffs
 		i = 1
-		while true do
-			local name, _, iconTexture, count, _, duration, expirationTime, caster, _, _, spellId = UnitBuff(unit, i)
-			if not name then
-				break
-			end
+		name, _, iconTexture, count, _, duration, expirationTime, caster, _, _, spellId = UnitBuff(unit, i)
+		while name do
 			local statuses = BuffHandlers[name] or BuffHandlers[spellId]
 			if statuses then
 				local isMine = myUnits[caster]
@@ -510,7 +501,9 @@ do
 				end
 			end
 			i = i + 1
+			name, _, iconTexture, count, _, duration, expirationTime, caster, _, _, spellId = UnitBuff(unit, i)
 		end
+
 		-- Mark indicators that need updating
 		for status in next, StatusList do
 			local seen = status.seen
@@ -521,6 +514,7 @@ do
 			end
 			status.seen = false
 		end
+
 		-- Update indicators that needs updating only once.
 		for indicator in next, indicators do
 			for frame in next, frames do

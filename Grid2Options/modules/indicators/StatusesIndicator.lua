@@ -16,7 +16,7 @@ local function RegisterIndicatorStatus(indicator, status, priority)
 	-- special case for auras
 	local type = status.dbx and status.dbx.type
 	if type == "buff" or type == "debuff" or type == "debuffType" then
-		Grid2:RefreshAuras()
+		status:Refresh()
 	end
 end
 

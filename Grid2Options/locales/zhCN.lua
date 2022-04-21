@@ -404,6 +404,8 @@ L["debuff"] = "debuff"
 -- L["Create Buff"] = ""
 -- L["Create Debuff"] = ""
 -- L["Create Color"] = ""
+-- L["Enabled for"] = ""
+-- L["Enable the status only if your character belong to the specified class."] = ""
 
 -- L["Threshold"] = ""
 -- L["Thresholds"] = ""

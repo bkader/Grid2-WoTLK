@@ -404,6 +404,8 @@ L["Create a new status."] = "Neuen Status erstellen."
 -- L["Create Buff"] = ""
 -- L["Create Debuff"] = ""
 -- L["Create Color"] = ""
+L["Enabled for"] = "Aktiviert für"
+L["Enable the status only if your character belong to the specified class."] = "Aktivieren Sie den Status nur, wenn Ihr Charakter der angegebenen Klasse angehört."
 
 L["Threshold"] = "Schwelle"
 -- L["Thresholds"] = ""

@@ -293,6 +293,7 @@ end
 
 -- {{ Register
 Grid2Options:RegisterStatusOptions("buff", "buff", function(self, status, options, optionParams)
+	self:MakeStatusEnabledOptions(status, options, optionParams)
 	self:MakeStatusAuraDescriptionOptions(status, options, optionParams)
 	self:MakeStatusAuraListOptions(status, options, optionParams)
 	self:MakeStatusAuraCommonOptions(status, options, optionParams)
@@ -305,6 +306,7 @@ Grid2Options:RegisterStatusOptions("buff", "buff", function(self, status, option
 end)
 
 Grid2Options:RegisterStatusOptions("debuff", "debuff", function(self, status, options, optionParams)
+	self:MakeStatusEnabledOptions(status, options, optionParams)
 	self:MakeStatusAuraDescriptionOptions(status, options, optionParams)
 	self:MakeStatusAuraListOptions(status, options, optionParams)
 	self:MakeStatusAuraCommonOptions(status, options, optionParams)
@@ -316,6 +318,7 @@ Grid2Options:RegisterStatusOptions("debuff", "debuff", function(self, status, op
 end)
 
 Grid2Options:RegisterStatusOptions("debuffType", "debuff", function(self, status, options, optionParams)
+	self:MakeStatusEnabledOptions(status, options, optionParams)
 	self:MakeStatusColorOptions(status, options, optionParams)
 	self:MakeStatusBlinkThresholdOptions(status, options, optionParams)
 	self:MakeStatusDebuffTypeFilterOptions(status, options, optionParams)

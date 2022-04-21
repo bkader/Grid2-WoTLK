@@ -17,9 +17,14 @@
 --]]
 local Grid2 = Grid2
 local AOEM = Grid2:NewModule("Grid2AoeHeals")
+local _
 
 AOEM.defaultDB = {profile = {updateRate = 0.25, showInCombat = true, showInRaid = false}}
-AOEM.playerClass = select(2, UnitClass("player"))
+AOEM.playerClass = Grid2.playerClass
+if not AOEM.playerClass then
+	_, AOEM.playerClass = UnitClass("player")
+	Grid2.playerClass = AOEM.playerClass
+end
 
 local IsInRaid = Grid2.IsInRaid
 local Grid2Layout = Grid2Layout

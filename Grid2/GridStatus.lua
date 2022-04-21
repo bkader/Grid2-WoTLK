@@ -62,6 +62,8 @@ status.OnEnable = Grid2.Dummy
 -- all indicators
 status.OnDisable = Grid2.Dummy
 -- all indicators
+status.Refresh = Grid2.Dummy
+-- all indicators
 status.UpdateAllIndicators = Grid2.statusLibrary.UpdateAllUnits
 -- all indicators
 status.Grid_Enabled = Grid2.statusLibrary.Grid_Enabled
@@ -183,4 +185,8 @@ do
 		end
 		LibGroupTalents.UnregisterAllCallbacks(status)
 	end
+end
+
+function status:IsSuspended()
+	return (self.dbx and self.dbx.playerClass and self.dbx.playerClass ~= Grid2.playerClass)
 end

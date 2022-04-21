@@ -7,6 +7,7 @@ local L = Grid2.L
 
 local LDB = LibStub("LibDataBroker-1.1")
 local LDI = LibStub("LibDBIcon-1.0", true)
+local _
 
 Grid2.defaults = {
 	profile = {
@@ -95,7 +96,7 @@ function Grid2:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("Grid2DB", self.defaults)
 
 	self.debugging = self.db.profile.debug
-	self.playerClass = select(2, UnitClass("player"))
+	_, self.playerClass = UnitClass("player")
 
 	local LibDualSpec = LibStub("LibDualSpec-1.0", true)
 	if LibDualSpec then

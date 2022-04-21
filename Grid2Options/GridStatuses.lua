@@ -105,7 +105,7 @@ do
 					else
 						local spellName, _
 						spellName, _, icon = GetSpellInfo(tonumber(spell) or spell)
-						desc = string.format("%s: %s", L[dbx.type], spellName or dbx.spellName)
+						desc = fmt("%s: %s", L[dbx.type], spellName or dbx.spellName)
 					end
 				elseif dbx.type == "debuffType" then -- special case for debuff types
 					icon = self.debuffTypeIcons[dbx.subType]
@@ -198,7 +198,6 @@ function Grid2Options:MakeStatusOptions(status)
 		if not group then
 			group = {
 				type = "group",
-				order = (params and params.groupOrder) or (status.name ~= status.dbx.type) and 200 or nil,
 				name = name,
 				desc = desc,
 				icon = icon,
@@ -209,6 +208,13 @@ function Grid2Options:MakeStatusOptions(status)
 			catGroup.args[status.name] = group
 		else
 			wipe(group.args)
+		end
+
+		local order = params and params.groupOrder
+		group.order = (type(order) == "function" and order(status) or order) or (status.name == status.dbx.type and 100 or 200)
+		if status:IsSuspended() then
+			group.order = group.order + 500
+			group.name = fmt("|cFF808080%s|r", group.name)
 		end
 		self:MakeStatusChildOptions(status, group.args)
 	end

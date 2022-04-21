@@ -404,6 +404,8 @@ L["Create a new status."] = "새로운 상태를 만듭니다."
 -- L["Create Buff"] = ""
 -- L["Create Debuff"] = ""
 -- L["Create Color"] = ""
+L["Enabled for"] = "사용 가능"
+L["Enable the status only if your character belong to the specified class."] = "캐릭터가 지정된 클래스인 경우에만 상태를 활성화합니다."
 
 L["Threshold"] = "수치"
 L["Thresholds"] = "수치"
