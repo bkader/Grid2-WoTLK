@@ -11,7 +11,7 @@ do
 
 	local function StatusSetPlayerClass(status, playerClass)
 		local suspended = status:IsSuspended()
-		status.dbx.playerClass = playerClass ~= "" and playerClass or nil
+		status.dbx.playerClass = (playerClass ~= "") and playerClass or nil
 		if suspended ~= status:IsSuspended() then
 			local name = status.name
 			for key, map in pairs(Grid2.db.profile.statusMap) do
