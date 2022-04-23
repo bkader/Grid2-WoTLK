@@ -28,7 +28,9 @@ do
 	local Combat = Grid2.statusPrototype:new("combat")
 	local UnitAffectingCombat = UnitAffectingCombat
 	local cache = {}
+	local timer = nil
 
+	Combat.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
 	Combat.GetColor = Grid2.statusLibrary.GetColor
 	Combat.GetPercent = GetPercent
 	Combat.GetText = GetText
@@ -48,12 +50,15 @@ do
 		self:UpdateDB()
 		self:RegisterMessage("Grid_UnitUpdated")
 		self:RegisterMessage("Grid_UnitLeft")
+		timer = timer or Grid2:ScheduleRepeatingTimer(UpdateUnits, 1)
 	end
 
 	function Combat:OnDisable()
 		self:UnregisterMessage("Grid_UnitUpdated")
 		self:UnregisterMessage("Grid_UnitLeft")
 		wipe(cache)
+		Grid2:CancelTimer(timer, true)
+		timer = nil
 	end
 
 	function Combat:Grid_UnitUpdated(_, unit)
@@ -70,6 +75,7 @@ do
 
 	function Combat:UpdateDB()
 		self.GetTexCoord = self.dbx.useEmptyIcon and GetTexCoordEmpty or GetTexCoordIcon
+		timer = timer or Grid2:ScheduleRepeatingTimer(UpdateUnits, 1)
 	end
 
 	local function CreateCombat(baseKey, dbx)
@@ -86,12 +92,11 @@ do
 	local MyCombat = Grid2.statusPrototype:new("combat-mine")
 	local inCombat
 
+	MyCombat.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
 	MyCombat.GetColor = Grid2.statusLibrary.GetColor
 	MyCombat.GetPercent = GetPercent
 	MyCombat.GetText = GetText
 	MyCombat.GetIcon = GetIcon
-
-	MyCombat.UpdateAllUnits = Grid2.statusLibrary.UpdateAllUnits
 
 	function MyCombat:IsActive()
 		return inCombat
