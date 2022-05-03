@@ -212,17 +212,23 @@ local NewAuraHandlerMT = {
 		end
 		return true
 	end,	
+	isDefaultAurasButtonDisabled = function(self)
+		local auras = DefaultClassAuras[engClass]
+		return auras == nil
+	end,
 	CreateDefaultBuffs = function(self)
 		local auras = DefaultClassAuras[engClass]
-		for i = 1, #auras do
+		for i = 1, #auras do			
 			local aura = auras[i]
-			aura.name = GetSpellInfo(aura.spellName)
-			aura.colorCount = 1
-			aura.subTypes = BuffSubTypes
-			aura.color = {r = 1, g = 1, b = 1, a = 1}
-			aura.Init = self.Init
-			aura.GetKey = self.GetKey			
-			self.Create(aura)
+			if aura.spellName ~= nil then
+				aura.name = GetSpellInfo(aura.spellName)
+				aura.colorCount = 1
+				aura.subTypes = BuffSubTypes
+				aura.color = {r = 1, g = 1, b = 1, a = 1}
+				aura.Init = self.Init
+				aura.GetKey = self.GetKey			
+				self.Create(aura)
+			end
 		end
 	end,
 }
@@ -305,6 +311,7 @@ NewBuffHandler.options = {
 		name = L["Create Deault Buffs"],
 		desc = format(L["Create Deault Buffs for %s."], L[engClass]),
 		func = "CreateDefaultBuffs",
+		disabled = "isDefaultAurasButtonDisabled",
 		handler = NewBuffHandler
 	},
 }
