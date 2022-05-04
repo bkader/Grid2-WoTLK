@@ -183,7 +183,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 		order = 104,
 		name = L["Text Location"],
 		desc = L["Text Location"],
-		values = Grid2Options.pointValueListExtra,
+		values = self.pointValueListExtra,
 		get = function()
 			if not indicator.dbx.disableStack then
 				local JustifyH = indicator.dbx.fontJustifyH or "CENTER"
@@ -215,10 +215,10 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 			return indicator.dbx.font or self.MEDIA_VALUE_DEFAULT
 		end,
 		set = function(info, v)
-			indicator.dbx.font = Grid2Options.MEDIA_VALUE_DEFAULT ~= v and v or nil
+			indicator.dbx.font = (self.MEDIA_VALUE_DEFAULT ~= v) and v or nil
 			self:RefreshIndicator(indicator, "Create")
 		end,
-		values = self.GetStatusBarValues,
+		values = self.GetFontValues,
 		hidden = function()
 			return indicator.dbx.disableStack
 		end
@@ -236,7 +236,7 @@ function Grid2Options:MakeIndicatorAuraIconsCustomOptions(indicator, options)
 			indicator.dbx.fontFlags = v ~= "NONE" and v or ""
 			self:RefreshIndicator(indicator, "Create")
 		end,
-		values = Grid2Options.fontFlagsValues,
+		values = self.fontFlagsValues,
 		hidden = function()
 			return indicator.dbx.disableStack
 		end

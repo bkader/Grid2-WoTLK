@@ -442,14 +442,12 @@ do
 	Grid2Options.MEDIA_VALUE_DEFAULT = string.format("*%s*", L["Default"])
 	Grid2Options.GetFontValues = function()
 		fonts = fonts or self:CopyOptionsTable(AceGUIWidgetLSMlists.font)
-		fonts[self.MEDIA_VALUE_DEFAULT] =
-			media:Fetch("font", Grid2Frame.db.profile.font or self.MEDIA_FONT_DEFAULT) or STANDARD_TEXT_FONT
+		fonts[self.MEDIA_VALUE_DEFAULT] = media:Fetch("font", Grid2Frame.db.profile.font or self.MEDIA_FONT_DEFAULT) or STANDARD_TEXT_FONT
 		return fonts
 	end
 	Grid2Options.GetStatusBarValues = function()
 		bars = bars or self:CopyOptionsTable(AceGUIWidgetLSMlists.statusbar)
-		bars[self.MEDIA_VALUE_DEFAULT] =
-			media:Fetch("statusbar", Grid2Frame.db.profile.barTexture or "Gradient") or "Gradient"
+		bars[self.MEDIA_VALUE_DEFAULT] = media:Fetch("statusbar", Grid2Frame.db.profile.barTexture or "Gradient") or "Gradient"
 		return bars
 	end
 end

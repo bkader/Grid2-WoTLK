@@ -36,7 +36,7 @@ function Grid2Options:MakeIndicatorIconCustomOptions(indicator, options)
 		order = 100,
 		name = L["Text Location"],
 		desc = L["Text Location"],
-		values = Grid2Options.pointValueListExtra,
+		values = self.pointValueListExtra,
 		get = function()
 			if not indicator.dbx.disableStack then
 				local JustifyH = indicator.dbx.fontJustifyH or "CENTER"
@@ -66,13 +66,14 @@ function Grid2Options:MakeIndicatorIconCustomOptions(indicator, options)
 		name = L["Font"],
 		desc = L["Adjust the font settings"],
 		get = function(info)
-			return indicator.dbx.font
+			return indicator.dbx.font or self.MEDIA_VALUE_DEFAULT
 		end,
 		set = function(info, v)
+			indicator.dbx.font = (self.MEDIA_VALUE_DEFAULT ~= v) and v or nil
 			indicator.dbx.font = v
 			self:RefreshIndicator(indicator, "Create")
 		end,
-		values = AceGUIWidgetLSMlists.font,
+		values = self.GetFontValues,
 		hidden = function()
 			return indicator.dbx.disableStack
 		end
@@ -90,7 +91,7 @@ function Grid2Options:MakeIndicatorIconCustomOptions(indicator, options)
 			indicator.dbx.fontFlags = v ~= "NONE" and v or ""
 			self:RefreshIndicator(indicator, "Create")
 		end,
-		values = Grid2Options.fontFlagsValues,
+		values = self.fontFlagsValues,
 		hidden = function()
 			return indicator.dbx.disableStack
 		end
