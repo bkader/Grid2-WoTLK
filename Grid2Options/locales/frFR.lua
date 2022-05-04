@@ -528,6 +528,8 @@ L["Elapsed time"] = "Temps écoulé "
 
 L["Class Filter"] = "Filtre de classe"
 L["Show on %s."] = "Montrer sur %s."
+L["All Classes"] = "Toutes les classes"
+L["Selected Classes"] = "Classes sélectionnées"
 
 L["Blink Threshold"] = "Seuil de clignotement"
 L["Blink Threshold at which to start blinking the status."] = "Seuil pour lequel le clignotement du statut commencera."

@@ -1,6 +1,7 @@
 -- Misc functions
 local Grid2 = Grid2
 Grid2.callbacks = Grid2.callbacks or LibStub("CallbackHandler-1.0"):New(Grid2)
+Grid2.dummyTable = Grid2.dummyTable or {}
 
 function Grid2.Dummy() end
 

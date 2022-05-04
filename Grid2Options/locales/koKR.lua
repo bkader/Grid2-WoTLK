@@ -449,6 +449,8 @@ L["Remaining time"] = "남은 시간"
 
 L["Class Filter"] = "직업 필터"
 L["Show on %s."] = "%s 표시합니다."
+L["All Classes"] = "모든 직업"
+L["Selected Classes"] = "선택한 수업"
 
 L["Blink Threshold"] = "깜박임 수치"
 L["Blink Threshold at which to start blinking the status."] = "상태를 깜박이게 할 수치를 설정합니다."

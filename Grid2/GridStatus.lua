@@ -188,5 +188,11 @@ do
 end
 
 function status:IsSuspended()
-	return (self.dbx and self.dbx.playerClass and self.dbx.playerClass ~= Grid2.playerClass) or nil
+	if self.dbx and self.dbx.playerClass then
+		if self.dbx.playerClass == "multi" and self.dbx.playerClasses then
+			return (self.dbx.playerClasses[Grid2.playerClass] ~= true)
+		end
+		return (self.dbx.playerClass ~= Grid2.playerClass)
+	end
+	return false
 end

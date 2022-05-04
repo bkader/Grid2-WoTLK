@@ -449,6 +449,8 @@ L["Display status only if the buff was cast by you."] = "显示你施放增益�
 
 L["Class Filter"] = "职业过滤"
 L["Show on %s."] = "在%s上显示。"
+L["All Classes"] = "全职业"
+L["Selected Classes"] = "选定的班级"
 
 -- L["Blink Threshold"] = ""
 -- L["Blink Threshold at which to start blinking the status."] = ""

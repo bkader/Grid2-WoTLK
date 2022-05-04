@@ -449,6 +449,8 @@ L["Remaining time"] = "剩餘時間"
 
 L["Class Filter"] = "職業過濾"
 L["Show on %s."] = "在 %s 顯示"
+L["All Classes"] = "所有職業"
+L["Selected Classes"] = "选定的班级"
 
 L["Blink Threshold"] = "閃爍門檻"
 L["Blink Threshold at which to start blinking the status."] = "開始狀態閃爍的門檻"

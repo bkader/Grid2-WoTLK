@@ -8,7 +8,7 @@ L["GRID2_DESC"]  = "Grid2 is a party&raid unit frame addon. Grid2 displays healt
 L["General Settings"] = true
 
 L["statuses"] = "Statuses"
-L["indicators"] ="Indicators"
+L["indicators"] = "Indicators"
 
 L["Frames"] = true
 L["frame"] = true
@@ -539,6 +539,8 @@ L["Elapsed time"] = true
 
 L["Class Filter"] = true
 L["Show on %s."] = true
+L["All Classes"] = true
+L["Selected Classes"] = true
 
 L["Blink Threshold"] = true
 L["Blink Threshold at which to start blinking the status."] = true

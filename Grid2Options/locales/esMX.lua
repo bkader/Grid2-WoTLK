@@ -449,6 +449,8 @@ L["Remaining time"] = "Duracion restante"
 
 L["Class Filter"] = "Filtro de clases"
 L["Show on %s."] = "Mostrar para %s."
+L["All Classes"] = "Todas las clases"
+L["Selected Classes"] = "Clases seleccionadas"
 
 L["Blink Threshold"] = "Umbral de parpadeo"
 L["Blink Threshold at which to start blinking the status."] = "Elige el umbral a partir del cual el estado parpadeará"

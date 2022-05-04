@@ -4,14 +4,23 @@ local L = Grid2Options.L
 
 -- Grid2Options:MakeStatusEnabledOptions()
 do
-	local ClassesValues = {[""] = L["All Classes"]}
+	local ClassesValues = {[""] = L["All Classes"], ["multi"] = L["Selected Classes"]}
+	local ClassesValues2 = {}
 	for class, translation in pairs(LOCALIZED_CLASS_NAMES_MALE) do
 		ClassesValues[class] = translation
+		ClassesValues2[class] = translation
 	end
 
-	local function StatusSetPlayerClass(status, playerClass)
-		local suspended = status:IsSuspended()
-		status.dbx.playerClass = (playerClass ~= "") and playerClass or nil
+	local function StatusSetPlayerClass(status, playerClass, ismulti)
+		local suspended = nil
+		if ismulti then
+			status.dbx.playerClass = "multi"
+			suspended = (not status.dbx.playerClasses or status.dbx.playerClasses[playerClass] ~= nil)
+		else
+			suspended = status:IsSuspended()
+			status.dbx.playerClass = (playerClass ~= "") and playerClass or nil
+			status.dbx.playerClasses = nil -- remove it
+		end
 		if suspended ~= status:IsSuspended() then
 			local name = status.name
 			for key, map in pairs(Grid2.db.profile.statusMap) do
@@ -54,6 +63,24 @@ do
 				StatusSetPlayerClass(status, v)
 			end,
 			values = ClassesValues
+		}
+		options.playerClasses = {
+			type = "multiselect",
+			width = "half",
+			name = "",
+			order = 1.6,
+			hidden = function()
+				return (not status.dbx.playerClass or status.dbx.playerClass ~= "multi")
+			end,
+			get = function(_, c)
+				return status.dbx.playerClasses and status.dbx.playerClasses[c]
+			end,
+			set = function(_, c, v)
+				status.dbx.playerClasses = status.dbx.playerClasses or {}
+				status.dbx.playerClasses[c] = v or nil
+				StatusSetPlayerClass(status, c, true)
+			end,
+			values = ClassesValues2
 		}
 		if headerKey ~= false then
 			self:MakeHeaderOptions(options, headerKey or "General")

@@ -449,6 +449,8 @@ L["examples: Druid@Regrowth Chimaeron>Low Health"] = "Beispiele: Druide@Nachwach
 
 L["Class Filter"] = "Klassen Filter"
 L["Show on %s."] = "Zeigt auf %s."
+L["All Classes"] = "Alle Klassen"
+L["Selected Classes"] = "Ausgewählte Klassen"
 
 L["Blink Threshold"] = "Blink Schwelle"
 L["Blink Threshold at which to start blinking the status."] = "Blink Schwelle ab wann der 'Status' Aufblinken soll"
