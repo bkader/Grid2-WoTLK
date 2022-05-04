@@ -29,28 +29,28 @@ local BuffSubTypes = {
 }
 
 local DefaultClassAuras = {
-	["SHAMAN"] = {
+	SHAMAN = {
 		{type = "buff", spellName = 61295, mine = true, color1 = {r = .8, g = .6, b = 1, a = 1}},
 		{type = "buff", spellName = 51945, mine = true, color1 = {r = .8, g = 1, b = .5, a = 1}},
 		{type = "buff", spellName = 974, color1 = {r = .8, g = .8, b = .2, a = 1}},
 		{type = "buff", spellName = 974, mine = true, colorCount = 2, color1 = {r = .9, g = .9, b = .4, a = 1}, color2 = {r = .9, g = .9, b = .4, a = 1}},
 	},
-	["DRUID"] = {
+	DRUID = {
 		{type = "buff", spellName = 33763, mine = true, colorCount = 3, color1 = {r = .2, g = .7, b = .2, a = 1}, color2 = {r = .6, g = .9, b = .6, a = 1}, color3 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 774, mine = true, color1 = {r = 1, g = 0, b = .6, a = 1}},
 		{type = "buff", spellName = 8936, mine = true, color1 = {r = .5, g = 1, b = 0, a = 1}},
 		{type = "buff", spellName = 48438, mine = true, color1 = {r = 0.2, g = .9, b = .2, a = 1}},
 	},
-	["PALADIN"] = {
+	PALADIN = {
 		{type = "buff", spellName = 53563, color1 = {r = .7, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 53563, mine = true, color1 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 642, mine = true, color1 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 498, mine = true, color1 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 1022, mine = true, color1 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 1038, color1 = {r = 1, g = 1, b = 1, a = 1}},
-		{type = "buff", spellName = 1038, mine = true, color1 = {r = .8, g = .8, b = .7, a = 1}},		
+		{type = "buff", spellName = 1038, mine = true, color1 = {r = .8, g = .8, b = .7, a = 1}},
 	},
-	["PRIEST"] = {
+	PRIEST = {
 		{type = "buff", spellName = 47509, color1 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 588, missing = true, color1 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 17, color1 = {r = 0, g = 1, b = 1, a = 1}},
@@ -58,21 +58,21 @@ local DefaultClassAuras = {
 		{type = "buff", spellName = 27827, blinkThreshold = 3, color1 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 33076, mine = true, colorCount = 5, color1 = {r = 1, g = .2, b = .2, a = 1}, color2 = {r = 1, g = 1, b = .4, a = .4}, color3 = {r = 1, g = .6, b = .6, a = 1}, color4 = {r = 1, g = .8, b = .8, a = 1}, color5 = {r = 1, g = 1, b = 1, a = 1}},
 	},
-	["MAGE"] = {
+	MAGE = {
 		{type = "buff", spellName = 54646, color1 = {r = .11, g = .22, b = .33, a = 1}},
 		{type = "buff", spellName = 7302, mine = true, missing = true, color1 = {r = .2, g = .4, b = .4, a = 1}},
 		{type = "buff", spellName = 11426, mine = true, missing = true, color1 = {r = 1, g = 1, b = 1, a = 1}},
 	},
-	["ROGUE"] = {
+	ROGUE = {
 		{type = "buff", spellName = 5277, mine = true, color1 = {r = .1, g = .1, b = 1, a = 1}},
 	},
-	["WARLOCK"] = {
+	WARLOCK = {
 		{type = "buff", spellName = 6229, mine = true, color1 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 19028, mine = true, color1 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 687, mine = true, missing = true, color1 = {r = 1, g = 1, b = 1, a = 1}},
 		{type = "buff", spellName = 28176, mine = true, missing = true, color1 = {r = 1, g = 1, b = 1, a = 1}},
 	},
-	["WARRIOR"] = {
+	WARRIOR = {
 		{type = "buff", spellName = 50720, mine = true, color1 = {r = .1, g = .1, b = 1, a = 1}},
 		{type = "buff", spellName = 6673, mine = true, color1 = {r = .1, g = .1, b = 1, a = 1}},
 		{type = "buff", spellName = 871, mine = true, color1 = {r = .1, g = .1, b = 1, a = 1}},
@@ -81,7 +81,7 @@ local DefaultClassAuras = {
 	}
 }
 
-local localizedClass, engClass = UnitClass("player")
+local _, engClass = UnitClass("player")
 local DebuffSubTypes = {["Debuff"] = 1, ["Debuffs Group"] = {}}
 local ColorCountValues = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 local ColorizeByValues = {L["Number of stacks"], L["Remaining time"]}
@@ -211,14 +211,14 @@ local NewAuraHandlerMT = {
 			return not (not Grid2.statuses[key])
 		end
 		return true
-	end,	
+	end,
 	isDefaultAurasButtonDisabled = function(self)
 		local auras = DefaultClassAuras[engClass]
 		return auras == nil
 	end,
 	CreateDefaultBuffs = function(self)
 		local auras = DefaultClassAuras[engClass]
-		for i = 1, #auras do			
+		for i = 1, #auras do
 			local aura = auras[i]
 			if aura.spellName ~= nil then
 				aura.name = GetSpellInfo(aura.spellName)
@@ -226,7 +226,7 @@ local NewAuraHandlerMT = {
 				aura.subTypes = BuffSubTypes
 				aura.color = {r = 1, g = 1, b = 1, a = 1}
 				aura.Init = self.Init
-				aura.GetKey = self.GetKey			
+				aura.GetKey = self.GetKey
 				self.Create(aura)
 			end
 		end
@@ -308,8 +308,8 @@ NewBuffHandler.options = {
 	DefaultBuffsExecute = {
 		type = "execute",
 		order = 10,
-		name = L["Create Deault Buffs"],
-		desc = format(L["Create Deault Buffs for %s."], L[engClass]),
+		name = L["Create Default Buffs"],
+		desc = format(L["Create Default Buffs for %s."], L[engClass]),
 		func = "CreateDefaultBuffs",
 		disabled = "isDefaultAurasButtonDisabled",
 		handler = NewBuffHandler
