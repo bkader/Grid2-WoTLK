@@ -4,6 +4,7 @@ local Grid2 = Grid2
 local pairs, next = pairs, next
 local UnitName, UnitGUID, UnitExists = UnitName, UnitGUID, UnitExists
 local IsInRaid, IsInGroup, GetNumGroupMembers = Grid2.IsInRaid, Grid2.IsInGroup, Grid2.GetNumGroupMembers
+local _
 
 -- realm name
 local my_realm = GetRealmName()
@@ -129,7 +130,7 @@ do
 		return count > 0 and "party" or "solo"
 	end
 	function Grid2:GroupChanged(event)
-		self.instType = select(2, IsInInstance())
+		_, self.instType = IsInInstance()
 		if self.instType == "raid" and IsInRaid() then
 			self.instType = select(5, GetInstanceInfo()) > 10 and "raid25" or "raid10"
 		elseif self.instType == "pvp" then

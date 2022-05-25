@@ -24,7 +24,7 @@ local newDebuffName
 local fmt = string.format
 local find = string.find
 local tonumber = tonumber
-local select = select
+local _
 
 -- forward declarations
 local AddBossDebuffOptions
@@ -443,8 +443,8 @@ end
 
 local function GetLocalizedStatusName(key)
 	local localizedText = L["raid-debuffs"]
-	local index = select(3, find(key, "(%d+)")) or 1
-	return index == 1 and localizedText or fmt("%s(%d)", localizedText, index)
+	local _, _, index = find(key, "(%d+)")
+	return (not index or index == 1) and localizedText or fmt("%s(%d)", localizedText, index)
 end
 
 local function GetCustomDebuffs()
@@ -477,14 +477,15 @@ local function CalculateAvailableStatuses()
 			statuses[#statuses + 1] = status
 		end
 	end
-	table.sort(
-		statuses,
-		function(a, b)
-			local index_a = tonumber(select(3, find(a.name, "(%d+)")) or 1)
-			local index_b = tonumber(select(3, find(b.name, "(%d+)")) or 1)
-			return index_a < index_b
-		end
-	)
+	table.sort(statuses, function(a, b)
+		local _, _, index_a = find(a.name, "(%d+)")
+		local _, _, index_b = find(b.name, "(%d+)")
+
+		index_a = tonumber(index_a) or 1
+		index_b = tonumber(index_b) or 1
+
+		return index_a < index_b
+	end)
 	wipe(statusesList)
 	for index, status in ipairs(statuses) do
 		statuses[status] = index
@@ -515,7 +516,7 @@ local function LoadBosses()
 	local order = 30
 	local bosses = RDDB[curModule][curInstance]
 	for boss in pairs(bosses) do
-		local EJ_Order = select(3, find(boss, "%-(%d+)%]"))
+		local _, _, EJ_Order = find(boss, "%-(%d+)%]")
 		if EJ_Order then
 			curBossesOrder[boss] = tonumber(EJ_Order)
 		else
@@ -954,7 +955,7 @@ end
 
 local function AddBossOptions(options, name)
 	local order = curBossesOrder[name] * 1000
-	local EJ_Order = select(3, find(name, "%-(%d+)%]"))
+	local _, _, EJ_Order = find(name, "%-(%d+)%]")
 	EJ_Order = EJ_Order and EJ_Order .. ") " or ""
 	local bossName = StripEJinfo(name)
 	options[name] = {

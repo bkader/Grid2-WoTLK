@@ -10,6 +10,7 @@ local UnitCanAttack = UnitCanAttack
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 local next = next
+local _
 
 local statuses = {}
 local sguids = {}
@@ -167,7 +168,7 @@ function Banzai:Update()
 	for g, func in next, bsrc do -- Search new banzais
 		local unit = tguids[g]
 		if unit then
-			local ico, _, et = select(4, func(sguids[g]))
+			local _, _, _, ico, _, et = func(sguids[g])
 			et = et and et / 1000 or ct + 0.25
 			bgid[g] = unit
 			buni[unit] = g

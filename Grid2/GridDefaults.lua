@@ -111,7 +111,7 @@ end
 
 local MakeDefaultsClass
 do
-	local class = select(2, UnitClass("player"))
+	local _, class = UnitClass("player")
 	if class == "SHAMAN" then
 		MakeDefaultsClass = function()
 			Grid2:DbSetValue("statuses", "buff-Riptide-mine", {type = "buff", spellName = 61295, mine = true, color1 = {r = .8, g = .6, b = 1, a = 1}})

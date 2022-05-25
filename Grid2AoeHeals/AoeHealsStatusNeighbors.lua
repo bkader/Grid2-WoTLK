@@ -6,7 +6,6 @@ if not AOEM then return end
 local radius
 local minPlayers
 local healthDeficit
-local IsActive
 
 local function CalcNeighbors(self, players)
 	local m = #players
@@ -56,7 +55,6 @@ local function UpdateDB(self, dbx)
 end
 
 AOEM.setupFunc["aoe-neighbors"] = function(self, dbx)
-	IsActive = self.IsActive
 	self.UpdateDB = UpdateDB
 	self.Update = Update
 	self.Refresh = Refresh

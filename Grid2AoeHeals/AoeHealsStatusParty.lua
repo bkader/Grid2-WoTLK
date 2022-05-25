@@ -9,6 +9,7 @@ local healthDeficit
 local healthThreshold
 local prevSolutions = {}
 local ProcessGroup
+local _
 
 local function CalcNeighbors(self, players, k, m)
 	for i = k, m do
@@ -98,7 +99,7 @@ end
 AOEM.setupFunc["aoe-PrayerOfHealing"] = function(self, dbx)
 	self.order = -1
 	self.spellId = 596
-	self.texture = select(3, GetSpellInfo(self.spellId))
+	_, _, self.texture = GetSpellInfo(self.spellId)
 	self.Update = Update
 	self.UpdateDB = UpdateDB
 	UpdateDB(self, dbx)

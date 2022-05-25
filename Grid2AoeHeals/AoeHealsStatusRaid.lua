@@ -15,6 +15,7 @@ local maxSolutions
 local healthDeficit
 local healthThreshold
 local keepPrevHeals
+local _
 
 local solutions = {}
 
@@ -146,7 +147,7 @@ if AOEM.playerClass == "PRIEST" then
 	AOEM.setupFunc["aoe-CircleOfHealing"] = function(self, dbx)
 		self.Update = Update
 		self.spellId = 34861
-		self.texture = select(3, GetSpellInfo(self.spellId))
+		_, _, self.texture = GetSpellInfo(self.spellId)
 		self.HighlightField = "totMaskR"
 		self.UpdateDB = UpdateDB
 		self.StatusEnabled = Enabled
@@ -169,7 +170,7 @@ elseif AOEM.playerClass == "DRUID" then
 	AOEM.setupFunc["aoe-WildGrowth"] = function(self, dbx)
 		self.Update = Update
 		self.spellId = 48438
-		self.texture = select(3, GetSpellInfo(self.spellId))
+		_, _, self.texture = GetSpellInfo(self.spellId)
 		self.HighlightField = "totMaskR"
 		self.UpdateDB = UpdateDB
 		self.StatusEnabled = Enabled

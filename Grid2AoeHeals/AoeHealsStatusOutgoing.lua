@@ -11,17 +11,12 @@ local defaultSpells = {
 }
 if not defaultSpells[playerClass] then return end
 
-local next, select, GetTime = next, select, GetTime
+local next, GetTime = next, GetTime
 
 local OutgoingHeal = Grid2.statusPrototype:new("aoe-OutgoingHeals")
-local timer
-local playerGUID
-local activeTime
-local timerDelay
-local spells = {}
-local icons = {}
-local heal_cache = {}
-local time_cache = {}
+local playerGUID, timer, activeTime, timerDelay
+local spells, icons = {}, {}
+local heal_cache, time_cache = {}, {}
 
 local function TimerEvent()
 	local ct = GetTime()
@@ -38,14 +33,9 @@ local function TimerEvent()
 	end
 end
 
-local function CombatLogEvent(...)
-	local spellName = select(14, ...)
-	local subEvent = select(3, ...)
-	if
-		(subEvent == "SPELL_HEAL" or subEvent == "SPELL_PERIODIC_HEAL") and spells[spellName] and
-			select(5, ...) == playerGUID
-	 then
-		local unit = Grid2:GetUnitidByGUID(select(9, ...))
+local function CombatLogEvent(_, _, subEvent, srcGUID, _, _, dstGUID, _, _, _, spellName)
+	if (subEvent == "SPELL_HEAL" or subEvent == "SPELL_PERIODIC_HEAL") and spellName and spells[spellName] and srcGUID == playerGUID then
+		local unit = Grid2:GetUnitidByGUID(dstGUID)
 		if unit then
 			local prev = heal_cache[unit]
 			heal_cache[unit] = spellName
@@ -60,47 +50,47 @@ local function CombatLogEvent(...)
 	end
 end
 
-local function OnEnable(self)
+function OutgoingHeal:OnEnable()
 	self:UpdateDB()
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", CombatLogEvent)
 end
 
-local function OnDisable(self)
+function OutgoingHeal:OnDisable()
 	wipe(heal_cache)
 	wipe(time_cache)
 	self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 end
 
-local function IsActive(self, unit)
+function OutgoingHeal:IsActive(unit)
 	if heal_cache[unit] then
 		return true
 	end
 end
 
-local function GetColor(self, unit)
+function OutgoingHeal:GetColor(unit)
 	local c = self.dbx.color1
 	return c.r, c.g, c.b, c.a
 end
 
-local function GetIcon(self, unit)
+function OutgoingHeal:GetIcon(unit)
 	local spell = heal_cache[unit]
 	if spell then
 		return icons[spell]
 	end
 end
 
-local function GetText(self, unit)
+function OutgoingHeal:GetText(unit)
 	return heal_cache[unit]
 end
 
-local function ResetClassSpells(self)
+function OutgoingHeal:ResetClassSpells()
 	wipe(self.dbx.spells[playerClass])
 	for _, spell in next, defaultSpells[playerClass] do
 		table.insert(self.dbx.spells[playerClass], spell)
 	end
 end
 
-local function GetSpellID(self, name)
+function OutgoingHeal:GetSpellID(name)
 	local id = 0
 	if tonumber(name) then
 		return tonumber(name)
@@ -111,11 +101,12 @@ local function GetSpellID(self, name)
 			return spell
 		end
 	end
-	local texture = select(3, GetSpellInfo(name))
+	local _, _, texture = GetSpellInfo(name)
 	for i = 150000, 1, -1 do
 		if GetSpellInfo(i) == name then
 			id = i
-			if select(3, GetSpellInfo(i)) == texture then
+			local _, _, t = GetSpellInfo(i)
+			if t == texture then
 				return i
 			end
 		end
@@ -123,7 +114,7 @@ local function GetSpellID(self, name)
 	return id
 end
 
-local function UpdateDB(self)
+function OutgoingHeal:UpdateDB()
 	wipe(icons)
 	wipe(spells)
 	if not self.dbx.spells[playerClass] then
@@ -147,18 +138,13 @@ end
 
 Grid2.setupFunc["aoe-OutgoingHeals"] = function(baseKey, dbx)
 	playerGUID = UnitGUID("player")
-	OutgoingHeal = OutgoingHeal
-	OutgoingHeal.OnEnable = OnEnable
-	OutgoingHeal.OnDisable = OnDisable
-	OutgoingHeal.IsActive = IsActive
-	OutgoingHeal.GetColor = GetColor
-	OutgoingHeal.GetIcon = GetIcon
-	OutgoingHeal.GetText = GetText
-	OutgoingHeal.UpdateDB = UpdateDB
-	OutgoingHeal.GetSpellID = GetSpellID
-	OutgoingHeal.ResetClassSpells = ResetClassSpells
 	Grid2:RegisterStatus(OutgoingHeal, {"color", "icon", "text"}, baseKey, dbx)
 	return OutgoingHeal
 end
 
-Grid2:DbSetStatusDefaultValue("aoe-OutgoingHeals", {type = "aoe-OutgoingHeals", spells = Grid2.CopyTable(defaultSpells), activeTime = 2, color1 = {r = 0, g = 0.8, b = 1, a = 1}})
+Grid2:DbSetStatusDefaultValue("aoe-OutgoingHeals", {
+	type = "aoe-OutgoingHeals",
+	spells = Grid2.CopyTable(defaultSpells),
+	activeTime = 2,
+	color1 = {r = 0, g = 0.8, b = 1, a = 1}
+})

@@ -8,6 +8,7 @@ local min = math.min
 local floor = math.floor
 local tsort = table.sort
 local tinsert = table.insert
+local _
 
 local roster = {} -- Roster for chain heals calculated by CalcNeighbors (GetFilteredRoster() with invalid targets for chain heals removed)
 local visited = {} -- Temporary table used by Chain Heals calcs
@@ -125,7 +126,7 @@ AOEM.setupFunc["aoe-ChainHeal"] = function(self, dbx)
 	AOEM.chCreated = true -- uggly/hackish special case
 	self.isChainHeal = true
 	self.spellId = 1064
-	self.texture = select(3, GetSpellInfo(self.spellId))
+	_, _, self.texture = GetSpellInfo(self.spellId)
 	self.HighlightField = "totMaskC"
 	self.Update = Update
 	self.UpdateDB = UpdateDB

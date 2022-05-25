@@ -4,6 +4,7 @@ local GetUnitSpec = Grid2.GetUnitSpec
 
 local SpecIcons = Grid2.SpecIcons
 local Portraits = {}
+local _
 
 local function Portrait_Create(self, parent)
 	local frame = self:CreateFrame("Frame", parent)
@@ -28,7 +29,7 @@ end
 
 local function Portrait_OnUpdateClass(self, parent, unit)
 	local Portrait = parent[self.name]
-	local class = select(2, UnitClass(unit))
+	local _, class = UnitClass(unit)
 	if class then
 		Portrait.portraitTexture:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
 		Portrait.portraitTexture:SetTexCoord(CLASS_ICON_TCOORDS[class][1], CLASS_ICON_TCOORDS[class][2], CLASS_ICON_TCOORDS[class][3], CLASS_ICON_TCOORDS[class][4])

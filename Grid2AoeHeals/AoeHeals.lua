@@ -38,7 +38,6 @@ local next = next
 local min = math.min
 local max = math.max
 local floor = math.floor
-local select = select
 local tsort = table.sort
 local tinsert = table.insert
 local tostring = tostring
@@ -90,7 +89,7 @@ local function UpdateRoster()
 		local g = raidSizes[Grid2Layout.partyType or "solo"] / 5
 		local i = 1
 		for j = 1, m do
-			local h = select(3, GetRaidRosterInfo(j))
+			local _, _, h = GetRaidRosterInfo(j)
 			if h <= g then
 				local p = rosterRaid[i]
 				roster[i] = p
@@ -151,7 +150,7 @@ local function SetTimer(enable)
 			timer = Grid2:ScheduleRepeatingTimer(TimerEvent, AOEM.db.profile.updateRate)
 			AOEM:Debug("Aoe Heals Timer Enabled.")
 		else
-			Grid2:CancelTimer(timer)
+			Grid2:CancelTimer(timer, true)
 			timer = nil
 			if mapValid then
 				ClearAllIndicators()
@@ -237,9 +236,8 @@ local function UpdateTimerState(InCombat)
 	if InCombat == nil then
 		InCombat = InCombatLockdown()
 	end
-	local disabled =
-		(AOEM.db.profile.showInCombat and (not InCombat)) or (AOEM.db.profile.showInRaid and (not IsInRaid())) or
-		(GetNumGroupMembers() == 0)
+	local disabled = (AOEM.db.profile.showInCombat and (not InCombat)) or (AOEM.db.profile.showInRaid and (not IsInRaid())) or (GetNumGroupMembers() == 0)
+	print("here", disabled)
 	SetTimer(not disabled)
 end
 
@@ -382,7 +380,8 @@ end
 
 function AOEM:PlayerHasGlyph(id)
 	for i = 1, 9 do
-		if id == select(4, GetGlyphSocketInfo(i)) then
+		local _, _, _, si = GetGlyphSocketInfo(i)
+		if id == si then
 			return true
 		end
 	end

@@ -5,6 +5,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Grid2")
 
 local DEFAULT_GROUP_ORDER = "WARRIOR,DEATHKNIGHT,ROGUE,PALADIN,DRUID,SHAMAN,PRIEST,MAGE,WARLOCK,HUNTER"
 local DEFAULT_PET_ORDER = "HUNTER,WARLOCK,DEATHKNIGHT,PRIEST,MAGE,DRUID,SHAMAN,WARRIOR,ROGUE,PALADIN"
+local _
 
 local groupFilters = {
 	{groupFilter = "1"},
@@ -599,7 +600,6 @@ do
 	}
 	Grid2Layout:AddLayout("Free Layout", FreeLayout)
 
-	local select = select
 	local fmt = string.format
 	local tinsert = table.insert
 	local tsort = table.sort
@@ -675,9 +675,9 @@ do
 		}
 		local function GetPartyRosterInfo(i)
 			local unit = i < 2 and "player" or "party" .. (i - 1)
-			local name = select(1, UnitName(unit))
+			local name = UnitName(unit)
 			if name and name ~= "" then
-				local class = select(2, UnitClass(unit))
+				local _, class = UnitClass(unit)
 				local role = GetPartyAssignment("MAINTANK", unit) and "MAINTANK" or ""
 				return name, nil, 1, nil, nil, class, nil, nil, nil, role
 			end
@@ -830,7 +830,7 @@ do
 				frame:IsVisible() and x >= frame:GetLeft() and x <= frame:GetRight() and y >= frame:GetBottom() and
 					y <= frame:GetTop()
 			 then
-				return frame.unit and select(1, UnitName(frame.unit)) or nil, frame
+				return frame.unit and UnitName(frame.unit) or nil, frame
 			end
 		end
 	end
