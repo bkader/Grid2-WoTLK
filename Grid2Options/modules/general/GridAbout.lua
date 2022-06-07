@@ -16,7 +16,7 @@ local options = {
 	}
 }
 -- about about args
-for i, field in ipairs({"Version", "Date", "Category", "Author", "Email", "Website", "Discord", "Donate", "Credits"}) do
+for i, field in ipairs({"Version", "Date", "Category", "Author", "Email", "Website", "Discord", "Credits"}) do
 	local meta = GetAddOnMetadata("Grid2", field) or GetAddOnMetadata("Grid2", "X-" .. field)
 	if meta then
 		options["d" .. i] = {

@@ -6,6 +6,11 @@ local pairs, ipairs, next = pairs, ipairs, next
 --{{{ Frame config function for secure headers
 local function GridHeader_InitialConfigFunction(self, name)
 	Grid2Frame:RegisterFrame(self)
+	RegisterUnitWatch(self)
+	self:SetAttribute("*type1", "target")
+	self:SetAttribute("useparent-toggleForVehicle", true)
+	self:SetAttribute("useparent-allowVehicleTarget", true)
+	self:SetAttribute("useparent-unitsuffix", true)
 end
 --}}}
 
@@ -30,15 +35,6 @@ local GridLayoutHeaderClass = {
 			frame = CreateFrame("Frame", "Grid2LayoutHeader" .. NUM_HEADERS, Grid2Layout.frame, assert(SecureHeaderTemplates[type]))
 			frame:SetAttribute("template", _G.ClickCastHeader and "ClickCastUnitTemplate,SecureUnitButtonTemplate" or "Grid2SecureUnitButtonTemplate")
 			frame.initialConfigFunction = GridHeader_InitialConfigFunction
-			frame:SetAttribute("initialConfigFunction", [[
-				RegisterUnitWatch(self)
-				self:SetAttribute("*type1", "target")
-				self:SetAttribute("useparent-toggleForVehicle", true)
-				self:SetAttribute("useparent-allowVehicleTarget", true)
-				self:SetAttribute("useparent-unitsuffix", true)
-				local header = self:GetParent()
-				header:CallMethod("initialConfigFunction", self:GetName())
-			]])
 		end
 		for name, func in pairs(self.prototype) do
 			frame[name] = func
