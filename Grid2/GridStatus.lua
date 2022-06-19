@@ -81,6 +81,7 @@ function status:Inject(data)
 end
 
 function status:UpdateIndicators(unit)
+	if not unit then return end
 	for parent in next, Grid2:GetUnitFrames(unit) do
 		for indicator in pairs(self.indicators) do
 			indicator:Update(parent, unit)

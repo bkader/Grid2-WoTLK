@@ -25,7 +25,7 @@ function Grid2:SetFrameUnit(frame, unit)
 end
 
 function Grid2:GetUnitFrames(unit)
-	return frames_of_unit[unit]
+	return unit and frames_of_unit[unit]
 end
 --}}}
 
