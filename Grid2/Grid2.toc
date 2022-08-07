@@ -6,7 +6,7 @@
 ## Notes-zhCN: 小巧的轻量级模块化队伍框架
 ## Notes-zhTW: 精簡的團隊框架功能
 
-## Author: Kader (|cff808080bkader#6361|r)
+## Author: Kader (|cff808080bkader#5341|r)
 ## Version: r736
 ## OptionalDeps: Ace3, Clique
 ## LoadOnDemand: 0

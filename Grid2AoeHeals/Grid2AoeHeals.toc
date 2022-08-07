@@ -2,7 +2,7 @@
 ## Title: Grid2 |cd1ff7d0aAOE Heals|r
 ## Notes: Display best targets for AOE Heals
 ## Notes-esES: Muestra los mejores objetivos para las curas de area
-## Author: Kader (|cff808080bkader#6361|r)
+## Author: Kader (|cff808080bkader#5341|r)
 ## Version: r736
 ## Dependencies: Grid2
 ## DefaultState: disabled

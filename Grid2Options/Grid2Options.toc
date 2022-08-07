@@ -4,7 +4,7 @@
 ## Notes: Configuration module for Grid2
 ## Notes-esES: Modulo de configuracion del Grid2
 
-## Author: Kader (|cff808080bkader#6361|r)
+## Author: Kader (|cff808080bkader#5341|r)
 ## Version: r736
 ## Dependencies: Grid2
 ## LoadOnDemand: 1
