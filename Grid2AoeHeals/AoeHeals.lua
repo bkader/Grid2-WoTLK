@@ -237,7 +237,6 @@ local function UpdateTimerState(InCombat)
 		InCombat = InCombatLockdown()
 	end
 	local disabled = (AOEM.db.profile.showInCombat and (not InCombat)) or (AOEM.db.profile.showInRaid and (not IsInRaid())) or (GetNumGroupMembers() == 0)
-	print("here", disabled)
 	SetTimer(not disabled)
 end
 
